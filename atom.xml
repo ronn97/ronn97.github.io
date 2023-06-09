@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-06-09T06:36:00.862Z</updated>
+  <updated>2023-06-09T07:43:11.133Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,18 +17,46 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>程序员舍不得删除的软件/插件推荐（持续更新）</title>
+    <link href="http://example.com/2023/06/09/20230609-1/"/>
+    <id>http://example.com/2023/06/09/20230609-1/</id>
+    <published>2023-06-09T07:36:59.000Z</published>
+    <updated>2023-06-09T07:43:11.133Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;最近摸鱼，突然就想总结一下遇到的那些好用的工具助手之类的软件，同时欢迎路过的兄弟姐妹补充。&lt;/p&gt;
+&lt;h2 id=&quot;软件&quot;&gt;&lt;a href=&quot;#软件&quot; class=&quot;headerlink&quot; title=&quot;软件&quot;&gt;&lt;/a&gt;软件&lt;/h2&gt;&lt;p&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    
+    <category term="软件" scheme="http://example.com/tags/%E8%BD%AF%E4%BB%B6/"/>
+    
+    <category term="工具" scheme="http://example.com/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="插件" scheme="http://example.com/tags/%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
     <link href="http://example.com/2023/06/09/hello-world/"/>
     <id>http://example.com/2023/06/09/hello-world/</id>
     <published>2023-06-09T06:36:00.862Z</published>
-    <updated>2023-06-09T06:36:00.862Z</updated>
+    <updated>2023-06-09T07:42:24.060Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt;欢迎来到我的博客,将会在此记录我的未来！&lt;/p&gt;
+    <summary type="html">&lt;p&gt;欢迎来到我的博客,将会在此记录一些有趣的事！&lt;/p&gt;
 </summary>
         
       
@@ -43,15 +71,15 @@
     <link href="http://example.com/2023/06/08/my-blog-build-remark/"/>
     <id>http://example.com/2023/06/08/my-blog-build-remark/</id>
     <published>2023-06-08T05:44:32.000Z</published>
-    <updated>2023-06-09T06:36:00.863Z</updated>
+    <updated>2023-06-09T07:39:09.645Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;img src=&quot;/2023/06/08/my-blog-build-remark/posts-file-tree.png&quot; class=&quot;&quot; title=&quot;目录结构&quot;&gt;
-&lt;img src=&quot;/2023/06/08/my-blog-build-remark/img.png&quot;</summary>
+    <summary type="html">&lt;img src=&quot;/2023/06/08/my-blog-build-remark/img.png&quot; class=&quot;&quot; title=&quot;头部&quot;&gt;
+&lt;h1 id=&quot;PersonalBlog&quot;&gt;&lt;a href=&quot;#PersonalBlog&quot; class=&quot;headerlink&quot;</summary>
         
       
     
@@ -60,7 +88,7 @@
     
     <category term="hexo" scheme="http://example.com/tags/hexo/"/>
     
-    <category term="fluid" scheme="http://example.com/tags/fluid/"/>
+    <category term="GitHub Pages" scheme="http://example.com/tags/GitHub-Pages/"/>
     
   </entry>
   

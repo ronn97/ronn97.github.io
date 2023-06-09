@@ -7,6 +7,15 @@
 ]]></content>
   </entry>
   <entry>
+    <title>测试是否可以创建中文</title>
+    <url>/2023/06/09/%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%88%9B%E5%BB%BA%E4%B8%AD%E6%96%87/</url>
+    <content><![CDATA[<p>经过测试，结论是可以创建中文.md</p>
+]]></content>
+      <tags>
+        <tag>中文</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>程序员舍不得删除的软件/插件推荐（持续更新）</title>
     <url>/2023/06/09/20230609-1/</url>
     <content><![CDATA[<p>最近摸鱼，突然就想总结一下遇到的那些好用的工具助手之类的软件，同时欢迎路过的兄弟姐妹补充。</p>

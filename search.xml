@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/06/09/hello-world/</url>
+    <content><![CDATA[<p>欢迎来到我的博客,将会在此记录我的未来！</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>基于 GitHub Pages + Hexo 搭建个人博客</title>
+    <url>/2023/06/08/my-blog-build-remark/</url>
+    <content><![CDATA[<img src="/2023/06/08/my-blog-build-remark/posts-file-tree.png" class="" title="目录结构">
+<img src="/2023/06/08/my-blog-build-remark/img.png" class="" title="头部">
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+        <tag>fluid</tag>
+      </tags>
+  </entry>
+</search>

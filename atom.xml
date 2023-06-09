@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>没有梦想的程序员</title>
+  
+  <subtitle>爱前端 | 爱挖坑 | 爱生活</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2023-06-09T06:36:00.862Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>Hao Zhou</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://example.com/2023/06/09/hello-world/"/>
+    <id>http://example.com/2023/06/09/hello-world/</id>
+    <published>2023-06-09T06:36:00.862Z</published>
+    <updated>2023-06-09T06:36:00.862Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;欢迎来到我的博客,将会在此记录我的未来！&lt;/p&gt;
+</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>基于 GitHub Pages + Hexo 搭建个人博客</title>
+    <link href="http://example.com/2023/06/08/my-blog-build-remark/"/>
+    <id>http://example.com/2023/06/08/my-blog-build-remark/</id>
+    <published>2023-06-08T05:44:32.000Z</published>
+    <updated>2023-06-09T06:36:00.863Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;img src=&quot;/2023/06/08/my-blog-build-remark/posts-file-tree.png&quot; class=&quot;&quot; title=&quot;目录结构&quot;&gt;
+&lt;img src=&quot;/2023/06/08/my-blog-build-remark/img.png&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="hexo" scheme="http://example.com/tags/hexo/"/>
+    
+    <category term="fluid" scheme="http://example.com/tags/fluid/"/>
+    
+  </entry>
+  
+</feed>

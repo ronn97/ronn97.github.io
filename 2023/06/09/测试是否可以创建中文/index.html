@@ -69,12 +69,41 @@
       
       
       
-        <p>经过测试，结论是可以创建中文.md</p>
-
+        <div id="readmore-container"><p>经过测试，结论是可以创建中文.md</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "http://weixin.qq.com/r/bBK_plrExwe4rR7F90d_",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/06/09/%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%88%9B%E5%BB%BA%E4%B8%AD%E6%96%87/" data-id="clioas90n0004dwwlgwjyafye" class="article-share-link">
+      <a data-url="http://example.com/2023/06/09/%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%88%9B%E5%BB%BA%E4%B8%AD%E6%96%87/" data-id="clisiar6z0006twwl26rw5541" class="article-share-link">
         分享
       </a>
       

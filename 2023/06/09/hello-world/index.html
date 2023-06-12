@@ -69,12 +69,41 @@
       
       
       
-        <p>欢迎来到我的博客,将会在此记录一些有趣的事！</p>
-
+        <div id="readmore-container"><p>欢迎来到我的博客,将会在此记录一些有趣的事！</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "http://weixin.qq.com/r/bBK_plrExwe4rR7F90d_",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/06/09/hello-world/" data-id="clioas90a0001dwwl6d69givf" class="article-share-link">
+      <a data-url="http://example.com/2023/06/09/hello-world/" data-id="clisiar6p0001twwl45iq6wwy" class="article-share-link">
         分享
       </a>
       

@@ -71,7 +71,7 @@
       
       
       
-        <img src="/2023/06/08/my-blog-build-remark/img.png" class="" title="头部">
+        <div id="readmore-container"><img src="/2023/06/08/my-blog-build-remark/img.png" class="" title="头部">
 <h1 id="PersonalBlog"><a href="#PersonalBlog" class="headerlink" title="PersonalBlog"></a>PersonalBlog</h1><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>基于 Github Pages + Hexo 的方式，搭建个人博客。<br>本站参考链接<a target="_blank" rel="noopener" href="https://my.oschina.net/u/5057806/blog/5602898">白嫖 GitHub Pages，轻松搭建个人博客</a></p>
 <h4 id="软件架构"><a href="#软件架构" class="headerlink" title="软件架构"></a>软件架构</h4><p>软件架构说明<br>Hexo 是一个快速、简单且功能强大的博客框架。使用 Markdown 解析文档，Hexo 能在几秒内生成带有自定义主题并集成各项功能的网站页面。</p>
 <h4 id="安装教程"><a href="#安装教程" class="headerlink" title="安装教程"></a>安装教程</h4><ol>
@@ -145,11 +145,40 @@
 
 <p>登入 Github，在库设置（Repository Settings）中将默认分支设置为 _config.yml 配置中的分支名称。<br>只需稍等片刻，个人博客站点就会显示在 Github Pages 中。</p>
 <p>个人博客的主页访问地址：https:&#x2F;&#x2F;&lt;GitHub 用户名&gt;.github.io。</p>
-
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "http://weixin.qq.com/r/bBK_plrExwe4rR7F90d_",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/06/08/my-blog-build-remark/" data-id="clioas90k0003dwwl76nocw4j" class="article-share-link">
+      <a data-url="http://example.com/2023/06/08/my-blog-build-remark/" data-id="clisiar6u0003twwlb5sgde51" class="article-share-link">
         分享
       </a>
       

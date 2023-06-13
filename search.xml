@@ -36,6 +36,46 @@
 			]]></content>
   </entry>
   <entry>
+    <title>Hexo主题themes/主题文件夹 无法提交到自己Git的原因以及解决办法</title>
+    <url>/2023/06/13/hexo%E4%B8%BB%E9%A2%98%E6%96%87%E4%BB%B6%E5%A4%B9%E6%97%A0%E6%B3%95%E6%8F%90%E4%BA%A4/</url>
+    <content><![CDATA[<div id="readmore-container"><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>主要还是因为<code>themes/ocean</code>也是从仓库里拉取下来的 他关联到了作者的git仓库 所以提交不上去</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><p>只要删除对应主题文件夹的<code>.git</code>文件即可；<br>这样就可以在任意电脑clone文件，就可以发布你的博客文章了；</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			]]></content>
+      <tags>
+        <tag>hexo</tag>
+        <tag>ocean</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>两行 js 实现 html 全自动翻译。 无需改动页面、无语言配置文件、无 API Key、对 SEO 友好！</title>
     <url>/2023/06/12/JS%E7%BD%91%E9%A1%B5%E5%85%A8%E8%87%AA%E5%8A%A8%E7%BF%BB%E8%AF%91/</url>
     <content><![CDATA[<div id="readmore-container"><h3 id="软件简介"><a href="#软件简介" class="headerlink" title="软件简介"></a>软件简介</h3><p>两行 js 实现 html 全自动翻译。 无需改动页面、无语言配置文件、无 API Key、对 SEO 友好！</p>

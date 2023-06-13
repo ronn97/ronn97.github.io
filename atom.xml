@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-06-12T09:36:30.725Z</updated>
+  <updated>2023-06-13T03:45:54.019Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Hexo主题themes/主题文件夹 无法提交到自己Git的原因以及解决办法</title>
+    <link href="http://example.com/2023/06/13/hexo%E4%B8%BB%E9%A2%98%E6%96%87%E4%BB%B6%E5%A4%B9%E6%97%A0%E6%B3%95%E6%8F%90%E4%BA%A4/"/>
+    <id>http://example.com/2023/06/13/hexo%E4%B8%BB%E9%A2%98%E6%96%87%E4%BB%B6%E5%A4%B9%E6%97%A0%E6%B3%95%E6%8F%90%E4%BA%A4/</id>
+    <published>2023-06-13T03:17:47.000Z</published>
+    <updated>2023-06-13T03:45:54.019Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h3 id=&quot;原因&quot;&gt;&lt;a href=&quot;#原因&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="hexo" scheme="http://example.com/tags/hexo/"/>
+    
+    <category term="ocean" scheme="http://example.com/tags/ocean/"/>
+    
+  </entry>
   
   <entry>
     <title>两行 js 实现 html 全自动翻译。 无需改动页面、无语言配置文件、无 API Key、对 SEO 友好！</title>

@@ -2553,6 +2553,12 @@ pre .javascript .function {
 .logo img {
   width: 4.2rem;
 }
+#translate {
+  padding: 1rem;
+}
+#translate select {
+  width: 6rem;
+}
 .totop {
   position: relative;
   display: inline-block;

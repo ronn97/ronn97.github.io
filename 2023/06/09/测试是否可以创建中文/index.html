@@ -109,7 +109,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2023/06/09/%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%88%9B%E5%BB%BA%E4%B8%AD%E6%96%87/" data-id="cljxnc94200070cwl65ysfa0t" class="article-share-link">
+      <a data-url="http://example.com/2023/06/09/%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%88%9B%E5%BB%BA%E4%B8%AD%E6%96%87/" data-id="cljxogvta0007jgwl29c81nbs" class="article-share-link">
         分享
       </a>
       
@@ -205,6 +205,9 @@
         搜索
       </a>
     </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -273,4 +276,11 @@
 
 </body>
 
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
 </html>

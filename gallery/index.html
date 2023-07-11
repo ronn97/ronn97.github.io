@@ -68,28 +68,28 @@
   
   <div>
     <a class="fancybox" data-fancybox="images" data-caption="20230501" href="/thumbnail_url"
-      rel="gallery_cljxnc93q00000cwld7cjcvc0" title="20230501">
+      rel="gallery_cljxogvt50002jgwl3ng06v2e" title="20230501">
       <img src="/images/gallery/IMG_20230501_162801.jpg" itemprop="image" alt="20230501">
     </a>
   </div>
   
   <div>
     <a class="fancybox" data-fancybox="images" data-caption="20230501" href="/thumbnail_url"
-      rel="gallery_cljxnc93q00000cwld7cjcvc0" title="20230501">
+      rel="gallery_cljxogvt50002jgwl3ng06v2e" title="20230501">
       <img src="/images/gallery/MVIMG_20230501_161424.jpg" itemprop="image" alt="20230501">
     </a>
   </div>
   
   <div>
     <a class="fancybox" data-fancybox="images" data-caption="img_caption" href="/thumbnail_url"
-      rel="gallery_cljxnc93q00000cwld7cjcvc0" title="img_caption">
+      rel="gallery_cljxogvt50002jgwl3ng06v2e" title="img_caption">
       <img src="/images/gallery/img.png" itemprop="image" alt="img_caption">
     </a>
   </div>
   
   <div>
     <a class="fancybox" data-fancybox="images" data-caption="img_caption" href="/thumbnail_url"
-      rel="gallery_cljxnc93q00000cwld7cjcvc0" title="img_caption">
+      rel="gallery_cljxogvt50002jgwl3ng06v2e" title="img_caption">
       <img src="/images/gallery/img_1.png" itemprop="image" alt="img_caption">
     </a>
   </div>
@@ -131,7 +131,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/gallery/index.html" data-id="cljxnc93q00000cwld7cjcvc0" class="article-share-link">
+      <a data-url="http://example.com/gallery/index.html" data-id="cljxogvt50002jgwl3ng06v2e" class="article-share-link">
         分享
       </a>
       
@@ -201,6 +201,9 @@
         搜索
       </a>
     </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
   </ul>
 </nav>
 <nav class="navbar navbar-bottom">
@@ -251,4 +254,11 @@
 
 </body>
 
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
 </html>

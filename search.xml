@@ -159,7 +159,8 @@
     <title>程序员舍不得删除的软件/插件/工具推荐（持续更新）</title>
     <url>/2023/06/09/%E8%BD%AF%E4%BB%B6-%E6%8F%92%E4%BB%B6-%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/</url>
     <content><![CDATA[<div id="readmore-container"><p>最近摸鱼，突然就想总结一下遇到的那些好用的工具助手之类的软件，同时欢迎路过的兄弟姐妹补充。</p>
-<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><p><a href="https://ttime.timerecord.cn/">TTime</a>：一款简洁、高效、高颜值的输入、截图、划词<strong>翻译软件</strong>。<br><a href="https://ttime.timerecord.cn/">QtScrcpy</a>：可以通过 USB &#x2F; 网络<strong>连接Android设备</strong>，并进行显示和控制。无需root权限。<br>同时支持 GNU&#x2F;Linux ，Windows 和 MacOS 三大主流桌面平台。<br>它专注于:</p>
+<h3 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h3><ul>
+<li><p><a href="https://ttime.timerecord.cn/">TTime</a>：一款简洁、高效、高颜值的输入、截图、划词<strong>翻译软件</strong>。<br><a href="https://ttime.timerecord.cn/">QtScrcpy</a>：可以通过 USB &#x2F; 网络<strong>连接Android设备</strong>，并进行显示和控制。无需root权限。<br>同时支持 GNU&#x2F;Linux ，Windows 和 MacOS 三大主流桌面平台。<br>它专注于:</p>
 <ul>
 <li>精致 (仅显示设备屏幕)</li>
 <li>性能 (30~60fps)</li>
@@ -168,9 +169,18 @@
 <li>快速启动 (1s 内就可以看到第一帧图像)</li>
 <li>非侵入性 (不在设备上安装任何软件)</li>
 </ul>
-<p><a href="https://github.com/docmirror/dev-sidecar/releases">dev-sidecar</a>：开发者边车，命名取自service-mesh的service-sidecar，意为为开发者打辅助的边车工具（以下简称ds）通过<strong>本地代理</strong>的方式将https请求代理到一些国内的<strong>加速通道</strong>上;简称<strong>github加速</strong>。github打不开可尝试  <a href="https://www.aliyundrive.com/s/fYxthYeWtHJ">阿里云盘 分享链接</a></p>
-<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p><a href="https://monica.im/?c=4C8VFNRV">monica</a>：您的 ChatGPT AI 智能助理适用于所有网站<strong>浏览器插件</strong>。</p>
-<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p><a href="https://www.007chatgpt.com/">零零七ChatGPT</a>：完全免费的一款chatgpt<strong>在线工具</strong>。</p>
+</li>
+<li><p><a href="https://github.com/docmirror/dev-sidecar/releases">dev-sidecar</a>：开发者边车，命名取自service-mesh的service-sidecar，意为为开发者打辅助的边车工具（以下简称ds）通过<strong>本地代理</strong>的方式将https请求代理到一些国内的<strong>加速通道</strong>上;简称<strong>github加速</strong>。github打不开可尝试  <a href="https://www.aliyundrive.com/s/fYxthYeWtHJ">阿里云盘 分享链接</a></p>
+</li>
+</ul>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><ul>
+<li><a href="https://monica.im/?c=4C8VFNRV">monica</a>：您的 ChatGPT AI 智能助理适用于所有网站<strong>浏览器插件</strong>。</li>
+<li><a href="https://github.com/adamyi/wechrome">WeChrome</a>: WeChrome 是用于解除微信网页版登录限制的 Chrome 插件。<br>如果你登录微信网页版时，出现如下提示<code>为了保护您的帐户，已暂停通过网络登录微信。</code>，可使用该插件来绕过限制。</li>
+<li><a href="https://www.tampermonkey.net/index.php?locale=zh_CN">篡改猴 (Tampermonkey)</a> 是拥有 超过 1000 万用户 的最流行的浏览器扩展之一。 它适用于 Chrome、Microsoft Edge、Safari、Opera Next 和 Firefox。它允许用户自定义并增强您最喜爱的网页的功能。用户脚本是小型 JavaScript 程序，可用于向网页添加新功能或修改现有功能。使用 篡改猴，您可以轻松在任何网站上创建、<strong>管理和运行这些用户脚本</strong>!<img src="/2023/06/09/%E8%BD%AF%E4%BB%B6-%E6%8F%92%E4%BB%B6-%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/img.png" class="" title="以上是本人添加的部分脚本"></li>
+</ul>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><ul>
+<li><a href="https://www.007chatgpt.com/">零零七ChatGPT</a>：完全免费的一款chatgpt<strong>在线工具</strong>。</li>
+</ul>
 </div>
 				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
 				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>

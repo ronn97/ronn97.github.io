@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 类型缩小 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-narrowing" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 类型缩小
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-narrowing/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><p>TypeScript 变量的值可以变，但是类型通常是不变的。唯一允许的改变，就是类型缩小，就是将变量值的范围缩得更小。</p>
+<h2 id="手动类型缩小"><a href="#手动类型缩小" class="headerlink" title="手动类型缩小"></a>手动类型缩小</h2><p>如果一个变量属于联合类型，所以使用时一般需要缩小类型。</p>
+<p>第一种方法是使用<code>if</code>判断。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getScore</span>(<span class="params">value: <span class="built_in">number</span>|<span class="built_in">string</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">&#x27;number&#x27;</span>) &#123; <span class="comment">// (A)</span></span><br><span class="line">    <span class="comment">// %inferred-type: number</span></span><br><span class="line">    value;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">&#x27;string&#x27;</span>) &#123; <span class="comment">// (B)</span></span><br><span class="line">    <span class="comment">// %inferred-type: string</span></span><br><span class="line">    value;</span><br><span class="line">    <span class="keyword">return</span> value.<span class="property">length</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Unsupported value: &#x27;</span> + value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果一个值是<code>any</code>或<code>unknown</code>，你又想对它进行处理，就必须先缩小类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">parseStringLiteral</span>(<span class="params">stringLiteral: <span class="built_in">string</span></span>): <span class="built_in">string</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="attr">result</span>: <span class="built_in">unknown</span> = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(stringLiteral);</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> result === <span class="string">&#x27;string&#x27;</span>) &#123; <span class="comment">// (A)</span></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Not a string literal: &#x27;</span> + stringLiteral);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是另一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Book</span> &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="literal">null</span> | <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">isbn</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getTitle</span>(<span class="params">book: Book</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (book.<span class="property">title</span> === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: null</span></span><br><span class="line">    book.<span class="property">title</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;(Untitled)&#x27;</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: string</span></span><br><span class="line">    book.<span class="property">title</span>;</span><br><span class="line">    <span class="keyword">return</span> book.<span class="property">title</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>缩小类型的前提是，需要先获取类型。获取类型的几种方法如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">func</span>(<span class="params">value: <span class="built_in">Function</span>|<span class="built_in">Date</span>|<span class="built_in">number</span>[]</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">&#x27;function&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: Function</span></span><br><span class="line">    value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (value <span class="keyword">instanceof</span> <span class="title class_">Date</span>) &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: Date</span></span><br><span class="line">    value;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (<span class="title class_">Array</span>.<span class="title function_">isArray</span>(value)) &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: number[]</span></span><br><span class="line">    value;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="typeof-运算符"><a href="#typeof-运算符" class="headerlink" title="typeof 运算符"></a>typeof 运算符</h3><p>第二种方法是使用<code>switch</code>缩小类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getScore</span>(<span class="params">value: <span class="built_in">number</span>|<span class="built_in">string</span></span>): <span class="built_in">number</span> &#123;</span><br><span class="line">  <span class="keyword">switch</span> (<span class="keyword">typeof</span> value) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;number&#x27;</span>:</span><br><span class="line">      <span class="comment">// %inferred-type: number</span></span><br><span class="line">      value;</span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;string&#x27;</span>:</span><br><span class="line">      <span class="comment">// %inferred-type: string</span></span><br><span class="line">      value;</span><br><span class="line">      <span class="keyword">return</span> value.<span class="property">length</span>;</span><br><span class="line">    <span class="attr">default</span>:</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Unsupported value: &#x27;</span> + value);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="instanceof-运算符"><a href="#instanceof-运算符" class="headerlink" title="instanceof 运算符"></a>instanceof 运算符</h3><p>第三种方法是instanceof运算符。它能够检测实例对象与构造函数之间的关系。instanceof运算符的左操作数为实例对象，右操作数为构造函数，若构造函数的prototype属性值存在于实例对象的原型链上，则返回true；否则，返回false。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">x: <span class="built_in">Date</span> | <span class="built_in">RegExp</span></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x <span class="keyword">instanceof</span> <span class="title class_">Date</span>) &#123;</span><br><span class="line">        x; <span class="comment">// Date</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x <span class="keyword">instanceof</span> <span class="title class_">RegExp</span>) &#123;</span><br><span class="line">        x; <span class="comment">// RegExp</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>instanceof类型守卫同样适用于自定义构造函数，并对其实例对象进行类型细化。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">x: A | B</span>) &#123;</span><br><span class="line">   <span class="keyword">if</span> (x <span class="keyword">instanceof</span> A) &#123;</span><br><span class="line">       x; <span class="comment">// A</span></span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (x <span class="keyword">instanceof</span> B) &#123;</span><br><span class="line">       x; <span class="comment">// B</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="in-运算符"><a href="#in-运算符" class="headerlink" title="in 运算符"></a>in 运算符</h3><p>第四种方法是使用in运算符。</p>
+<p>in运算符是JavaScript中的关系运算符之一，用来判断对象自身或其原型链中是否存在给定的属性，若存在则返回true，否则返回false。in运算符有两个操作数，左操作数为待测试的属性名，右操作数为测试对象。</p>
+<p>in类型守卫根据in运算符的测试结果，将右操作数的类型细化为具体的对象类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123;</span><br><span class="line">    <span class="attr">x</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123;</span><br><span class="line">    <span class="attr">y</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">x: A | B</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="string">&#x27;x&#x27;</span> <span class="keyword">in</span> x) &#123;</span><br><span class="line">        x; <span class="comment">// A</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        x; <span class="comment">// B</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> A &#123; <span class="attr">a</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"><span class="keyword">interface</span> B &#123; <span class="attr">b</span>: <span class="built_in">number</span> &#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">pickAB</span>(<span class="params">ab: A | B</span>) &#123;</span><br><span class="line"> <span class="keyword">if</span> (<span class="string">&#x27;a&#x27;</span> <span class="keyword">in</span> ab) &#123;</span><br><span class="line"> ab <span class="comment">// Type is A</span></span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> ab <span class="comment">// Type is B</span></span><br><span class="line"> &#125;</span><br><span class="line"> ab <span class="comment">// Type is A | B</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>缩小对象的属性，要用<code>in</code>运算符。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">FirstOrSecond</span> =</span><br><span class="line">  | &#123;<span class="attr">first</span>: <span class="built_in">string</span>&#125;</span><br><span class="line">  | &#123;<span class="attr">second</span>: <span class="built_in">string</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">func</span>(<span class="params">firstOrSecond: FirstOrSecond</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;second&#x27;</span> <span class="keyword">in</span> firstOrSecond) &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: &#123; second: string; &#125;</span></span><br><span class="line">    firstOrSecond;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">func</span>(<span class="params">firstOrSecond: FirstOrSecond</span>) &#123;</span><br><span class="line">  <span class="comment">// @ts-expect-error: Property &#x27;second&#x27; does not exist on</span></span><br><span class="line">  <span class="comment">// type &#x27;FirstOrSecond&#x27;. [...]</span></span><br><span class="line">  <span class="keyword">if</span> (firstOrSecond.<span class="property">second</span> !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="comment">// ···</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>in</code>运算符只能用于联合类型，不能用于检查一个属性是否存在。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">func</span>(<span class="params">obj: <span class="built_in">object</span></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;name&#x27;</span> <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    <span class="comment">// %inferred-type: object</span></span><br><span class="line">    obj;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 报错</span></span><br><span class="line">    obj.<span class="property">name</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="特征属性"><a href="#特征属性" class="headerlink" title="特征属性"></a>特征属性</h3><p>对于不同对象之间的区分，还可以人为地为每一类对象设置一个特征属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">UploadEvent</span> &#123;</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&#x27;upload&#x27;</span>;</span><br><span class="line">    <span class="attr">filename</span>: <span class="built_in">string</span>;</span><br><span class="line">    <span class="attr">contents</span>: <span class="built_in">string</span> </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">DownloadEvent</span> &#123; <span class="attr">type</span>: <span class="string">&#x27;download&#x27;</span>; <span class="attr">filename</span>: <span class="built_in">string</span>; &#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">AppEvent</span> = <span class="title class_">UploadEvent</span> | <span class="title class_">DownloadEvent</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">handleEvent</span>(<span class="params">e: AppEvent</span>) &#123;</span><br><span class="line"> <span class="keyword">switch</span> (e.<span class="property">type</span>) &#123;</span><br><span class="line"> <span class="keyword">case</span> <span class="string">&#x27;download&#x27;</span>:</span><br><span class="line"> e <span class="comment">// Type is DownloadEvent</span></span><br><span class="line"> <span class="keyword">break</span>;</span><br><span class="line"> <span class="keyword">case</span> <span class="string">&#x27;upload&#x27;</span>:</span><br><span class="line"> e; <span class="comment">// Type is UploadEvent</span></span><br><span class="line"> <span class="keyword">break</span>;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="any-类型的细化"><a href="#any-类型的细化" class="headerlink" title="any 类型的细化"></a>any 类型的细化</h2><p>TypeScript 推断变量类型时，会根据获知的信息，不断改变推断出来的类型，越来越细化。这种现象在<code>any</code>身上特别明显。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">range</span>(<span class="params"></span></span><br><span class="line"><span class="params">  start:<span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">  limit:<span class="built_in">number</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> out = []; <span class="comment">// 类型为 any[]</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = start; i &lt; limit; i++) &#123;</span><br><span class="line">    out.<span class="title function_">push</span>(i);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> out; <span class="comment">// 类型为 number[]</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="string">``</span><span class="string">`  </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">上面示例中，变量`</span>out<span class="string">`的类型一开始推断为`</span><span class="built_in">any</span>[]<span class="string">`，后来在里面放入数值，类型就变为`</span><span class="built_in">number</span>[]<span class="string">`。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">再看下面的例子。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>typescript</span><br><span class="line"><span class="keyword">const</span> result = []; <span class="comment">// 类型为 any[]</span></span><br><span class="line">result.<span class="title function_">push</span>(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">result <span class="comment">// 类型为 string[]</span></span><br><span class="line">result.<span class="title function_">push</span>(<span class="number">1</span>);</span><br><span class="line">result <span class="comment">// 类型为 (string | number)[]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，数组<code>result</code>随着成员类型的不同，而不断改变自己的类型。</p>
+<p>注意，这种<code>any</code>类型的细化，只在打开了编译选项<code>noImplicitAny</code>时发生。</p>
+<p>这时，如果在变量的推断类型还为<code>any</code>时（即没有任何写操作)，就去输出（或读取）该变量，则会报错，因为这时推断还没有完成，无法满足<code>noImplicitAny</code>的要求。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> result = []; <span class="comment">// 类型为 any[]</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">typeof</span> result); <span class="comment">// 报错</span></span><br><span class="line">result.<span class="title function_">push</span>(<span class="string">&#x27;a&#x27;</span>); <span class="comment">// 类型为 string[]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，只有运行完第三行，<code>result</code>的类型才能完成第一次推断，所以第二行读取<code>result</code>就会报错。</p>
+<h2 id="is-运算符"><a href="#is-运算符" class="headerlink" title="is 运算符"></a>is 运算符</h2><p><code>is</code>运算符返回一个布尔值，用来判断左侧的值是否属于右侧的类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isInputElement</span>(<span class="params">el: HTMLElement</span>): el is <span class="title class_">HTMLInputElement</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;value&#x27;</span> <span class="keyword">in</span> el;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getElementContent</span>(<span class="params">el: HTMLElement</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="title function_">isInputElement</span>(el)) &#123;</span><br><span class="line"> el; <span class="comment">// Type is HTMLInputElement</span></span><br><span class="line">    <span class="keyword">return</span> el.<span class="property">value</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> el; <span class="comment">// Type is HTMLElement</span></span><br><span class="line"> <span class="keyword">return</span> el.<span class="property">textContent</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> isDefined&lt;T&gt;(<span class="attr">x</span>: T | <span class="literal">undefined</span>): x is T &#123;</span><br><span class="line"> <span class="keyword">return</span> x !== <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-narrowing/" data-id="clm609r3f001ft4wlc878fnux" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-mapping/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 的类型映射
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-namespace/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript namespace</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

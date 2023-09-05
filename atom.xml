@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>没有梦想的程序员</title>
+  
+  <subtitle>爱前端 | 爱挖坑 | 爱折腾 | 爱生活</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2023-09-05T04:01:09.127Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>Hao Zhou</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TypeScript 的数组类型</title>
+    <link href="http://example.com/2023/09/05/ts-array/"/>
+    <id>http://example.com/2023/09/05/ts-array/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T04:01:09.127Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;JavaScript 数组在 TypeScript 里面分成两种类型，分别是数组（array）和元组（tuple）。&lt;/p&gt;
+&lt;p&gt;本章介绍数组，下一章介绍元组。&lt;/p&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的类型断言</title>
+    <link href="http://example.com/2023/09/05/ts-assert/"/>
+    <id>http://example.com/2023/09/05/ts-assert/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:22:31.967Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;对于没有类型声明的值，TypeScript</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>any 类型，unknown 类型，never 类型</title>
+    <link href="http://example.com/2023/09/05/ts-any/"/>
+    <id>http://example.com/2023/09/05/ts-any/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T04:01:01.751Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;本章介绍 TypeScript 的三种特殊类型，它们可以作为学习 TypeScript 类型系统的起点。&lt;/p&gt;
+&lt;h2 id=&quot;any-类型&quot;&gt;&lt;a href=&quot;#any-类型&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 基本用法</title>
+    <link href="http://example.com/2023/09/05/ts-basic/"/>
+    <id>http://example.com/2023/09/05/ts-basic/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:22:57.149Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;本章介绍 TypeScript 的一些最基本的语法和用法。&lt;/p&gt;
+&lt;h2 id=&quot;类型声明&quot;&gt;&lt;a href=&quot;#类型声明&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的 class 类型</title>
+    <link href="http://example.com/2023/09/05/ts-class/"/>
+    <id>http://example.com/2023/09/05/ts-class/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:23:24.815Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;类（class）是面向对象编程的基本构件，封装了属性和方法，TypeScript</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的注释指令</title>
+    <link href="http://example.com/2023/09/05/ts-comment/"/>
+    <id>http://example.com/2023/09/05/ts-comment/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:25:33.038Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;TypeScript 接受一些注释指令。&lt;/p&gt;
+&lt;p&gt;所谓“注释指令”，指的是采用 JS 双斜杠注释的形式，向编译器发出的命令。&lt;/p&gt;
+&lt;h2 id=&quot;ts-nocheck&quot;&gt;&lt;a</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>d.ts 类型声明文件</title>
+    <link href="http://example.com/2023/09/05/ts-d.ts/"/>
+    <id>http://example.com/2023/09/05/ts-d.ts/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:25:33.050Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;单独使用的模块，一般会同时提供一个单独的类型声明文件（declaration</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>declare 关键字</title>
+    <link href="http://example.com/2023/09/05/ts-declare/"/>
+    <id>http://example.com/2023/09/05/ts-declare/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:25:48.021Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;declare</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的 Enum 类型</title>
+    <link href="http://example.com/2023/09/05/ts-enum/"/>
+    <id>http://example.com/2023/09/05/ts-enum/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:29:20.627Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;Enum 是 TypeScript 新增的一种数据结构和类型，中文译为“枚举”。&lt;/p&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 装饰器</title>
+    <link href="http://example.com/2023/09/05/ts-decorator/"/>
+    <id>http://example.com/2023/09/05/ts-decorator/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:26:07.264Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>装饰器（旧语法）</title>
+    <link href="http://example.com/2023/09/05/ts-decorator-legacy/"/>
+    <id>http://example.com/2023/09/05/ts-decorator-legacy/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:29:20.650Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;上一章介绍了装饰器的标准语法，那是在2022年通过成为标准的。但是在此之前，TypeScript</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的 ES6 类型</title>
+    <link href="http://example.com/2023/09/05/ts-es6/"/>
+    <id>http://example.com/2023/09/05/ts-es6/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:35:12.540Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;Map-lt-K-V-gt&quot;&gt;&lt;a href=&quot;#Map-lt-K-V-gt&quot; class=&quot;headerlink&quot; title=&quot;Map&amp;lt;K, V&amp;gt;&quot;&gt;&lt;/a&gt;&lt;code&gt;Map&amp;lt;K,</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 泛型</title>
+    <link href="http://example.com/2023/09/05/ts-generics/"/>
+    <id>http://example.com/2023/09/05/ts-generics/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:35:28.798Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;有些时候，函数返回值的类型与参数类型是相关的。&lt;/p&gt;
+&lt;figure</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的函数类型</title>
+    <link href="http://example.com/2023/09/05/ts-function/"/>
+    <id>http://example.com/2023/09/05/ts-function/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:30:05.610Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的 interface 接口</title>
+    <link href="http://example.com/2023/09/05/ts-interface/"/>
+    <id>http://example.com/2023/09/05/ts-interface/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:35:37.411Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;interface</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 语言简介</title>
+    <link href="http://example.com/2023/09/05/ts-intro/"/>
+    <id>http://example.com/2023/09/05/ts-intro/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:35:50.286Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;TypeScript（简称 TS）是微软公司开发的一种基于 JavaScript</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 模块</title>
+    <link href="http://example.com/2023/09/05/ts-module/"/>
+    <id>http://example.com/2023/09/05/ts-module/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:36:09.230Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;任何包含 import 或 export</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 的类型映射</title>
+    <link href="http://example.com/2023/09/05/ts-mapping/"/>
+    <id>http://example.com/2023/09/05/ts-mapping/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:36:01.086Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript 类型缩小</title>
+    <link href="http://example.com/2023/09/05/ts-narrowing/"/>
+    <id>http://example.com/2023/09/05/ts-narrowing/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:36:35.644Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;TypeScript 变量的值可以变，但是类型通常是不变的。唯一允许的改变，就是类型缩小，就是将变量值的范围缩得更小。&lt;/p&gt;
+&lt;h2 id=&quot;手动类型缩小&quot;&gt;&lt;a href=&quot;#手动类型缩小&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>TypeScript namespace</title>
+    <link href="http://example.com/2023/09/05/ts-namespace/"/>
+    <id>http://example.com/2023/09/05/ts-namespace/</id>
+    <published>2023-09-05T02:50:55.000Z</published>
+    <updated>2023-09-05T07:36:28.941Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;div id=&quot;readmore-container&quot;&gt;&lt;p&gt;namespace 是一种将相关代码组织在一起的方式，中文译为“命名空间”。&lt;/p&gt;
+&lt;p&gt;它出现在 ES 模块诞生之前，作为 TypeScript 自己的模块格式而发明的。但是，自从有了 ES</summary>
+        
+      
+    
+    
+    
+    <category term="TS教程" scheme="http://example.com/categories/TS%E6%95%99%E7%A8%8B/"/>
+    
+    
+  </entry>
+  
+</feed>

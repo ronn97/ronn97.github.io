@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 装饰器 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-decorator" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 装饰器
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-decorator/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>装饰器（Decorator）是一种语法结构，用来在定义时修改类（class）的行为。</p>
+<p>在语法上，装饰器有如下几个特征。</p>
+<p>（1）第一个字符（或者说前缀）是<code>@</code>，后面是一个表达式。</p>
+<p>（2）<code>@</code>后面的表达式，必须是一个函数（或者执行后可以得到一个函数）。</p>
+<p>（3）这个函数接受所修饰对象的一些相关值作为参数。</p>
+<p>（4）这个函数要么不返回值，要么返回一个新对象取代所修饰的目标对象。</p>
+<p>举例来说，有一个函数<code>Injectable()</code>当作装饰器使用，那么需要写成<code>@Injectable</code>，然后放在某个类的前面。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Injectable</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，由于有了装饰器<code>@Injectable</code>，类<code>A</code>的行为在运行时就会发生改变。</p>
+<p>下面就是一个最简单的装饰器。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">simpleDecorator</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;hi&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@simpleDecorator</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;&#125; <span class="comment">// &quot;hi&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>simpleDecorator()</code>用作装饰器，附加在类<code>A</code>之上，后者在代码解析时就会打印一行日志。</p>
+<p>编译上面的代码会报错，提示没有用到装饰器的参数。现在就为装饰器加上参数，让它更像正式运行的代码。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">simpleDecorator</span>(<span class="params"></span></span><br><span class="line"><span class="params">  value:<span class="built_in">any</span>,</span></span><br><span class="line"><span class="params">  context:<span class="built_in">any</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`hi, this is <span class="subst">$&#123;context.kind&#125;</span> <span class="subst">$&#123;context.name&#125;</span>`</span>);</span><br><span class="line">  <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@simpleDecorator</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> &#123;&#125; <span class="comment">// &quot;hi, this is class A&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的代码就可以顺利通过编译了，代码含义这里先不解释。大家只要理解，类<code>A</code>在执行前会先执行装饰器<code>simpleDecorator()</code>，并且会向装饰器自动传入参数就可以了。</p>
+<p>装饰器有多种形式，基本上只要在<code>@</code>符号后面添加表达式都是可以的。下面都是合法的装饰器。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@myFunc</span></span><br><span class="line"><span class="meta">@myFuncFactory</span>(arg1, arg2)</span><br><span class="line"></span><br><span class="line"><span class="meta">@libraryModule</span>.<span class="property">prop</span></span><br><span class="line"><span class="meta">@someObj</span>.<span class="title function_">method</span>(<span class="number">123</span>)</span><br><span class="line"></span><br><span class="line">@(<span class="title function_">wrap</span>(dict[<span class="string">&#x27;prop&#x27;</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>注意，<code>@</code>后面的表达式，最终执行后得到的应该是一个函数。</p>
+<p>相比使用子类改变父类，装饰器更加简洁优雅，缺点是不那么直观，功能也受到一些限制。所以，装饰器一般只用来为类添加某种特定行为。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@frozen <span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line"></span><br><span class="line">  @<span class="title function_">configurable</span>(<span class="literal">false</span>)</span><br><span class="line">  @<span class="title function_">enumerable</span>(<span class="literal">true</span>)</span><br><span class="line">  <span class="title function_">method</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  @<span class="title function_">throttle</span>(<span class="number">500</span>)</span><br><span class="line">  <span class="title function_">expensiveMethod</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，一共有四个装饰器，一个用在类本身（<code>@frozen</code>），另外三个用在类的方法（<code>@configurable</code>、<code>@enumerable</code>、<code>@throttle</code>）。它们不仅增加了代码的可读性，清晰地表达了意图，而且提供一种方便的手段，增加或修改类的功能。</p>
+<h2 id="装饰器的版本"><a href="#装饰器的版本" class="headerlink" title="装饰器的版本"></a>装饰器的版本</h2><p>TypeScript 从早期开始，就支持装饰器。但是，装饰器的语法后来发生了变化。ECMAScript 标准委员会最终通过的语法标准，与 TypeScript 早期使用的语法有很大差异。</p>
+<p>目前，TypeScript 5.0 同时支持两种装饰器语法。标准语法可以直接使用，传统语法需要打开<code>--experimentalDecorators</code>编译参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tsc --target ES5 --experimentalDecorators</span><br></pre></td></tr></table></figure>
+
+<p>本章介绍装饰器的标准语法，下一章介绍传统语法。</p>
+<h2 id="装饰器的结构"><a href="#装饰器的结构" class="headerlink" title="装饰器的结构"></a>装饰器的结构</h2><p>装饰器函数的类型定义如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Decorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: DecoratedValue,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="built_in">string</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="built_in">symbol</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer?(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">static</span>?: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">private</span>?: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    access: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">      get?(): <span class="built_in">unknown</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">      set?(value: <span class="built_in">unknown</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> <span class="built_in">void</span> | <span class="title class_">ReplacementValue</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，<code>Decorator</code>是装饰器的类型定义。它是一个函数，使用时会接收到<code>value</code>和<code>context</code>两个参数。</p>
+<ul>
+<li><code>value</code>：所装饰的对象。</li>
+<li><code>context</code>：上下文对象，TypeScript 提供一个原生接口<code>ClassMethodDecoratorContext</code>，描述这个对象。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">decorator</span>(<span class="params"></span></span><br><span class="line"><span class="params">  value:<span class="built_in">any</span>,</span></span><br><span class="line"><span class="params">  context:ClassMethodDecoratorContext</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面是一个装饰器函数，其中第二个参数<code>context</code>的类型就可以写成<code>ClassMethodDecoratorContext</code>。</p>
+<p><code>context</code>对象的属性，根据所装饰对象的不同而不同，其中只有两个属性（<code>kind</code>和<code>name</code>）是必有的，其他都是可选的。</p>
+<p>（1）<code>kind</code>：字符串，表示所装饰对象的类型，可能取以下的值。</p>
+<ul>
+<li>‘class’</li>
+<li>‘method’</li>
+<li>‘getter’</li>
+<li>‘setter’</li>
+<li>‘field’</li>
+<li>‘accessor’</li>
+</ul>
+<p>这表示一共有六种类型的装饰器。</p>
+<p>（2）<code>name</code>：字符串或者 Symbol 值，所装饰对象的名字，比如类名、属性名等。</p>
+<p>（3）<code>addInitializer()</code>：函数，用来添加类的初始化逻辑。以前，这些逻辑通常放在构造函数里面，对方法进行初始化，现在改成以函数形式传入<code>addInitializer()</code>方法。注意，<code>addInitializer()</code>没有返回值。</p>
+<p>（4）<code>private</code>：布尔值，表示所装饰的对象是否为类的私有成员。</p>
+<p>（5）<code>static</code>：布尔值，表示所装饰的对象是否为类的静态成员。</p>
+<p>（6）<code>access</code>：一个对象，包含了某个值的 get 和 set 方法。</p>
+<h2 id="类装饰器"><a href="#类装饰器" class="headerlink" title="类装饰器"></a>类装饰器</h2><p>类装饰器的类型描述如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ClassDecorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: <span class="built_in">Function</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="string">&#x27;class&#x27;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="literal">undefined</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> <span class="title class_">Function</span> | <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>类装饰器接受两个参数：<code>value</code>（当前类本身）和<code>context</code>（上下文对象）。其中，<code>context</code>对象的<code>kind</code>属性固定为字符串<code>class</code>。</p>
+<p>类装饰器一般用来对类进行操作，可以不返回任何值，请看下面的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Greeter</span>(<span class="params">value, context</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (context.<span class="property">kind</span> === <span class="string">&#x27;class&#x27;</span>) &#123;</span><br><span class="line">    value.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">greet</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;你好&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Greeter</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> u = <span class="keyword">new</span> <span class="title class_">User</span>();</span><br><span class="line">u.<span class="title function_">greet</span>(); <span class="comment">// &quot;你好&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类装饰器<code>@Greeter</code>在类<code>User</code>的原型对象上，添加了一个<code>greet()</code>方法，实例就可以直接使用该方法。</p>
+<p>类装饰器可以返回一个函数，替代当前类的构造方法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">countInstances</span>(<span class="params">value:<span class="built_in">any</span>, context:<span class="built_in">any</span></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> instanceCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> wrapper = <span class="keyword">function</span> (<span class="params">...args:<span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">    instanceCount++;</span><br><span class="line">    <span class="keyword">const</span> instance = <span class="keyword">new</span> <span class="title function_">value</span>(...args);</span><br><span class="line">    instance.<span class="property">count</span> = instanceCount;</span><br><span class="line">    <span class="keyword">return</span> instance;</span><br><span class="line">  &#125; <span class="keyword">as</span> <span class="built_in">unknown</span> <span class="keyword">as</span> <span class="keyword">typeof</span> <span class="title class_">MyClass</span>;</span><br><span class="line"></span><br><span class="line">  wrapper.<span class="property"><span class="keyword">prototype</span></span> = value.<span class="property"><span class="keyword">prototype</span></span>; <span class="comment">// A</span></span><br><span class="line">  <span class="keyword">return</span> wrapper;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@countInstances</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inst1 = <span class="keyword">new</span> <span class="title class_">MyClass</span>();</span><br><span class="line">inst1 <span class="keyword">instanceof</span> <span class="title class_">MyClass</span> <span class="comment">// true</span></span><br><span class="line">inst1.<span class="property">count</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类装饰器<code>@countInstances</code>返回一个函数，替换了类<code>MyClass</code>的构造方法。新的构造方法实现了实例的计数，每新建一个实例，计数器就会加一，并且对实例添加<code>count</code>属性，表示当前实例的编号。</p>
+<p>注意，上例为了确保新构造方法继承定义在<code>MyClass</code>的原型之上的成员，特别加入<code>A</code>行，确保两者的原型对象是一致的。否则，新的构造函数<code>wrapper</code>的原型对象，与<code>MyClass</code>不同，通不过<code>instanceof</code>运算符。</p>
+<p>类装饰器也可以返回一个新的类，替代原来所装饰的类。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">countInstances</span>(<span class="params">value:<span class="built_in">any</span>, context:<span class="built_in">any</span></span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> instanceCount = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">class</span> <span class="title class_">extends</span> value &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">...args:<span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">      <span class="variable language_">super</span>(...args);</span><br><span class="line">      instanceCount++;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">count</span> = instanceCount;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@countInstances</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inst1 = <span class="keyword">new</span> <span class="title class_">MyClass</span>();</span><br><span class="line">inst1 <span class="keyword">instanceof</span> <span class="title class_">MyClass</span> <span class="comment">// true</span></span><br><span class="line">inst1.<span class="property">count</span> <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>@countInstances</code>返回一个<code>MyClass</code>的子类。</p>
+<p>下面的例子是通过类装饰器，禁止使用<code>new</code>命令新建类的实例。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">functionCallable</span>(<span class="params"></span></span><br><span class="line"><span class="params">  value <span class="keyword">as</span> <span class="built_in">any</span>, &#123;kind&#125; <span class="keyword">as</span> <span class="built_in">any</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (kind === <span class="string">&#x27;class&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">...args</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">new</span>.<span class="property">target</span> !== <span class="literal">undefined</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">TypeError</span>(<span class="string">&#x27;This function can’t be new-invoked&#x27;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="title function_">value</span>(...args);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@functionCallable</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> robin = <span class="title class_">Person</span>(<span class="string">&#x27;Robin&#x27;</span>);</span><br><span class="line">robin.<span class="property">name</span> <span class="comment">// &#x27;Robin&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类装饰器<code>@functionCallable</code>返回一个新的构造方法，里面判断<code>new.target</code>是否不为空，如果是的，就表示通过<code>new</code>命令调用，从而报错。</p>
+<p>类装饰器的上下文对象<code>context</code>的<code>addInitializer()</code>方法，用来定义一个类的初始化函数，在类完全定义结束后执行。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">customElement</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &lt;<span class="title class_">Input</span> <span class="keyword">extends</span> <span class="keyword">new</span> (...<span class="attr">args</span>: <span class="built_in">any</span>) =&gt; <span class="built_in">any</span>&gt;<span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    value: Input,</span></span></span><br><span class="line"><span class="params"><span class="function">    context: ClassDecoratorContext</span></span></span><br><span class="line"><span class="params"><span class="function">  </span>) =&gt;</span> &#123;</span><br><span class="line">    context.<span class="title function_">addInitializer</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">      customElements.<span class="title function_">define</span>(name, value);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@customElement</span>(<span class="string">&quot;hello-world&quot;</span>)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">HTMLElement</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">connectedCallback</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">innerHTML</span> = <span class="string">`&lt;h1&gt;Hello World&lt;/h1&gt;`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类<code>MyComponent</code>定义完成后，会自动执行类装饰器<code>@customElement()</code>给出的初始化函数，该函数会将当前类注册为指定名称（本例为<code>&lt;hello-world&gt;</code>）的自定义 HTML 元素。</p>
+<h2 id="方法装饰器"><a href="#方法装饰器" class="headerlink" title="方法装饰器"></a>方法装饰器</h2><p>方法装饰器用来装饰类的方法（method）。它的类型描述如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ClassMethodDecorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: <span class="built_in">Function</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="string">&#x27;method&#x27;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="built_in">symbol</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">static</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">private</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    access: &#123; get: () =&gt; <span class="built_in">unknown</span> &#125;;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> <span class="title class_">Function</span> | <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>根据上面的类型，方法装饰器是一个函数，接受两个参数：<code>value</code>和<code>context</code>。</p>
+<p>参数<code>value</code>是方法本身，参数<code>context</code>是上下文对象，有以下属性。</p>
+<ul>
+<li><code>kind</code>：值固定为字符串<code>method</code>，表示当前为方法装饰器。</li>
+<li><code>name</code>：所装饰的方法名，类型为字符串或 Symbol 值。</li>
+<li><code>static</code>：布尔值，表示是否为静态方法。该属性为只读属性。</li>
+<li><code>private</code>：布尔值，表示是否为私有方法。该属性为只读属性。</li>
+<li><code>access</code>：对象，包含了方法的存取器，但是只有<code>get()</code>方法用来取值，没有<code>set()</code>方法进行赋值。</li>
+<li><code>addInitializer()</code>：为方法增加初始化函数。</li>
+</ul>
+<p>方法装饰器会改写类的原始方法，实质等同于下面的操作。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">trace</span>(<span class="params">decoratedMethod</span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@trace</span></span><br><span class="line">  <span class="title function_">toString</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;C&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// `@trace` 等同于</span></span><br><span class="line"><span class="comment">// C.prototype.toString = trace(C.prototype.toString);</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>@trace</code>是方法<code>toString()</code>的装饰器，它的效果等同于最后一行对<code>toString()</code>的改写。</p>
+<p>如果方法装饰器返回一个新的函数，就会替代所装饰的原始函数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">replaceMethod</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`How are you, <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>?`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@replaceMethod</span></span><br><span class="line">  <span class="title function_">hello</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`Hi <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>!`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> robin = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;Robin&#x27;</span>);</span><br><span class="line"></span><br><span class="line">robin.<span class="title function_">hello</span>() <span class="comment">// &#x27;How are you, Robin?&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，装饰器<code>@replaceMethod</code>返回的函数，就成为了新的<code>hello()</code>方法。</p>
+<p>下面是另一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@log</span></span><br><span class="line">  <span class="title function_">greet</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, my name is <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">originalMethod:<span class="built_in">any</span>, context:ClassMethodDecoratorContext</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> methodName = <span class="title class_">String</span>(context.<span class="property">name</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">replacementMethod</span>(<span class="params"><span class="variable language_">this</span>: <span class="built_in">any</span>, ...args: <span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`LOG: Entering method &#x27;<span class="subst">$&#123;methodName&#125;</span>&#x27;.`</span>)</span><br><span class="line">    <span class="keyword">const</span> result = originalMethod.<span class="title function_">call</span>(<span class="variable language_">this</span>, ...args);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`LOG: Exiting method &#x27;<span class="subst">$&#123;methodName&#125;</span>&#x27;.`</span>)</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> replacementMethod;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> person = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;张三&#x27;</span>);</span><br><span class="line">person.<span class="title function_">greet</span>()</span><br><span class="line"><span class="comment">// &quot;LOG: Entering method &#x27;greet&#x27;.&quot;</span></span><br><span class="line"><span class="comment">// &quot;Hello, my name is 张三.&quot;</span></span><br><span class="line"><span class="comment">// &quot;LOG: Exiting method &#x27;greet&#x27;.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，装饰器<code>@log</code>的返回值是一个函数<code>replacementMethod</code>，替代了原始方法<code>greet()</code>。在<code>replacementMethod()</code>内部，通过执行<code>originalMethod.call()</code>完成了对原始方法的调用。</p>
+<p>利用方法装饰器，可以将类的方法变成延迟执行。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">delay</span>(<span class="params">milliseconds: <span class="built_in">number</span> = <span class="number">0</span></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">value, context</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (context.<span class="property">kind</span> === <span class="string">&quot;method&quot;</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">...args: <span class="built_in">any</span>[]</span>) &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          value.<span class="title function_">apply</span>(<span class="variable language_">this</span>, args);</span><br><span class="line">        &#125;, milliseconds);</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Logger</span> &#123;</span><br><span class="line">  <span class="meta">@delay</span>(<span class="number">1000</span>)</span><br><span class="line">  <span class="title function_">log</span>(<span class="params">msg: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;msg&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logger = <span class="keyword">new</span> <span class="title class_">Logger</span>();</span><br><span class="line">logger.<span class="title function_">log</span>(<span class="string">&quot;Hello World&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，方法装饰器<code>@delay(1000)</code>将方法<code>log()</code>的执行推迟了1秒（1000毫秒）。这里真正的方法装饰器，是<code>delay()</code>执行后返回的函数，<code>delay()</code>的作用是接收参数，用来设置推迟执行的时间。这种通过高阶函数返回装饰器的做法，称为“工厂模式”，即可以像工厂那样生产出一个模子的装饰器。</p>
+<p>方法装饰器的参数<code>context</code>对象里面，有一个<code>addInitializer()</code>方法。它是一个钩子方法，用来在类的初始化阶段，添加回调函数。这个回调函数就是作为<code>addInitializer()</code>的参数传入的，它会在构造方法执行期间执行，早于属性（field）的初始化。</p>
+<p>下面是<code>addInitializer()</code>方法的一个例子。我们知道，类的方法往往需要在构造方法里面，进行<code>this</code>的绑定。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// greet() 绑定 this</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">greet</span> = <span class="variable language_">this</span>.<span class="property">greet</span>.<span class="title function_">bind</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">greet</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, my name is <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> g = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;张三&#x27;</span>).<span class="property">greet</span>;</span><br><span class="line"><span class="title function_">g</span>() <span class="comment">// &quot;Hello, my name is 张三.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面例子中，类<code>Person</code>的构造方法内部，将<code>this</code>与<code>greet()</code>方法进行了绑定。如果没有这一行，将<code>greet()</code>赋值给变量<code>g</code>进行调用，就会报错了。</p>
+<p><code>this</code>的绑定必须放在构造方法里面，因为这必须在类的初始化阶段完成。现在，它可以移到方法装饰器的<code>addInitializer()</code>里面。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">bound</span>(<span class="params"></span></span><br><span class="line"><span class="params">  originalMethod:<span class="built_in">any</span>, context:ClassMethodDecoratorContext</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> methodName = context.<span class="property">name</span>;</span><br><span class="line">  <span class="keyword">if</span> (context.<span class="property">private</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">`不能绑定私有方法 <span class="subst">$&#123;methodName <span class="keyword">as</span> <span class="built_in">string</span>&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  context.<span class="title function_">addInitializer</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>[methodName] = <span class="variable language_">this</span>[methodName].<span class="title function_">bind</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，绑定<code>this</code>转移到了<code>addInitializer()</code>方法里面。</p>
+<p>下面再看一个例子，通过<code>addInitializer()</code>将选定的方法名，放入一个集合。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">collect</span>(<span class="params"></span></span><br><span class="line"><span class="params">  value,</span></span><br><span class="line"><span class="params">  &#123;name, addInitializer&#125;</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">addInitializer</span>(<span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable language_">this</span>.<span class="property">collectedMethodKeys</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">collectedMethodKeys</span> = <span class="keyword">new</span> <span class="title class_">Set</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">collectedMethodKeys</span>.<span class="title function_">add</span>(name);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@collect</span></span><br><span class="line">  <span class="title function_">toString</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@collect</span></span><br><span class="line">  [<span class="title class_">Symbol</span>.<span class="property">iterator</span>]() &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inst = <span class="keyword">new</span> <span class="title function_">C</span>();</span><br><span class="line">inst.<span class="property">collectedMethodKeys</span> <span class="comment">// new Set([&#x27;toString&#x27;, Symbol.iterator])</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，方法装饰器<code>@collect</code>会将所装饰的成员名字，加入一个 Set 集合<code>collectedMethodKeys</code>。</p>
+<h2 id="属性装饰器"><a href="#属性装饰器" class="headerlink" title="属性装饰器"></a>属性装饰器</h2><p>属性装饰器用来装饰定义在类顶部的属性（field）。它的类型描述如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ClassFieldDecorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: <span class="literal">undefined</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="string">&#x27;field&#x27;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="built_in">symbol</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">static</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">private</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    access: &#123; get: () =&gt; <span class="built_in">unknown</span>, set: (value: <span class="built_in">unknown</span>) =&gt; <span class="built_in">void</span> &#125;;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> <span class="function">(<span class="params">initialValue: <span class="built_in">unknown</span></span>) =&gt;</span> <span class="built_in">unknown</span> | <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注意，装饰器的第一个参数<code>value</code>的类型是<code>undefined</code>，这意味着这个参数实际上没用的，装饰器不能从<code>value</code>获取所装饰属性的值。另外，第二个参数<code>context</code>对象的<code>kind</code>属性的值为字符串<code>field</code>，而不是“property”或“attribute”，这一点是需要注意的。</p>
+<p>属性装饰器要么不返回值，要么返回一个函数，该函数会自动执行，用来对所装饰属性进行初始化。该函数的参数是所装饰属性的初始值，该函数的返回值是该属性的最终值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">logged</span>(<span class="params">value, context</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; kind, name &#125; = context;</span><br><span class="line">  <span class="keyword">if</span> (kind === <span class="string">&#x27;field&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">initialValue</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`initializing <span class="subst">$&#123;name&#125;</span> with value <span class="subst">$&#123;initialValue&#125;</span>`</span>);</span><br><span class="line">      <span class="keyword">return</span> initialValue;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Color</span> &#123;</span><br><span class="line">  <span class="meta">@logged</span> name = <span class="string">&#x27;green&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> color = <span class="keyword">new</span> <span class="title class_">Color</span>();</span><br><span class="line"><span class="comment">// &quot;initializing name with value green&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，属性装饰器<code>@logged</code>装饰属性<code>name</code>。<code>@logged</code>的返回值是一个函数，该函数用来对属性<code>name</code>进行初始化，它的参数<code>initialValue</code>就是属性<code>name</code>的初始值<code>green</code>。新建实例对象<code>color</code>时，该函数会自动执行。</p>
+<p>属性装饰器的返回值函数，可以用来更改属性的初始值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">twice</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">initialValue</span> =&gt;</span> initialValue * <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@twice</span></span><br><span class="line">  field = <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inst = <span class="keyword">new</span> <span class="title function_">C</span>();</span><br><span class="line">inst.<span class="property">field</span> <span class="comment">// 6</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，属性装饰器<code>@twice</code>返回一个函数，该函数的返回值是属性<code>field</code>的初始值乘以2，所以属性<code>field</code>的最终值是6。</p>
+<p>属性装饰器的上下文对象<code>context</code>的<code>access</code>属性，提供所装饰属性的存取器，请看下面的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> acc;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">exposeAccess</span>(<span class="params"></span></span><br><span class="line"><span class="params">  value, &#123;access&#125;</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  acc = access;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Color</span> &#123;</span><br><span class="line">  <span class="meta">@exposeAccess</span></span><br><span class="line">  name = <span class="string">&#x27;green&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> green = <span class="keyword">new</span> <span class="title class_">Color</span>();</span><br><span class="line">green.<span class="property">name</span> <span class="comment">// &#x27;green&#x27;</span></span><br><span class="line"></span><br><span class="line">acc.<span class="title function_">get</span>(green) <span class="comment">// &#x27;green&#x27;</span></span><br><span class="line"></span><br><span class="line">acc.<span class="title function_">set</span>(green, <span class="string">&#x27;red&#x27;</span>);</span><br><span class="line">green.<span class="property">name</span> <span class="comment">// &#x27;red&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>access</code>包含了属性<code>name</code>的存取器，可以对该属性进行取值和赋值。</p>
+<h2 id="getter-装饰器，setter-装饰器"><a href="#getter-装饰器，setter-装饰器" class="headerlink" title="getter 装饰器，setter 装饰器"></a>getter 装饰器，setter 装饰器</h2><p>getter 装饰器和 setter 装饰器，是分别针对类的取值器（getter）和存值器（setter）的装饰器。它们的类型描述如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ClassGetterDecorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: <span class="built_in">Function</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="string">&#x27;getter&#x27;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="built_in">symbol</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">static</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">private</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    access: &#123; get: () =&gt; <span class="built_in">unknown</span> &#125;;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> <span class="title class_">Function</span> | <span class="built_in">void</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ClassSetterDecorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: <span class="built_in">Function</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="string">&#x27;setter&#x27;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="built_in">symbol</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">static</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">private</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    access: &#123; set: (value: <span class="built_in">unknown</span>) =&gt; <span class="built_in">void</span> &#125;;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> <span class="title class_">Function</span> | <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注意，getter 装饰器的上下文对象<code>context</code>的<code>access</code>属性，只包含<code>get()</code>方法；setter 装饰器的<code>access</code>属性，只包含<code>set()</code>方法。</p>
+<p>这两个装饰器要么不返回值，要么返回一个函数，取代原来的取值器或存值器。</p>
+<p>下面的例子是将取值器的结果，保存为一个属性，加快后面的读取。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@lazy</span></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;正在计算……&#x27;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;开销大的计算结果&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">lazy</span>(<span class="params"></span></span><br><span class="line"><span class="params">  value:<span class="built_in">any</span>,</span></span><br><span class="line"><span class="params">  &#123;kind, name&#125;:<span class="built_in">any</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (kind === <span class="string">&#x27;getter&#x27;</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params"><span class="variable language_">this</span>:<span class="built_in">any</span></span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> result = value.<span class="title function_">call</span>(<span class="variable language_">this</span>);</span><br><span class="line">      <span class="title class_">Object</span>.<span class="title function_">defineProperty</span>(</span><br><span class="line">        <span class="variable language_">this</span>, name,</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="attr">value</span>: result,</span><br><span class="line">          <span class="attr">writable</span>: <span class="literal">false</span>,</span><br><span class="line">        &#125;</span><br><span class="line">      );</span><br><span class="line">      <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> inst = <span class="keyword">new</span> <span class="title function_">C</span>();</span><br><span class="line">inst.<span class="property">value</span></span><br><span class="line"><span class="comment">// 正在计算……</span></span><br><span class="line"><span class="comment">// &#x27;开销大的计算结果&#x27;</span></span><br><span class="line">inst.<span class="property">value</span></span><br><span class="line"><span class="comment">// &#x27;开销大的计算结果&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，第一次读取<code>inst.value</code>，会进行计算，然后装饰器<code>@lazy</code>将结果存入只读属性<code>value</code>，后面再读取这个属性，就不会进行计算了。</p>
+<h2 id="accessor-装饰器"><a href="#accessor-装饰器" class="headerlink" title="accessor 装饰器"></a>accessor 装饰器</h2><p>装饰器语法引入了一个新的属性修饰符<code>accessor</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  accessor x = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>accessor</code>修饰符等同于为属性<code>x</code>自动生成取值器和存值器，它们作用于私有属性<code>x</code>。也就是说，上面的代码等同于下面的代码。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  #x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">x</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.#x;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">set</span> <span class="title function_">x</span>(<span class="params">val</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.#x = val;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>accessor</code>也可以与静态属性和私有属性一起使用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="keyword">static</span> accessor x = <span class="number">1</span>;</span><br><span class="line">  accessor #y = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>accessor 装饰器的类型如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ClassAutoAccessorDecorator</span> = <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">  value: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    get: () =&gt; <span class="built_in">unknown</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    set: (value: <span class="built_in">unknown</span>) =&gt; <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;,</span></span></span><br><span class="line"><span class="params"><span class="function">  context: &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">    kind: <span class="string">&quot;accessor&quot;</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    name: <span class="built_in">string</span> | <span class="built_in">symbol</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    access: &#123; get(): <span class="built_in">unknown</span>, set(value: <span class="built_in">unknown</span>): <span class="built_in">void</span> &#125;;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">static</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">private</span>: <span class="built_in">boolean</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">    addInitializer(initializer: () =&gt; <span class="built_in">void</span>): <span class="built_in">void</span>;</span></span></span><br><span class="line"><span class="params"><span class="function">  &#125;</span></span></span><br><span class="line"><span class="params"><span class="function"></span>) =&gt;</span> &#123;</span><br><span class="line">  get?: <span class="function">() =&gt;</span> <span class="built_in">unknown</span>;</span><br><span class="line">  set?: <span class="function">(<span class="params">value: <span class="built_in">unknown</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line">  init?: <span class="function">(<span class="params">initialValue: <span class="built_in">unknown</span></span>) =&gt;</span> <span class="built_in">unknown</span>;</span><br><span class="line">&#125; | <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure>
+
+<p>accessor 装饰器的<code>value</code>参数，是一个包含<code>get()</code>方法和<code>set()</code>方法的对象。该装饰器可以不返回值，或者返回一个新的对象，用来取代原来的<code>get()</code>方法和<code>set()</code>方法。此外，装饰器返回的对象还可以包括一个<code>init()</code>方法，用来改变私有属性的初始值。</p>
+<p>下面是一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="meta">@logged</span> accessor x = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">logged</span>(<span class="params">value, &#123; kind, name &#125;</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (kind === <span class="string">&quot;accessor&quot;</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> &#123; get, set &#125; = value;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="title function_">get</span>(<span class="params"></span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`getting <span class="subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> get.<span class="title function_">call</span>(<span class="variable language_">this</span>);</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="title function_">set</span>(<span class="params">val</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`setting <span class="subst">$&#123;name&#125;</span> to <span class="subst">$&#123;val&#125;</span>`</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> set.<span class="title function_">call</span>(<span class="variable language_">this</span>, val);</span><br><span class="line">      &#125;,</span><br><span class="line"></span><br><span class="line">      <span class="title function_">init</span>(<span class="params">initialValue</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`initializing <span class="subst">$&#123;name&#125;</span> with value <span class="subst">$&#123;initialValue&#125;</span>`</span>);</span><br><span class="line">        <span class="keyword">return</span> initialValue;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c = <span class="keyword">new</span> <span class="title function_">C</span>();</span><br><span class="line"></span><br><span class="line">c.<span class="property">x</span>;</span><br><span class="line"><span class="comment">// getting x</span></span><br><span class="line"></span><br><span class="line">c.<span class="property">x</span> = <span class="number">123</span>;</span><br><span class="line"><span class="comment">// setting x to 123</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，装饰器<code>@logged</code>为属性<code>x</code>的存值器和取值器，加上了日志输出。</p>
+<h2 id="装饰器的执行顺序"><a href="#装饰器的执行顺序" class="headerlink" title="装饰器的执行顺序"></a>装饰器的执行顺序</h2><p>装饰器的执行分为两个阶段。</p>
+<p>（1）评估（evaluation）：计算<code>@</code>符号后面的表达式的值，得到的应该是函数。</p>
+<p>（2）应用（application）：将评估装饰器后得到的函数，应用于所装饰对象。</p>
+<p>也就是说，装饰器的执行顺序是，先评估所有装饰器表达式的值，再将其应用于当前类。</p>
+<p>应用装饰器时，顺序依次为方法装饰器和属性装饰器，然后是类装饰器。</p>
+<p>请看下面的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">d</span>(<span class="params">str:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`评估 @d(): <span class="subst">$&#123;str&#125;</span>`</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    value:<span class="built_in">any</span>, context:<span class="built_in">any</span></span></span></span><br><span class="line"><span class="params"><span class="function">  </span>) =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`应用 @d(): <span class="subst">$&#123;str&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">str:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(str);</span><br><span class="line">  <span class="keyword">return</span> str;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@d</span>(<span class="string">&#x27;类装饰器&#x27;</span>)</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">T</span> &#123;</span><br><span class="line">  <span class="meta">@d</span>(<span class="string">&#x27;静态属性装饰器&#x27;</span>)</span><br><span class="line">  <span class="keyword">static</span> staticField = <span class="title function_">log</span>(<span class="string">&#x27;静态属性值&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@d</span>(<span class="string">&#x27;原型方法&#x27;</span>)</span><br><span class="line">  [<span class="title function_">log</span>(<span class="string">&#x27;计算方法名&#x27;</span>)]() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@d</span>(<span class="string">&#x27;实例属性&#x27;</span>)</span><br><span class="line">  instanceField = <span class="title function_">log</span>(<span class="string">&#x27;实例属性值&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类<code>T</code>有四种装饰器：类装饰器、静态属性装饰器、方法装饰器、属性装饰器。</p>
+<p>它的运行结果如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &quot;评估 @d(): 类装饰器&quot;</span></span><br><span class="line"><span class="comment">// &quot;评估 @d(): 静态属性装饰器&quot;</span></span><br><span class="line"><span class="comment">// &quot;评估 @d(): 原型方法&quot;</span></span><br><span class="line"><span class="comment">// &quot;计算方法名&quot;</span></span><br><span class="line"><span class="comment">// &quot;评估 @d(): 实例属性&quot;</span></span><br><span class="line"><span class="comment">// &quot;应用 @d(): 原型方法&quot;</span></span><br><span class="line"><span class="comment">// &quot;应用 @d(): 静态属性装饰器&quot;</span></span><br><span class="line"><span class="comment">// &quot;应用 @d(): 实例属性&quot;</span></span><br><span class="line"><span class="comment">// &quot;应用 @d(): 类装饰器&quot;</span></span><br><span class="line"><span class="comment">// &quot;静态属性值&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，类载入的时候，代码按照以下顺序执行。</p>
+<p>（1）装饰器评估：这一步计算装饰器的值，首先是类装饰器，然后是类内部的装饰器，按照它们出现的顺序。</p>
+<p>注意，如果属性名或方法名是计算值（本例是“计算方法名”），则它们在对应的装饰器评估之后，也会进行自身的评估。</p>
+<p>（2）装饰器应用：实际执行装饰器函数，将它们与对应的方法和属性进行结合。</p>
+<p>原型方法的装饰器首先应用，然后是静态属性和静态方法装饰器，接下来是实例属性装饰器，最后是类装饰器。</p>
+<p>注意，“实例属性值”在类初始化的阶段并不执行，直到类实例化时才会执行。</p>
+<p>如果一个方法或属性有多个装饰器，则内层的装饰器先执行，外层的装饰器后执行。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@bound</span></span><br><span class="line">  <span class="meta">@log</span></span><br><span class="line">  <span class="title function_">greet</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, my name is <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>.`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>greet()</code>有两个装饰器，内层的<code>@log</code>先执行，外层的<code>@bound</code>针对得到的结果再执行。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://2ality.com/2022/10/javascript-decorators.html">JavaScript metaprogramming with the 2022-03 decorators API</a></li>
+<li><a target="_blank" rel="noopener" href="https://plainenglish.io/blog/ts-5-0-beta-new-decorators-are-here">TS 5.0 Beta: New Decorators Are Here!</a>, Bytefer</li>
+</ul>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-decorator/" data-id="clm609r33000vt4wl3ha9cddc" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-enum/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 的 Enum 类型
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-decorator-legacy/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">装饰器（旧语法）</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

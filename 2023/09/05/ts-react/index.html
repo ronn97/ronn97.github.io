@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 的 React 支持 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-react" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 的 React 支持
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-react/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><h2 id="JSX-语法"><a href="#JSX-语法" class="headerlink" title="JSX 语法"></a>JSX 语法</h2><p>JSX 是 React 库引入的一种语法，可以在 JavaScript 脚本中直接书写 HTML 风格的标签。</p>
+<p>TypeScript 支持 JSX 语法，但是必须将脚本后缀名改成<code>.tsx</code>。</p>
+<p><code>.tsx</code>文件中，类型断言一律使用<code>as</code>形式，因为尖括号的写法会与 JSX 冲突。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用</span></span><br><span class="line"><span class="keyword">var</span> x = foo <span class="keyword">as</span> <span class="built_in">any</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不使用</span></span><br><span class="line"><span class="keyword">var</span> x = &lt;<span class="built_in">any</span>&gt;foo;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>foo</code>被断言为类型<code>any</code>，在<code>.tsx</code>文件中只能使用第一种写法，不使用第二种写法。</p>
+<h2 id="React-库"><a href="#React-库" class="headerlink" title="React 库"></a>React 库</h2><p>TypeScript 使用 React 库必须引入 React 的类型定义。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;reference path=&quot;react.d.ts&quot; /&gt;</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MyComponent</span> <span class="keyword">extends</span> <span class="title class_ inherited__">React.Component</span>&lt;<span class="title class_">Props</span>, &#123;&#125;&gt; &#123;</span><br><span class="line">  <span class="title function_">render</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;this.props.name&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="title class_">MyComponent</span> name=<span class="string">&quot;bar&quot;</span> /&gt;; <span class="comment">// OK</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">MyComponent</span> <span class="attr">name</span>=<span class="string">&#123;0&#125;</span> /&gt;</span></span>; <span class="comment">// error, `name` is not a number</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="内置元素"><a href="#内置元素" class="headerlink" title="内置元素"></a>内置元素</h2><p>内置元素使用<code>JSX.IntrinsicElements</code>接口。默认情况下，内置元素不进行类型检查。但是，如果给出了接口定义，就会进行类型检查。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> JSX &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">IntrinsicElements</span> &#123;</span><br><span class="line">    <span class="attr">foo</span>: <span class="built_in">any</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;foo /&gt;; <span class="comment">// ok</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">bar</span> /&gt;</span></span>; <span class="comment">// error</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>&lt;bar /&gt;</code>不符合接口定义，所以报错。</p>
+<p>一种解决办法就是，在接口中定义一个通用元素。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> JSX &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">IntrinsicElements</span> &#123;</span><br><span class="line">    [<span class="attr">elemName</span>: <span class="built_in">string</span>]: <span class="built_in">any</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中， 元素名可以是任意字符串。</p>
+<h2 id="组件的写法"><a href="#组件的写法" class="headerlink" title="组件的写法"></a>组件的写法</h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">FooProp</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">X</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">Y</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">function</span> <span class="title function_">AnotherComponent</span>(<span class="params">prop: &#123; name: <span class="built_in">string</span> &#125;</span>);</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">ComponentFoo</span>(<span class="params">prop: FooProp</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="language-xml"><span class="tag">&lt;<span class="name">AnotherComponent</span> <span class="attr">name</span>=<span class="string">&#123;prop.name&#125;</span> /&gt;</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="title function_">Button</span> = (<span class="params">prop: &#123; value: <span class="built_in">string</span> &#125;, context: &#123; color: <span class="built_in">string</span> &#125;</span>) =&gt; (</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">button</span> /&gt;</span></span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-react/" data-id="clm609r3n001pt4wlduk93wlj" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-operator/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 类型运算符
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-symbol/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 的 symbol 类型</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

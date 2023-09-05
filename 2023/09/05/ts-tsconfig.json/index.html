@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    tsconfig.json |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-tsconfig.json" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    tsconfig.json
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-tsconfig.json/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><code>tsconfig.json</code>是 TypeScript 项目的配置文件，放在项目的根目录。反过来说，如果一个目录里面有<code>tsconfig.json</code>，TypeScript 就认为这是项目的根目录。</p>
+<p>如果项目源码是 JavaScript，但是想用 TypeScript 处理，那么配置文件的名字是<code>jsconfig.json</code>，它跟<code>tsconfig</code>的写法是一样的。</p>
+<p><code>tsconfig.json</code>文件主要供<code>tsc</code>编译器使用，它的命令行参数<code>--project</code>或<code>-p</code>可以指定<code>tsconfig.json</code>的位置（目录或文件皆可）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tsc -p ./dir</span><br></pre></td></tr></table></figure>
+
+<p>如果不指定配置文件的位置，<code>tsc</code>就会在当前目录下搜索<code>tsconfig.json</code>文件，如果不存在，就到上一级目录搜索，直到找到为止。</p>
+<p><code>tsconfig.json</code>文件的格式，是一个 JSON 对象，最简单的情况可以只放置一个空对象<code>&#123;&#125;</code>。下面是一个示例。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;outDir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./built&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;allowJs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;es5&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;include&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="string">&quot;./src/**/*&quot;</span><span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>本章后面会详细介绍<code>tsconfig.json</code>的各个属性，这里简单说一下，上面示例的四个属性的含义。</p>
+<ul>
+<li>include：指定哪些文件需要编译。</li>
+<li>allowJs：指定源目录的 JavaScript 文件是否原样拷贝到编译后的目录。</li>
+<li>outDir：指定编译产物存放的目录。</li>
+<li>target：指定编译产物的 JS 版本。</li>
+</ul>
+<p><code>tsconfig.json</code>文件可以不必手写，使用 tsc 命令的<code>--init</code>参数自动生成。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tsc --init</span><br></pre></td></tr></table></figure>
+
+<p>上面命令生成的<code>tsconfig.json</code>文件，里面会有一些默认配置。</p>
+<p>你也可以使用别人预先写好的 tsconfig.json 文件，npm 的<code>@tsconfig</code>名称空间下面有很多模块，都是写好的<code>tsconfig.json</code>样本，比如 <code>@tsconfig/recommended</code>和<code>@tsconfig/node16</code>。</p>
+<p>这些模块需要安装，以<code>@tsconfig/deno</code>为例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ npm install --save-dev @tsconfig/deno</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">$ yarn add --dev @tsconfig/deno</span><br></pre></td></tr></table></figure>
+
+<p>安装以后，就可以在<code>tsconfig.json</code>里面引用这个模块，相当于继承它的设置，然后进行扩展。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;extends&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@tsconfig/deno/tsconfig.json&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>@tsconfig</code>空间下包含的完整 tsconfig 文件目录，可以查看 <a target="_blank" rel="noopener" href="https://github.com/tsconfig/bases/tree/main/bases">GitHub</a>。</p>
+<p><code>tsconfig.json</code>的一级属性并不多，只有很少几个，但是<code>compilerOptions</code>属性有很多二级属性。下面先逐一介绍一级属性，然后再介绍<code>compilerOptions</code>的二级属性，按照首字母排序。</p>
+<h2 id="exclude"><a href="#exclude" class="headerlink" title="exclude"></a>exclude</h2><p><code>exclude</code>属性是一个数组，必须与<code>include</code>属性一起使用，用来从编译列表中去除指定的文件。它也支持使用与<code>include</code>属性相同的通配符。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;include&quot;</span>: [<span class="string">&quot;**/*&quot;</span>],</span><br><span class="line">  <span class="string">&quot;exclude&quot;</span>: [<span class="string">&quot;**/*.spec.ts&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h2><p><code>tsconfig.json</code>可以继承另一个<code>tsconfig.json</code>文件的配置。如果一个项目有多个配置，可以把共同的配置写成<code>tsconfig.base.json</code>，其他的配置文件继承该文件，这样便于维护和修改。</p>
+<p><code>extends</code>属性用来指定所要继承的配置文件。它可以是本地文件。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;extends&quot;</span><span class="punctuation">:</span> <span class="string">&quot;../tsconfig.base.json&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果<code>extends</code>属性指定的路径不是以<code>./</code>或<code>../</code>开头，那么编译器将在<code>node_modules</code>目录下查找指定的配置文件。</p>
+<p><code>extends</code>属性也可以继承已发布的 npm 模块里面的 tsconfig 文件。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;extends&quot;</span><span class="punctuation">:</span> <span class="string">&quot;@tsconfig/node12/tsconfig.json&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>extends</code>指定的<code>tsconfig.json</code>会先加载，然后加载当前的<code>tsconfig.json</code>。如果两者有重名的属性，后者会覆盖前者。</p>
+<h2 id="files"><a href="#files" class="headerlink" title="files"></a>files</h2><p><code>files</code>属性指定编译的文件列表，如果其中有一个文件不存在，就会报错。</p>
+<p>它是一个数组，排在前面的文件先编译。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;files&quot;</span>: [<span class="string">&quot;a.ts&quot;</span>, <span class="string">&quot;b.ts&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>该属性必须逐一列出文件，不支持文件匹配。如果文件较多，建议使用<code>include</code>和<code>exclude</code>属性。</p>
+<h2 id="include"><a href="#include" class="headerlink" title="include"></a>include</h2><p><code>include</code>属性指定所要编译的文件列表，既支持逐一列出文件，也支持通配符。文件位置相对于当前配置文件而定。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;include&quot;</span>: [<span class="string">&quot;src/**/*&quot;</span>, <span class="string">&quot;tests/**/*&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>include</code>属性支持三种通配符。</p>
+<ul>
+<li><code>?</code>：指代单个字符</li>
+<li><code>*</code>：指代任意字符，不含路径分隔符</li>
+<li><code>**</code>：指定任意目录层级。</li>
+</ul>
+<p>如果不指定文件后缀名，默认包括<code>.ts</code>、<code>.tsx</code>和<code>.d.ts</code>文件。如果打开了<code>allowJs</code>，那么还包括<code>.js</code>和<code>.jsx</code>。</p>
+<h2 id="references"><a href="#references" class="headerlink" title="references"></a>references</h2><p><code>references</code>属性是一个数组，数组成员为对象，适合一个大项目由许多小项目构成的情况，用来设置需要引用的底层项目。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;references&quot;</span>: [</span><br><span class="line">    &#123; <span class="string">&quot;path&quot;</span>: <span class="string">&quot;../pkg1&quot;</span> &#125;,</span><br><span class="line">    &#123; <span class="string">&quot;path&quot;</span>: <span class="string">&quot;../pkg2/tsconfig.json&quot;</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>references</code>数组成员对象的<code>path</code>属性，既可以是含有文件<code>tsconfig.json</code>的目录，也可以直接是该文件。</p>
+<p>与此同时，引用的底层项目的<code>tsconfig.json</code>必须启用<code>composite</code>属性。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;composite&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="compileOptions"><a href="#compileOptions" class="headerlink" title="compileOptions"></a>compileOptions</h2><p><code>compilerOptions</code>属性用来定制编译行为。这个属性可以省略，这时编译器将使用默认设置。</p>
+<h3 id="allowJs"><a href="#allowJs" class="headerlink" title="allowJs"></a>allowJs</h3><p><code>allowJs</code>允许 TypeScript 项目加载 JS 脚本。编译时，也会将 JS 文件，一起拷贝到输出目录。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;allowJs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="alwaysStrict"><a href="#alwaysStrict" class="headerlink" title="alwaysStrict"></a>alwaysStrict</h3><p><code>alwaysStrict</code>确保脚本以 ECMAScript 严格模式进行解析，因此脚本头部不用写<code>&quot;use strict&quot;</code>。它的值是一个布尔值，默认为<code>true</code>。</p>
+<h3 id="allowSyntheticDefaultImports"><a href="#allowSyntheticDefaultImports" class="headerlink" title="allowSyntheticDefaultImports"></a>allowSyntheticDefaultImports</h3><p><code>allowSyntheticDefaultImports</code>允许<code>import</code>命令默认加载没有<code>default</code>输出的模块。</p>
+<p>比如，打开这个设置，就可以写<code>import React from &quot;react&quot;;</code>，而不是<code>import * as React from &quot;react&quot;;</code>。</p>
+<h3 id="allowUnreachableCode"><a href="#allowUnreachableCode" class="headerlink" title="allowUnreachableCode"></a>allowUnreachableCode</h3><p><code>allowUnreachableCode</code>设置是否允许存在不可能执行到的代码。它的值有三种可能。</p>
+<ul>
+<li><code>undefined</code>： 默认值，编辑器显示警告。</li>
+<li><code>true</code>：忽略不可能执行到的代码。</li>
+<li><code>false</code>：编译器报错。</li>
+</ul>
+<h3 id="allowUnusedLabels"><a href="#allowUnusedLabels" class="headerlink" title="allowUnusedLabels"></a>allowUnusedLabels</h3><p><code>allowUnusedLabels</code>设置是否允许存在没有用到的代码标签（label）。它的值有三种可能。</p>
+<ul>
+<li><code>undefined</code>： 默认值，编辑器显示警告。</li>
+<li><code>true</code>：忽略没有用到的代码标签。</li>
+<li><code>false</code>：编译器报错。</li>
+</ul>
+<h3 id="baseUrl"><a href="#baseUrl" class="headerlink" title="baseUrl"></a>baseUrl</h3><p><code>baseUrl</code>的值为字符串，指定 TypeScript 项目的基准目录。</p>
+<p>由于默认是以 tsconfig.json 的位置作为基准目录，所以一般情况不需要使用该属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>baseUrl</code>为当前目录<code>./</code>。那么，当遇到下面的语句，TypeScript 将以<code>./</code>为起点，寻找<code>hello/world.ts</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; helloWorld &#125; <span class="keyword">from</span> <span class="string">&quot;hello/world&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="checkJs"><a href="#checkJs" class="headerlink" title="checkJs"></a>checkJs</h3><p><code>checkJS</code>设置对 JS 文件同样进行类型检查。打开这个属性，也会自动打开<code>allowJs</code>。它等同于在 JS 脚本的头部添加<code>// @ts-check</code>命令。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;checkJs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="composite"><a href="#composite" class="headerlink" title="composite"></a>composite</h3><p><code>composite</code>打开某些设置，使得 TypeScript 项目可以进行增量构建，往往跟<code>incremental</code>属性配合使用。</p>
+<h3 id="declaration"><a href="#declaration" class="headerlink" title="declaration"></a>declaration</h3><p><code>declaration</code>设置编译时是否为每个脚本生成类型声明文件<code>.d.ts</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;declaration&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="declarationDir"><a href="#declarationDir" class="headerlink" title="declarationDir"></a>declarationDir</h3><p><code>declarationDir</code>设置生成的<code>.d.ts</code>文件所在的目录。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;declaration&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;declarationDir&quot;</span>: <span class="string">&quot;./types&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="declarationMap"><a href="#declarationMap" class="headerlink" title="declarationMap"></a>declarationMap</h3><p><code>declarationMap</code>设置生成<code>.d.ts</code>类型声明文件的同时，还会生成对应的 Source Map 文件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;declaration&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;declarationMap&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="emitBOM"><a href="#emitBOM" class="headerlink" title="emitBOM"></a>emitBOM</h3><p><code>emitBOM</code>设置是否在编译结果的文件头添加字节顺序标志 BOM，默认值是<code>false</code>。</p>
+<h3 id="emitDeclarationOnly"><a href="#emitDeclarationOnly" class="headerlink" title="emitDeclarationOnly"></a>emitDeclarationOnly</h3><p><code>emitDeclarationOnly</code>设置编译后只生成<code>.d.ts</code>文件，不生成<code>.js</code>文件。</p>
+<h3 id="esModuleInterop"><a href="#esModuleInterop" class="headerlink" title="esModuleInterop"></a>esModuleInterop</h3><p><code>esModuleInterop</code>修复了一些 CommonJS 和 ES6 模块之间的兼容性问题。</p>
+<p>如果<code>module</code>属性为<code>node16</code>或<code>nodenext</code>，则<code>esModuleInterop</code>默认为<code>true</code>，其他情况默认为<code>false</code>。</p>
+<p>打开这个属性，使用<code>import</code>命令加载 CommonJS 模块时，TypeScript 会严格检查兼容性问题是否存在。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> moment <span class="keyword">from</span> <span class="string">&#x27;moment&#x27;</span></span><br><span class="line"><span class="title function_">moment</span>(); <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，根据 ES6 规范，<code>import * as moment</code>里面的<code>moment</code>是一个对象，不能当作函数调用，所以第二行报错了。</p>
+<p>解决方法就是改写上面的语句，改成加载默认接口。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> moment <span class="keyword">from</span> <span class="string">&#x27;moment&#x27;</span></span><br><span class="line"><span class="title function_">moment</span>(); <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>打开<code>esModuleInterop</code>以后，如果将上面的代码编译成 CommonJS 模块格式，就会加入一些辅助函数，保证编译后的代码行为正确。</p>
+<p>注意，打开<code>esModuleInterop</code>，将自动打开<code>allowSyntheticDefaultImports</code>。</p>
+<h3 id="exactOptionalPropertyTypes"><a href="#exactOptionalPropertyTypes" class="headerlink" title="exactOptionalPropertyTypes"></a>exactOptionalPropertyTypes</h3><p><code>exactOptionalPropertyTypes</code>设置可选属性不能赋值为<code>undefined</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打开 exactOptionalPropertyTypes</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">MyObj</span> &#123;</span><br><span class="line">  foo?: <span class="string">&#x27;A&#x27;</span> | <span class="string">&#x27;B&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>:<span class="title class_">MyObj</span> = &#123; <span class="attr">foo</span>: <span class="string">&#x27;A&#x27;</span> &#125;;</span><br><span class="line"></span><br><span class="line">obj.<span class="property">foo</span> = <span class="literal">undefined</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>foo</code>是可选属性，打开<code>exactOptionalPropertyTypes</code>以后，该属性就不能显式赋值为<code>undefined</code>。</p>
+<h3 id="forceConsistentCasingInFileNames"><a href="#forceConsistentCasingInFileNames" class="headerlink" title="forceConsistentCasingInFileNames"></a>forceConsistentCasingInFileNames</h3><p><code>forceConsistentCasingInFileNames</code>设置文件名是否为大小写敏感，默认为<code>true</code>。</p>
+<h3 id="incremental"><a href="#incremental" class="headerlink" title="incremental"></a>incremental</h3><p><code>incremental</code>让 TypeScript 项目构建时产生文件<code>tsbuildinfo</code>，从而完成增量构建。</p>
+<h3 id="inlineSourceMap"><a href="#inlineSourceMap" class="headerlink" title="inlineSourceMap"></a>inlineSourceMap</h3><p><code>inlineSourceMap</code>设置将 SourceMap 文件写入编译后的 JS 文件中，否则会单独生成一个<code>.js.map</code>文件。</p>
+<h3 id="inlineSources"><a href="#inlineSources" class="headerlink" title="inlineSources"></a>inlineSources</h3><p><code>inlineSources</code>设置将原始的<code>.ts</code>代码嵌入编译后的 JS 中。</p>
+<p>它要求<code>sourceMap</code>或<code>inlineSourceMap</code>至少打开一个。</p>
+<h3 id="isolatedModules"><a href="#isolatedModules" class="headerlink" title="isolatedModules"></a>isolatedModules</h3><p><code>isolatedModules</code>设置如果当前 TypeScript 脚本作为单个模块编译，是否会因为缺少其他脚本的类型信息而报错，主要便于非官方的编译工具（比如 Babel）正确编译单个脚本。</p>
+<h3 id="jsx"><a href="#jsx" class="headerlink" title="jsx"></a>jsx</h3><p><code>jsx</code>设置如何处理<code>.tsx</code>文件。它可以取以下五个值。</p>
+<ul>
+<li><code>preserve</code>：保持 jsx 语法不变，输出的文件名为<code>.jsx</code>。</li>
+<li><code>react</code>：将<code>&lt;div /&gt;</code>编译成<code>React.createElement(&quot;div&quot;)</code>，输出的文件名为<code>.js</code>。</li>
+<li><code>react-native</code>：保持 jsx 语法不变，输出的文件后缀名为<code>.js</code>。</li>
+<li><code>react-jsx</code>：将<code>&lt;div /&gt;</code>编译成<code>_jsx(&quot;div&quot;)</code>，输出的文件名为<code>.js</code>。</li>
+<li><code>react-jsxdev</code>：跟<code>react-jsx</code>类似，但是为<code>_jsx()</code>加上更多的开发调试项，输出的文件名为<code>.js</code>。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;jsx&quot;</span>: <span class="string">&quot;preserve&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="lib"><a href="#lib" class="headerlink" title="lib"></a>lib</h3><p><code>lib</code>值是一个数组，描述项目需要加载的 TypeScript 内置类型描述文件，跟三斜线指令<code>/// &lt;reference lib=&quot;&quot; /&gt;</code>作用相同。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;lib&quot;</span>: [<span class="string">&quot;dom&quot;</span>, <span class="string">&quot;es2021&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>TypeScript 内置的类型描述文件，主要有以下一些，完整的清单可以参考 <a target="_blank" rel="noopener" href="https://github.com/microsoft/TypeScript/tree/main/src/lib">TypeScript 源码</a>。</p>
+<ul>
+<li>ES5</li>
+<li>ES2015</li>
+<li>ES6</li>
+<li>ES2016</li>
+<li>ES7</li>
+<li>ES2017</li>
+<li>ES2018</li>
+<li>ES2019</li>
+<li>ES2020</li>
+<li>ES2021</li>
+<li>ES2022</li>
+<li>ESNext</li>
+<li>DOM</li>
+<li>WebWorker</li>
+<li>ScriptHost</li>
+</ul>
+<h3 id="listEmittedFiles"><a href="#listEmittedFiles" class="headerlink" title="listEmittedFiles"></a>listEmittedFiles</h3><p><code>listEmittedFiles</code>设置编译时在终端显示，生成了哪些文件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;listEmittedFiles&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="listFiles"><a href="#listFiles" class="headerlink" title="listFiles"></a>listFiles</h3><p><code>listFiles</code>设置编译时在终端显示，参与本次编译的文件列表。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;listFiles&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="mapRoot"><a href="#mapRoot" class="headerlink" title="mapRoot"></a>mapRoot</h3><p><code>mapRoot</code>指定 SourceMap 文件的位置，而不是默认的生成位置。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;sourceMap&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;mapRoot&quot;</span>: <span class="string">&quot;https://my-website.com/debug/sourcemaps/&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3><p><code>module</code>指定编译产物的模块格式。它的默认值与<code>target</code>属性有关，如果<code>target</code>是<code>ES3</code>或<code>ES5</code>，它的默认值是<code>commonjs</code>，否则就是<code>ES6/ES2015</code>。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;module&quot;</span><span class="punctuation">:</span> <span class="string">&quot;commonjs&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>它可以取以下值：none、commonjs、amd、umd、system、es6&#x2F;es2015、es2020、es2022、esnext、node16、nodenext。</p>
+<h3 id="moduleResolution"><a href="#moduleResolution" class="headerlink" title="moduleResolution"></a>moduleResolution</h3><p><code>moduleResolution</code>确定模块路径的算法，即如何查找模块。它可以取以下四种值。</p>
+<ul>
+<li><code>node</code>：采用 Node.js 的 CommonJS 模块算法。</li>
+<li><code>node16</code>或<code>nodenext</code>：采用 Node.js 的 ECMAScript 模块算法，从 TypeScript 4.7 开始支持。</li>
+<li><code>classic</code>：TypeScript 1.6 之前的算法，新项目不建议使用。</li>
+<li><code>bundler</code>：TypeScript 5.0 新增的选项，表示当前代码会被其他打包器（比如 Webpack、Vite、esbuild、Parcel、rollup、swc）处理，从而放宽加载规则，它要求<code>module</code>设为<code>es2015</code>或更高版本，详见加入该功能的 <a target="_blank" rel="noopener" href="https://github.com/microsoft/TypeScript/pull/51669">PR 说明</a>。</li>
+</ul>
+<p>它的默认值与<code>module</code>属性有关，如果<code>module</code>为<code>AMD</code>、<code>UMD</code>、<code>System</code>或<code>ES6/ES2015</code>，默认值为<code>classic</code>；如果<code>module</code>为<code>node16</code>或<code>nodenext</code>，默认值为这两个值；其他情况下,默认值为<code>Node</code>。</p>
+<h3 id="moduleSuffixes"><a href="#moduleSuffixes" class="headerlink" title="moduleSuffixes"></a>moduleSuffixes</h3><p><code>moduleSuffixes</code>指定模块的后缀名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;moduleSuffixes&quot;</span>: [<span class="string">&quot;.ios&quot;</span>, <span class="string">&quot;.native&quot;</span>, <span class="string">&quot;&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的设置使得 TypeScript 对于语句<code>import * as foo from &quot;./foo&quot;;</code>，会搜索以下脚本<code>./foo.ios.ts</code>、<code>./foo.native.ts</code>和<code>./foo.ts</code>。</p>
+<h3 id="newLine"><a href="#newLine" class="headerlink" title="newLine"></a>newLine</h3><p><code>newLine</code>设置换行符为<code>CRLF</code>（Windows）还是<code>LF</code>（Linux）。</p>
+<h3 id="noEmit"><a href="#noEmit" class="headerlink" title="noEmit"></a>noEmit</h3><p><code>noEmit</code>设置是否产生编译结果。如果不生成，TypeScript 编译就纯粹作为类型检查了。</p>
+<h3 id="noEmitHelpers"><a href="#noEmitHelpers" class="headerlink" title="noEmitHelpers"></a>noEmitHelpers</h3><p><code>noEmitHelpers</code>设置在编译结果文件不插入 TypeScript 辅助函数，而是通过外部引入辅助函数来解决，比如 NPM 模块<code>tslib</code>。</p>
+<h3 id="noEmitOnError"><a href="#noEmitOnError" class="headerlink" title="noEmitOnError"></a>noEmitOnError</h3><p><code>noEmitOnError</code>指定一旦编译报错，就不生成编译产物，默认为<code>false</code>。</p>
+<h3 id="noFallthroughCasesInSwitch"><a href="#noFallthroughCasesInSwitch" class="headerlink" title="noFallthroughCasesInSwitch"></a>noFallthroughCasesInSwitch</h3><p><code>noFallthroughCasesInSwitch</code>设置是否对没有<code>break</code>语句（或者<code>return</code>和<code>throw</code>语句）的 switch 分支报错，即<code>case</code>代码里面必须有终结语句（比如<code>break</code>）。</p>
+<h3 id="noImplicitAny"><a href="#noImplicitAny" class="headerlink" title="noImplicitAny"></a>noImplicitAny</h3><p><code>noImplicitAny</code>设置当一个表达式没有明确的类型描述、且编译器无法推断出具体类型时，是否允许将它推断为<code>any</code>类型。</p>
+<p>它是一个布尔值，默认为<code>true</code>，即只要推断出<code>any</code>类型就报错。</p>
+<h3 id="noImplicitReturns"><a href="#noImplicitReturns" class="headerlink" title="noImplicitReturns"></a>noImplicitReturns</h3><p><code>noImplicitReturns</code>设置是否要求函数任何情况下都必须返回一个值，即函数必须有<code>return</code>语句。</p>
+<h3 id="noImplicitThis"><a href="#noImplicitThis" class="headerlink" title="noImplicitThis"></a>noImplicitThis</h3><p><code>noImplicitThis</code>设置如果<code>this</code>被推断为<code>any</code>类型是否报错。</p>
+<h3 id="noUnusedLocals"><a href="#noUnusedLocals" class="headerlink" title="noUnusedLocals"></a>noUnusedLocals</h3><p><code>noUnusedLocals</code>设置是否允许未使用的局部变量。</p>
+<h3 id="noUnusedParameters"><a href="#noUnusedParameters" class="headerlink" title="noUnusedParameters"></a>noUnusedParameters</h3><p><code>noUnusedParameters</code>设置是否允许未使用的函数参数。</p>
+<h3 id="outDir"><a href="#outDir" class="headerlink" title="outDir"></a>outDir</h3><p><code>outDir</code>指定编译产物的存放目录。如果不指定，编译出来的<code>.js</code>文件存放在对应的<code>.ts</code>文件的相同位置。</p>
+<h3 id="outFile"><a href="#outFile" class="headerlink" title="outFile"></a>outFile</h3><p><code>outFile</code>设置将所有非模块的全局文件，编译在同一个文件里面。它只有在<code>module</code>属性为<code>None</code>、<code>System</code>、<code>AMD</code>时才生效，并且不能用来打包 CommonJS 或 ES6 模块。</p>
+<h3 id="paths"><a href="#paths" class="headerlink" title="paths"></a>paths</h3><p><code>paths</code>设置模块名和模块路径的映射，也就是 TypeScript 如何导入<code>require</code>或<code>imports</code>语句加载的模块。</p>
+<p><code>paths</code>基于<code>baseUrl</code>进行加载，所以必须同时设置后者。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">    <span class="string">&quot;paths&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;b&quot;</span>: [<span class="string">&quot;bar/b&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它还可以使用通配符“*”。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;baseUrl&quot;</span>: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">    <span class="string">&quot;paths&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;@bar/*&quot;</span>: [<span class="string">&quot;bar/*&quot;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="preserveConstEnums"><a href="#preserveConstEnums" class="headerlink" title="preserveConstEnums"></a>preserveConstEnums</h3><p><code>preserveConstEnums</code>将<code>const enum</code>结构保留下来，不替换成常量值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;preserveConstEnums&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="pretty"><a href="#pretty" class="headerlink" title="pretty"></a>pretty</h3><p><code>pretty</code>设置美化输出终端的编译信息，默认为<code>true</code>。</p>
+<h3 id="removeComments"><a href="#removeComments" class="headerlink" title="removeComments"></a>removeComments</h3><p><code>removeComments</code>移除 TypeScript 脚本里面的注释，默认为<code>false</code>。</p>
+<h3 id="resolveJsonModule"><a href="#resolveJsonModule" class="headerlink" title="resolveJsonModule"></a>resolveJsonModule</h3><p><code>resolveJsonModule</code>允许 import 命令导入 JSON 文件。</p>
+<h3 id="rootDir"><a href="#rootDir" class="headerlink" title="rootDir"></a>rootDir</h3><p><code>rootDir</code>设置源码脚本所在的目录，主要跟编译后的脚本结构有关。<code>rootDir</code>对应目录下的所有脚本，会成为输出目录里面的顶层脚本。</p>
+<h3 id="rootDirs"><a href="#rootDirs" class="headerlink" title="rootDirs"></a>rootDirs</h3><p><code>rootDirs</code>把多个不同目录，合并成一个目虚拟目录，便于模块定位。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;rootDirs&quot;</span>: [<span class="string">&quot;bar&quot;</span>, <span class="string">&quot;foo&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>rootDirs</code>将<code>bar</code>和<code>foo</code>组成一个虚拟目录。</p>
+<h3 id="sourceMap"><a href="#sourceMap" class="headerlink" title="sourceMap"></a>sourceMap</h3><p><code>sourceMap</code>设置编译时是否生成 SourceMap 文件。</p>
+<h3 id="sourceRoot"><a href="#sourceRoot" class="headerlink" title="sourceRoot"></a>sourceRoot</h3><p><code>sourceRoot</code>在 SourceMap 里面设置 TypeScript 源文件的位置。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;sourceMap&quot;</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="string">&quot;sourceRoot&quot;</span>: <span class="string">&quot;https://my-website.com/debug/source/&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="strict"><a href="#strict" class="headerlink" title="strict"></a>strict</h3><p><code>strict</code>用来打开 TypeScript 的严格检查。它的值是一个布尔值，默认是关闭的。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;strict&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个设置相当于同时打开以下的一系列设置。</p>
+<ul>
+<li>alwaysStrict</li>
+<li>strictNullChecks</li>
+<li>strictBindCallApply</li>
+<li>strictFunctionTypes</li>
+<li>strictPropertyInitialization</li>
+<li>noImplicitAny</li>
+<li>noImplicitThis</li>
+<li>useUnknownInCatchVaria</li>
+</ul>
+<p>打开<code>strict</code>的时候，允许单独关闭其中一项。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;strict&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;alwaysStrict&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="strictBindCallApply"><a href="#strictBindCallApply" class="headerlink" title="strictBindCallApply"></a>strictBindCallApply</h3><p><code>strictBindCallApply</code>设置是否对函数的<code>call()</code>、<code>bind()</code>、<code>apply()</code>这三个方法进行类型检查。</p>
+<p>如果不打开<code>strictBindCallApply</code>编译选项，编译器不会对以上三个方法进行类型检查，参数类型都是<code>any</code>，传入任何参数都不会产生编译错误。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params">x: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">parseInt</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// strictBindCallApply:false</span></span><br><span class="line"><span class="keyword">const</span> n = fn.<span class="title function_">call</span>(<span class="literal">undefined</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">// 以上不报错</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="strictFunctionTypes"><a href="#strictFunctionTypes" class="headerlink" title="strictFunctionTypes"></a>strictFunctionTypes</h3><p><code>strictFunctionTypes</code>允许对函数更严格的参数检查。具体来说，如果函数 B 的参数是函数 A 参数的子类型，那么函数 B 不能替代函数 A。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params">x:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello, &#x27;</span> + x.<span class="title function_">toLowerCase</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">StringOrNumberFunc</span> = <span class="function">(<span class="params">ns:<span class="built_in">string</span>|<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打开 strictFunctionTypes，下面代码会报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">func</span>:<span class="title class_">StringOrNumberFunc</span> = fn;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>fn()</code>的参数是<code>StringOrNumberFunc</code>参数的子集，因此<code>fn</code>不能替代<code>StringOrNumberFunc</code>。</p>
+<h3 id="strictNullChecks"><a href="#strictNullChecks" class="headerlink" title="strictNullChecks"></a>strictNullChecks</h3><p><code>strictNullChecks</code>设置对<code>null</code>和<code>undefined</code>进行严格类型检查。如果打开<code>strict</code>属性，这一项就会自动设为<code>true</code>，否则为<code>false</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">let</span> value:string;</span><br><span class="line"></span><br><span class="line">// strictNullChecks:<span class="literal">false</span></span><br><span class="line">// 下面语句不报错</span><br><span class="line">value = null;</span><br></pre></td></tr></table></figure>
+
+<p>它可以理解成只要打开，就需要显式检查<code>null</code>或<code>undefined</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">doSomething</span>(<span class="params">x:<span class="built_in">string</span>|<span class="literal">null</span></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (x === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="comment">// do nothing</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Hello, &quot;</span> + x.<span class="title function_">toUpperCase</span>());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="strictPropertyInitialization"><a href="#strictPropertyInitialization" class="headerlink" title="strictPropertyInitialization"></a>strictPropertyInitialization</h3><p><code>strictPropertyInitialization</code>设置类的实例属性都必须初始化，包括以下几种情况。</p>
+<ul>
+<li>设为<code>undefined</code>类型</li>
+<li>显式初始化</li>
+<li>构造函数中赋值</li>
+</ul>
+<p>注意，使用该属性的同时，必须打开<code>strictNullChecks</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// strictPropertyInitialization：true</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="comment">// 报错，属性 username 没有初始化</span></span><br><span class="line">  <span class="attr">username</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决方法一</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username = <span class="string">&#x27;张三&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决方法二</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">username</span>:<span class="built_in">string</span>|<span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决方法三</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="attr">username</span>:<span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">username:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">username</span> = username;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> username:<span class="built_in">string</span></span>) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 解决方法四：赋值断言</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">  username!:<span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">username:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="title function_">initialize</span>(username);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> <span class="title function_">initialize</span>(<span class="params">username:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">username</span> = username;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="suppressExcessPropertyErrors"><a href="#suppressExcessPropertyErrors" class="headerlink" title="suppressExcessPropertyErrors"></a>suppressExcessPropertyErrors</h3><p><code>suppressExcessPropertyErrors</code>关闭对象字面量的多余参数的报错。</p>
+<h3 id="target"><a href="#target" class="headerlink" title="target"></a>target</h3><p><code>target</code>指定编译出来的 JavaScript 代码的 ECMAScript 版本，比如<code>es2021</code>，默认是<code>es3</code>。</p>
+<p>它可以取以下值。</p>
+<ul>
+<li>es3</li>
+<li>es5</li>
+<li>es6&#x2F;es2015</li>
+<li>es2016</li>
+<li>es2017</li>
+<li>es2018</li>
+<li>es2019</li>
+<li>es2020</li>
+<li>es2021</li>
+<li>es2022</li>
+<li>esnext</li>
+</ul>
+<p>注意，如果编译的目标版本过老，比如<code>&quot;target&quot;: &quot;es3&quot;</code>，有些语法可能无法编译，<code>tsc</code>命令会报错。</p>
+<h3 id="traceResolution"><a href="#traceResolution" class="headerlink" title="traceResolution"></a>traceResolution</h3><p><code>traceResolution</code>设置编译时，在终端输出模块解析的具体步骤。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;traceResolution&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="typeRoots"><a href="#typeRoots" class="headerlink" title="typeRoots"></a>typeRoots</h3><p><code>typeRoots</code>设置类型模块所在的目录，默认是<code>node_modules/@types</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;typeRoots&quot;</span>: [<span class="string">&quot;./typings&quot;</span>, <span class="string">&quot;./vendor/types&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="types"><a href="#types" class="headerlink" title="types"></a>types</h3><p><code>types</code>设置<code>typeRoots</code>目录下需要包括在编译之中的类型模块。默认情况下，该目录下的所有类型模块，都会自动包括在编译之中。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;compilerOptions&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;types&quot;</span>: [<span class="string">&quot;node&quot;</span>, <span class="string">&quot;jest&quot;</span>, <span class="string">&quot;express&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="useUnknownInCatchVariables"><a href="#useUnknownInCatchVariables" class="headerlink" title="useUnknownInCatchVariables"></a>useUnknownInCatchVariables</h3><p><code>useUnknownInCatchVariables</code>设置<code>catch</code>语句捕获的<code>try</code>抛出的返回值类型，从<code>any</code>变成<code>unknown</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="title function_">someExternalFunction</span>();</span><br><span class="line">&#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">  err; <span class="comment">// 类型 any</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，默认情况下，<code>catch</code>语句的参数<code>err</code>类型是<code>any</code>，即可以是任何值。</p>
+<p>打开<code>useUnknownInCatchVariables</code>以后，<code>err</code>的类型抛出的错误将是<code>unknown</code>类型。这带来的变化就是使用<code>err</code>之前，必须缩小它的类型，否则会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="title function_">someExternalFunction</span>();</span><br><span class="line">&#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">  <span class="keyword">if</span> (err <span class="keyword">instanceof</span> <span class="title class_">Error</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(err.<span class="property">message</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mariusschulz.com/blog/strict-property-initialization-in-typescript">Strict Property Initialization in TypeScript</a>, Marius Schulz</li>
+</ul>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-tsconfig.json/" data-id="clm609r3r001xt4wl8z1j5f6p" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-tuple/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 的元组类型
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-type-operations/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">类型运算</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

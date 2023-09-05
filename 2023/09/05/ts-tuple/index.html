@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 的元组类型 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-tuple" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 的元组类型
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-tuple/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>元组（tuple）是 TypeScript 特有的数据类型，JavaScript 没有单独区分这种类型。它表示成员类型可以自由设置的数组，即数组的各个成员的类型可以不同。</p>
+<p>由于成员的类型可以不一样，所以元组必须明确声明每个成员的类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">s</span>:[<span class="built_in">string</span>, <span class="built_in">string</span>, <span class="built_in">boolean</span>]</span><br><span class="line">  = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="literal">true</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，元组<code>s</code>的前两个成员的类型是<code>string</code>，最后一个成员的类型是<code>boolean</code>。</p>
+<p>元组类型的写法，与上一章的数组有一个重大差异。数组的成员类型写在方括号外面（<code>number[]</code>），元组的成员类型是写在方括号里面（<code>[number]</code>）。TypeScript 的区分方法就是，成员类型写在方括号里面的就是元组，写在外面的就是数组。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数组</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:<span class="built_in">number</span>[] = [<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 元组</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">t</span>:[<span class="built_in">number</span>] = [<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>a</code>和<code>t</code>的值都是<code>[1]</code>，但是它们的类型是不一样的。<code>a</code>是一个数组，成员类型<code>number</code>写在方括号外面；<code>t</code>是一个元组，成员类型<code>number</code>写在方括号里面。</p>
+<p>使用元组时，必须明确给出类型声明（上例的<code>[number]</code>），不能省略，否则 TypeScript 会把一个值自动推断为数组。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a 的类型被推断为 (number | boolean)[]</span></span><br><span class="line"><span class="keyword">let</span> a = [<span class="number">1</span>, <span class="literal">true</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>a</code>的值其实是一个元组，但是 TypeScript 会将其推断为一个联合类型的数组，即<code>a</code>的类型为<code>(number | boolean)[]</code>。所以，元组必须显式给出类型声明。</p>
+<p>元组成员的类型可以添加问号后缀（<code>?</code>），表示该成员是可选的。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:[<span class="built_in">number</span>, <span class="built_in">number</span>?] = [<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，元组<code>a</code>的第二个成员是可选的，可以省略。</p>
+<p>注意，问号只能用于元组的尾部成员，也就是说，所有可选成员必须在必选成员之后。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> myTuple = [</span><br><span class="line">  <span class="built_in">number</span>,</span><br><span class="line">  <span class="built_in">number</span>,</span><br><span class="line">  <span class="built_in">number</span>?,</span><br><span class="line">  <span class="built_in">string</span>?</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，元组<code>myTuple</code>的最后两个成员是可选的。也就是说，它的成员数量可能有两个、三个和四个。</p>
+<p>由于需要声明每个成员的类型，所以大多数情况下，元组的成员数量是有限的，从类型声明就可以明确知道，元组包含多少个成员，越界的成员会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:[<span class="built_in">string</span>, <span class="built_in">string</span>] = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"></span><br><span class="line">x[<span class="number">2</span>] = <span class="string">&#x27;c&#x27;</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>是一个只有两个成员的元组，如果对第三个成员赋值就报错了。</p>
+<p>但是，使用扩展运算符（<code>...</code>），可以表示不限成员数量的元组。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">NamedNums</span> = [</span><br><span class="line">  <span class="built_in">string</span>,</span><br><span class="line">  ...<span class="built_in">number</span>[]</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">a</span>:<span class="title class_">NamedNums</span> = [<span class="string">&#x27;A&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="attr">b</span>:<span class="title class_">NamedNums</span> = [<span class="string">&#x27;B&#x27;</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，元组类型<code>NamedNums</code>的第一个成员是字符串，后面的成员使用扩展运算符来展开一个数组，从而实现了不定数量的成员。</p>
+<p>扩展运算符（<code>...</code>）用在元组的任意位置都可以，它的后面只能是一个数组或元组。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> t1 = [<span class="built_in">string</span>, <span class="built_in">number</span>, ...<span class="built_in">boolean</span>[]];</span><br><span class="line"><span class="keyword">type</span> t2 = [<span class="built_in">string</span>, ...<span class="built_in">boolean</span>[], <span class="built_in">number</span>];</span><br><span class="line"><span class="keyword">type</span> t3 = [...<span class="built_in">boolean</span>[], <span class="built_in">string</span>, <span class="built_in">number</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，扩展运算符分别在元组的尾部、中部和头部，<code>...</code>的后面是一个数组<code>boolean[]</code>。</p>
+<p>如果不确定元组成员的类型和数量，可以写成下面这样。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Tuple</span> = [...<span class="built_in">any</span>[]];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，元组<code>Tuple</code>可以放置任意数量和类型的成员。但是这样写，也就失去了使用元组和 TypeScript 的意义。</p>
+<p>元组的成员可以添加成员名，这个成员名是说明性的，可以任意取名，没有实际作用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Color</span> = [</span><br><span class="line">  <span class="attr">red</span>: <span class="built_in">number</span>,</span><br><span class="line">  <span class="attr">green</span>: <span class="built_in">number</span>,</span><br><span class="line">  <span class="attr">blue</span>: <span class="built_in">number</span></span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">c</span>:<span class="title class_">Color</span> = [<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>Color</code>是一个元组，它有三个成员。每个成员都有一个名字，写在具体类型的前面，使用冒号分隔。这几个名字可以随便取，没有实际作用，只是用来说明每个成员的含义。</p>
+<p>元组可以通过方括号，读取成员类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Tuple</span> = [<span class="built_in">string</span>, <span class="built_in">number</span>];</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Age</span> = <span class="title class_">Tuple</span>[<span class="number">1</span>]; <span class="comment">// number</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Tuple[1]</code>返回1号位置的成员类型。</p>
+<p>由于元组的成员都是数值索引，即索引类型都是<code>number</code>，所以可以像下面这样读取。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Tuple</span> = [<span class="built_in">string</span>, <span class="built_in">number</span>, <span class="title class_">Date</span>];</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">TupleEl</span> = <span class="title class_">Tuple</span>[<span class="built_in">number</span>];  <span class="comment">// string|number|Date</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Tuple[number]</code>表示元组<code>Tuple</code>的所有数值索引的成员类型，所以返回<code>string|number|Date</code>，即这个类型是三种值的联合类型。</p>
+<h2 id="只读元组"><a href="#只读元组" class="headerlink" title="只读元组"></a>只读元组</h2><p>元组也可以是只读的，不允许修改，有两种写法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写法一</span></span><br><span class="line"><span class="keyword">type</span> t = <span class="keyword">readonly</span> [<span class="built_in">number</span>, <span class="built_in">string</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二</span></span><br><span class="line"><span class="keyword">type</span> t = <span class="title class_">Readonly</span>&lt;[<span class="built_in">number</span>, <span class="built_in">string</span>]&gt;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，两种写法都可以得到只读元组，其中写法二是一个泛型，用到了工具类型<code>Readonly&lt;T&gt;</code>。</p>
+<p>跟数组一样，只读元组是元组的父类型。所以，元组可以替代只读元组，而只读元组不能替代元组。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> t1 = <span class="keyword">readonly</span> [<span class="built_in">number</span>, <span class="built_in">number</span>];</span><br><span class="line"><span class="keyword">type</span> t2 = [<span class="built_in">number</span>, <span class="built_in">number</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:t2 = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">y</span>:t1 = x; <span class="comment">// 正确</span></span><br><span class="line"></span><br><span class="line">x = y; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>t1</code>是只读元组，类型<code>t2</code>是普通元组。<code>t2</code>类型可以赋值给<code>t1</code>类型，反过来就会报错。</p>
+<p>由于只读元组不能替代元组，所以会产生一些令人困惑的报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">distanceFromOrigin</span>(<span class="params">[x, y]:[<span class="built_in">number</span>, <span class="built_in">number</span>]</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Math</span>.<span class="title function_">sqrt</span>(x**<span class="number">2</span> + y**<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> point = [<span class="number">3</span>, <span class="number">4</span>] <span class="keyword">as</span> <span class="keyword">const</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">distanceFromOrigin</span>(point); <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>distanceFromOrigin()</code>的参数是一个元组，传入只读元组就会报错，因为只读元组不能替代元组。</p>
+<p>读者可能注意到了，上例中<code>[3, 4] as const</code>的写法，在上一章讲到，生成的是只读数组，其实生成的同时也是只读元组。因为它生成的实际上是一个只读的“值类型”<code>readonly [3, 4]</code>，把它解读成只读数组或只读元组都可以。</p>
+<p>上面示例报错的解决方法，就是使用类型断言，在最后一行将传入的参数断言为普通元组，详见《类型断言》一章。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">distanceFromOrigin</span>(</span><br><span class="line">  point <span class="keyword">as</span> [<span class="built_in">number</span>, <span class="built_in">number</span>]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="成员数量的推断"><a href="#成员数量的推断" class="headerlink" title="成员数量的推断"></a>成员数量的推断</h2><p>如果没有可选成员和扩展运算符，TypeScript 会推断出元组的成员数量（即元组长度）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">point: [<span class="built_in">number</span>, <span class="built_in">number</span>]</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (point.<span class="property">length</span> === <span class="number">3</span>) &#123;  <span class="comment">// 报错</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例会报错，原因是 TypeScript 发现元组<code>point</code>的长度是<code>2</code>，不可能等于<code>3</code>，这个判断无意义。</p>
+<p>如果包含了可选成员，TypeScript 会推断出可能的成员数量。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params"></span></span><br><span class="line"><span class="params">  point:[<span class="built_in">number</span>, <span class="built_in">number</span>?, <span class="built_in">number</span>?]</span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (point.<span class="property">length</span> === <span class="number">4</span>) &#123;  <span class="comment">// 报错</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例会报错，原因是 TypeScript 发现<code>point.length</code>的类型是<code>1|2|3</code>，不可能等于<code>4</code>。</p>
+<p>如果使用了扩展运算符，TypeScript 就无法推断出成员数量。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">myTuple</span>:[...<span class="built_in">string</span>[]]</span><br><span class="line">  = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (myTuple.<span class="property">length</span> === <span class="number">4</span>) &#123; <span class="comment">// 正确</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>myTuple</code>只有三个成员，但是 TypeScript 推断不出它的成员数量，因为它的类型用到了扩展运算符，TypeScript 把<code>myTuple</code>当成数组看待，而数组的成员数量是不确定的。</p>
+<p>一旦扩展运算符使得元组的成员数量无法推断，TypeScript 内部就会把该元组当成数组处理。</p>
+<h2 id="扩展运算符与成员数量"><a href="#扩展运算符与成员数量" class="headerlink" title="扩展运算符与成员数量"></a>扩展运算符与成员数量</h2><p>扩展运算符（<code>...</code>）将数组（注意，不是元组）转换成一个逗号分隔的序列，这时 TypeScript 会认为这个序列的成员数量是不确定的，因为数组的成员数量是不确定的。</p>
+<p>这导致如果函数调用时，使用扩展运算符传入函数参数，可能发生参数数量与数组长度不匹配的报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x:<span class="built_in">number</span>, y:<span class="built_in">number</span></span>)&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(...arr) <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例会报错，原因是函数<code>add()</code>只能接受两个参数，但是传入的是<code>...arr</code>，TypeScript 认为转换后的参数个数是不确定的。</p>
+<p>有些函数可以接受任意数量的参数，这时使用扩展运算符就不会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(...arr) <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>console.log()</code>可以接受任意数量的参数，所以传入<code>...arr</code>就不会报错。</p>
+<p>解决这个问题的一个方法，就是把成员数量不确定的数组，写成成员数量确定的元组，再使用扩展运算符。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">arr</span>:[<span class="built_in">number</span>, <span class="built_in">number</span>] = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x:<span class="built_in">number</span>, y:<span class="built_in">number</span></span>)&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(...arr) <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>arr</code>是一个拥有两个成员的元组，所以 TypeScript 能够确定<code>...arr</code>可以匹配函数<code>add()</code>的参数数量，就不会报错了。</p>
+<p>另一种写法是使用<code>as const</code>断言。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">1</span>, <span class="number">2</span>] <span class="keyword">as</span> <span class="keyword">const</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面这种写法也可以，因为 TypeScript 会认为<code>arr</code>的类型是<code>readonly [1, 2]</code>，这是一个只读的值类型，可以当作数组，也可以当作元组。</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-tuple/" data-id="clm609r3r001vt4wl1dao5evj" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-tsc/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      tsc 命令行编译器
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-tsconfig.json/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">tsconfig.json</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

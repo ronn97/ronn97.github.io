@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 类型运算符 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-operator" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 类型运算符
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-operator/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><p>TypeScript 提供强大的类型运算能力，可以使用各种类型运算符，对已有的类型进行计算，得到新类型。</p>
+<h2 id="keyof-运算符"><a href="#keyof-运算符" class="headerlink" title="keyof 运算符"></a>keyof 运算符</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>keyof 是一个单目运算符，接受一个对象类型作为参数，返回该对象的所有键名组成的联合类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyObj</span> = &#123;</span><br><span class="line">  <span class="attr">foo</span>: <span class="built_in">number</span>,</span><br><span class="line">  <span class="attr">bar</span>: <span class="built_in">string</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Keys</span> = keyof <span class="title class_">MyObj</span>; <span class="comment">// &#x27;foo&#x27;|&#x27;bar&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>keyof MyObj</code>返回<code>MyObj</code>的所有键名组成的联合类型，即<code>&#39;foo&#39;|&#39;bar&#39;</code>。</p>
+<p>下面是另一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> T &#123;</span><br><span class="line">  <span class="number">0</span>: <span class="built_in">boolean</span>;</span><br><span class="line">  <span class="attr">a</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">b</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof T; <span class="comment">// 0 | &#x27;a&#x27; | &#x27;b&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>由于 JavaScript 对象的键名只有三种类型，所以对于任意对象的键名的联合类型就是<code>string|number|symbol</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// string | number | symbol</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof <span class="built_in">any</span>;</span><br></pre></td></tr></table></figure>
+
+<p>对于没有自定义键名的类型使用 keyof 运算符，返回<code>never</code>类型，表示不可能有这样类型的键名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof <span class="built_in">object</span>;  <span class="comment">// never</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，由于<code>object</code>类型没有自身的属性，也就没有键名，所以<code>keyof object</code>返回<code>never</code>类型。</p>
+<p>由于 keyof 返回的类型是<code>string|number|symbol</code>，如果有些场合只需要其中的一种类型，那么可以采用交叉类型的写法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Capital</span>&lt;T <span class="keyword">extends</span> <span class="built_in">string</span>&gt; = <span class="title class_">Capitalize</span>&lt;T&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">MyKeys</span>&lt;<span class="title class_">Obj</span> <span class="keyword">extends</span> <span class="built_in">object</span>&gt; = <span class="title class_">Capital</span>&lt;keyof <span class="title class_">Obj</span>&gt;; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>Capital</code>只接受字符串作为类型参数，传入<code>keyof Obj</code>会报错，原因是这时的类型参数是<code>string|number|symbol</code>，跟字符串不兼容。采用下面的交叉类型写法，就不会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyKeys</span>&lt;<span class="title class_">Obj</span> <span class="keyword">extends</span> <span class="built_in">object</span>&gt; = <span class="title class_">Capital</span>&lt;<span class="built_in">string</span> &amp; keyof <span class="title class_">Obj</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>string &amp; keyof Obj</code>等同于<code>string &amp; string|number|symbol</code>进行交集运算，最后返回<code>string</code>，因此<code>Capital&lt;T extends string&gt;</code>就不会报错了。</p>
+<p>如果对象属性名采用索引形式，keyof 会返回属性名的索引类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例一</span></span><br><span class="line"><span class="keyword">interface</span> T &#123;</span><br><span class="line">  [<span class="attr">prop</span>: <span class="built_in">number</span>]: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// number</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof T;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例二</span></span><br><span class="line"><span class="keyword">interface</span> T &#123;</span><br><span class="line">  [<span class="attr">prop</span>: <span class="built_in">string</span>]: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// string|number</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof T;</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例二，<code>keyof T</code>返回的类型是<code>string|number</code>，原因是 JavaScript 属性名为字符串时，包含了属性名为数值的情况，因为数值属性名会自动转为字符串。</p>
+<p>如果 keyof 运算符用于数组或元组类型，得到的结果可能出人意料。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Result</span> = keyof [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="comment">// 返回 number | &quot;0&quot; | &quot;1&quot; | &quot;2&quot;</span></span><br><span class="line"><span class="comment">// | &quot;length&quot; | &quot;pop&quot; | &quot;push&quot; | ···</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，keyof 会返回数组的所有键名，包括数字键名和继承的键名。</p>
+<p>对于联合类型，keyof 返回成员共有的键名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123; <span class="attr">a</span>: <span class="built_in">string</span>; <span class="attr">z</span>: <span class="built_in">boolean</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> B = &#123; <span class="attr">b</span>: <span class="built_in">string</span>; <span class="attr">z</span>: <span class="built_in">boolean</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回 &#x27;z&#x27;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof (A | B);</span><br></pre></td></tr></table></figure>
+
+<p>对于交叉类型，keyof 返回所有键名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123; <span class="attr">a</span>: <span class="built_in">string</span>; <span class="attr">x</span>: <span class="built_in">boolean</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> B = &#123; <span class="attr">b</span>: <span class="built_in">string</span>; <span class="attr">y</span>: <span class="built_in">number</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回 &#x27;a&#x27; | &#x27;x&#x27; | &#x27;b&#x27; | &#x27;y&#x27;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">KeyT</span> = keyof (A &amp; B);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 相当于</span></span><br><span class="line">keyof (A &amp; B) ≡ keyof A | keyof B</span><br></pre></td></tr></table></figure>
+
+<p>keyof 取出的是键名组成的联合类型，如果想取出键值组成的联合类型，可以像下面这样写。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyObj</span> = &#123;</span><br><span class="line">  <span class="attr">foo</span>: <span class="built_in">number</span>,</span><br><span class="line">  <span class="attr">bar</span>: <span class="built_in">string</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Keys</span> = keyof <span class="title class_">MyObj</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Values</span> = <span class="title class_">MyObj</span>[<span class="title class_">Keys</span>]; <span class="comment">// number|string</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Keys</code>是键名组成的联合类型，而<code>MyObj[Keys]</code>会取出每个键名对应的键值类型，组成一个新的联合类型，即<code>number|string</code>。</p>
+<h3 id="keyof-运算符的用途"><a href="#keyof-运算符的用途" class="headerlink" title="keyof 运算符的用途"></a>keyof 运算符的用途</h3><p>keyof 运算符往往用于精确表达对象的属性类型。</p>
+<p>举例来说，取出对象的某个指定属性的值，JavaScript 版本可以写成下面这样。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">prop</span>(<span class="params">obj, key</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面这个函数添加类型，只能写成下面这样。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">prop</span>(<span class="params"></span></span><br><span class="line"><span class="params">  obj: &#123; [p:string]: any &#125;,</span></span><br><span class="line"><span class="params">  key: string</span></span><br><span class="line"><span class="params"></span>):any &#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的类型声明有两个问题，一是无法表示参数<code>key</code>与参数<code>obj</code>之间的关系，二是返回值类型只能写成<code>any</code>。</p>
+<p>有了 keyof 以后，就可以解决这两个问题，精确表达返回值类型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> prop&lt;<span class="title class_">Obj</span>, K <span class="keyword">extends</span> keyof <span class="title class_">Obj</span>&gt;(</span><br><span class="line">  <span class="attr">obj</span>:<span class="title class_">Obj</span>, <span class="attr">key</span>:K</span><br><span class="line">):<span class="title class_">Obj</span>[K] &#123;</span><br><span class="line">  <span class="keyword">return</span> obj[key];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>K extends keyof Obj</code>表示<code>K</code>是<code>Obj</code>的一个属性名，传入其他字符串会报错。返回值类型<code>Obj[K]</code>就表示<code>K</code>这个属性值的类型。</p>
+<p>keyof 的另一个用途是用于属性映射，即将一个类型的所有属性逐一映射成其他值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">NewProps</span>&lt;<span class="title class_">Obj</span>&gt; = &#123;</span><br><span class="line">  [<span class="title class_">Prop</span> <span class="keyword">in</span> keyof <span class="title class_">Obj</span>]: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用法</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">MyObj</span> = &#123; <span class="attr">foo</span>: <span class="built_in">number</span>; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等于 &#123; foo: boolean; &#125;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NewObj</span> = <span class="title class_">NewProps</span>&lt;<span class="title class_">MyObj</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>NewProps</code>是类型<code>Obj</code>的映射类型，前者继承了后者的所有属性，但是把所有属性值类型都改成了<code>boolean</code>。</p>
+<p>下面的例子是去掉 readonly 修饰符。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Mutable</span>&lt;<span class="title class_">Obj</span>&gt; = &#123;</span><br><span class="line">  -<span class="keyword">readonly</span> [<span class="title class_">Prop</span> <span class="keyword">in</span> keyof <span class="title class_">Obj</span>]: <span class="title class_">Obj</span>[<span class="title class_">Prop</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用法</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">MyObj</span> = &#123;</span><br><span class="line">  <span class="keyword">readonly</span> <span class="attr">foo</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等于 &#123; foo: number; &#125;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NewObj</span> = <span class="title class_">Mutable</span>&lt;<span class="title class_">MyObj</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>[Prop in keyof Obj]</code>是<code>Obj</code>类型的所有属性名，<code>-readonly</code>表示去除这些属性的只读特性。对应地，还有<code>+readonly</code>的写法，表示添加只读属性设置。</p>
+<p>下面的例子是让可选属性变成必有的属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Concrete</span>&lt;<span class="title class_">Obj</span>&gt; = &#123;</span><br><span class="line">  [<span class="title class_">Prop</span> <span class="keyword">in</span> keyof <span class="title class_">Obj</span>]-?: <span class="title class_">Obj</span>[<span class="title class_">Prop</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用法</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">MyObj</span> = &#123;</span><br><span class="line">  foo?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等于 &#123; foo: number; &#125;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">NewObj</span> = <span class="title class_">Concrete</span>&lt;<span class="title class_">MyObj</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>[Prop in keyof Obj]</code>后面的<code>-?</code>表示去除可选属性设置。对应地，还有<code>+?</code>的写法，表示添加可选属性设置。</p>
+<h2 id="in-运算符"><a href="#in-运算符" class="headerlink" title="in 运算符"></a>in 运算符</h2><p>JavaScript 语言中，<code>in</code>运算符用来确定对象是否包含某个属性名。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">123</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="string">&#x27;a&#x27;</span> <span class="keyword">in</span> obj)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;found a&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>in</code>运算符用来判断对象<code>obj</code>是否包含属性<code>a</code>。</p>
+<p><code>in</code>运算符的左侧是一个字符串，表示属性名，右侧是一个对象。它的返回值是一个布尔值。</p>
+<p>TypeScript 语言的类型运算中，<code>in</code>运算符有不同的用法，用来取出（遍历）联合类型的每一个成员类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> U = <span class="string">&#x27;a&#x27;</span>|<span class="string">&#x27;b&#x27;</span>|<span class="string">&#x27;c&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Foo</span> = &#123;</span><br><span class="line">  [<span class="title class_">Prop</span> <span class="keyword">in</span> U]: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Foo</span> = &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="built_in">number</span>,</span><br><span class="line">  <span class="attr">b</span>: <span class="built_in">number</span>,</span><br><span class="line">  <span class="attr">c</span>: <span class="built_in">number</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>[Prop in U]</code>表示依次取出联合类型<code>U</code>的每一个成员。</p>
+<p>上一小节的例子也提到，<code>[Prop in keyof Obj]</code>表示取出对象<code>Obj</code>的每一个键名。</p>
+<h2 id="方括号运算符"><a href="#方括号运算符" class="headerlink" title="方括号运算符"></a>方括号运算符</h2><p>方括号运算符（<code>[]</code>）用于取出对象的键值类型，比如<code>T[K]</code>会返回对象<code>T</code>的属性<code>K</code>的类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Person</span> = &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">alive</span>: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Age 的类型是 number</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Age</span> = <span class="title class_">Person</span>[<span class="string">&#x27;age&#x27;</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Person[&#39;age&#39;]</code>返回属性<code>age</code>的类型，本例是<code>number</code>。</p>
+<p>方括号的参数如果是联合类型，那么返回的也是联合类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Person</span> = &#123;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">alive</span>: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// number|string</span></span><br><span class="line"><span class="keyword">type</span> T = <span class="title class_">Person</span>[<span class="string">&#x27;age&#x27;</span>|<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// number|string|boolean</span></span><br><span class="line"><span class="keyword">type</span> A = <span class="title class_">Person</span>[keyof <span class="title class_">Person</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，方括号里面是属性名的联合类型，所以返回的也是对应的属性值的联合类型。</p>
+<p>如果访问不存在的属性，会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T = <span class="title class_">Person</span>[<span class="string">&#x27;notExisted&#x27;</span>]; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>方括号运算符的参数也可以是属性名的索引类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Obj</span> = &#123;</span><br><span class="line">  [<span class="attr">key</span>:<span class="built_in">string</span>]: <span class="built_in">number</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// number</span></span><br><span class="line"><span class="keyword">type</span> T = <span class="title class_">Obj</span>[<span class="built_in">string</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Obj</code>的属性名是字符串的索引类型，所以可以写成<code>Obj[string]</code>，代表所有字符串属性名，返回的就是它们的类型<code>number</code>。</p>
+<p>这个语法对于数组也适用，可以使用<code>number</code>作为方括号的参数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MyArray 的类型是 &#123; [key:number]: string &#125;</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">MyArray</span> = [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于 (typeof MyArray)[number]</span></span><br><span class="line"><span class="comment">// 返回 string</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Person</span> = <span class="keyword">typeof</span> <span class="title class_">MyArray</span>[<span class="built_in">number</span>];</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>MyArray</code>是一个数组，它的类型实际上是属性名的数值索引，而<code>typeof MyArray[number]</code>的<code>typeof</code>运算优先级高于方括号，所以返回的是所有数值键名的键值类型<code>string</code>。</p>
+<p>注意，方括号里面不能有值的运算。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例一</span></span><br><span class="line"><span class="keyword">const</span> key = <span class="string">&#x27;age&#x27;</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Age</span> = <span class="title class_">Person</span>[key]; <span class="comment">// 报错</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例二</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Age</span> = <span class="title class_">Person</span>[<span class="string">&#x27;a&#x27;</span> + <span class="string">&#x27;g&#x27;</span> + <span class="string">&#x27;e&#x27;</span>]; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面两个示例，方括号里面都涉及值的运算，编译时不会进行这种运算，所以会报错。</p>
+<h2 id="extends…-条件运算符"><a href="#extends…-条件运算符" class="headerlink" title="extends…?: 条件运算符"></a>extends…?: 条件运算符</h2><p>TypeScript 提供类似 JavaScript 的<code>?:</code>运算符这样的三元运算符，但多出了一个<code>extends</code>关键字。</p>
+<p>条件运算符<code>extends...?:</code>可以根据当前类型是否符合某种条件，返回不同的类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T <span class="keyword">extends</span> U ? X : Y</span><br></pre></td></tr></table></figure>
+
+<p>上面式子中的<code>extends</code>用来判断，类型<code>T</code>是否可以赋值给类型<code>U</code>，即<code>T</code>是否为<code>U</code>的子类型，这里的<code>T</code>和<code>U</code>可以是任意类型。</p>
+<p>如果<code>T</code>能够赋值给类型<code>U</code>，表达式的结果为类型<code>X</code>，否则结果为类型<code>Y</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="keyword">type</span> T = <span class="number">1</span> <span class="keyword">extends</span> <span class="built_in">number</span> ? <span class="literal">true</span> : <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>1</code>是<code>number</code>的子类型，所以返回<code>true</code>。</p>
+<p>下面是另外一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">live</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">woof</span>(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// number</span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T1</span> = <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_">Animal</span> ? <span class="built_in">number</span> : <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// string</span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T2</span> = <span class="title class_">RegExp</span> <span class="keyword">extends</span> <span class="title class_">Animal</span> ? <span class="built_in">number</span> : <span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Dog</code>是<code>Animal</code>的子类型，所以<code>T1</code>的类型是<code>number</code>。<code>RegExp</code>不是<code>Animal</code>的子类型，所以<code>T2</code>的类型是<code>string</code>。</p>
+<p>一般来说，调换<code>extends</code>两侧类型，会返回相反的结果。举例来说，有两个类<code>Cat</code>和<code>Animal</code>，前者是后者的子类型，那么<code>Cat extends Animal</code>就为真，而<code>Animal extends Cat</code>就为伪。</p>
+<p>如果需要判断的类型是一个联合类型，那么条件运算符会展开这个联合类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(A|B) <span class="keyword">extends</span> U ? X : Y</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"></span><br><span class="line">(A <span class="keyword">extends</span> U ? X : Y) |</span><br><span class="line">(B <span class="keyword">extends</span> U ? X : Y)</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>A|B</code>是一个联合类型，进行条件运算时，相当于<code>A</code>和<code>B</code>分别进行运算符，返回结果组成一个联合类型。</p>
+<p>如果不希望联合类型被条件运算符展开，可以把<code>extends</code>两侧的操作数都放在方括号里面。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 示例一</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ToArray</span>&lt;<span class="title class_">Type</span>&gt; =</span><br><span class="line">  <span class="title class_">Type</span> <span class="keyword">extends</span> <span class="built_in">any</span> ? <span class="title class_">Type</span>[] : <span class="built_in">never</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// string[]|number[]</span></span><br><span class="line"><span class="keyword">type</span> T = <span class="title class_">ToArray</span>&lt;<span class="built_in">string</span>|<span class="built_in">number</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例二</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">ToArray</span>&lt;<span class="title class_">Type</span>&gt; =</span><br><span class="line">  [<span class="title class_">Type</span>] <span class="keyword">extends</span> [<span class="built_in">any</span>] ? <span class="title class_">Type</span>[] : <span class="built_in">never</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// (string | number)[]</span></span><br><span class="line"><span class="keyword">type</span> T = <span class="title class_">ToArray</span>&lt;<span class="built_in">string</span>|<span class="built_in">number</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例一，传入<code>ToArray&lt;Type&gt;</code>的类型参数是一个联合类型，所以会被展开，返回的也是联合类型。示例二是<code>extends</code>两侧的运算数都放在方括号里面，所以传入的联合类型不会展开，返回的是一个数组。</p>
+<p>条件运算符还可以嵌套使用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">LiteralTypeName</span>&lt;T&gt; =</span><br><span class="line">  T <span class="keyword">extends</span> <span class="literal">undefined</span> ? <span class="string">&quot;undefined&quot;</span> :</span><br><span class="line">  T <span class="keyword">extends</span> <span class="literal">null</span> ? <span class="string">&quot;null&quot;</span> :</span><br><span class="line">  T <span class="keyword">extends</span> <span class="built_in">boolean</span> ? <span class="string">&quot;boolean&quot;</span> :</span><br><span class="line">  T <span class="keyword">extends</span> <span class="built_in">number</span> ? <span class="string">&quot;number&quot;</span> :</span><br><span class="line">  T <span class="keyword">extends</span> <span class="built_in">bigint</span> ? <span class="string">&quot;bigint&quot;</span> :</span><br><span class="line">  T <span class="keyword">extends</span> <span class="built_in">string</span> ? <span class="string">&quot;string&quot;</span> :</span><br><span class="line">  <span class="built_in">never</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例是一个多重判断，返回一个字符串的值类型，对应当前类型。下面是它的用法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &quot;bigint&quot;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Result1</span> = <span class="title class_">LiteralTypeName</span>&lt;<span class="number">123n</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &quot;string&quot; | &quot;number&quot; | &quot;boolean&quot;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Result2</span> = <span class="title class_">LiteralTypeName</span>&lt;<span class="literal">true</span> | <span class="number">1</span> | <span class="string">&#x27;a&#x27;</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="infer-关键字"><a href="#infer-关键字" class="headerlink" title="infer 关键字"></a>infer 关键字</h2><p><code>infer</code>关键字用来定义泛型里面推断出来的类型参数，而不是外部传入的类型参数。</p>
+<p>它通常跟条件运算符一起使用，用在<code>extends</code>关键字后面的父类型之中。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Flatten</span>&lt;<span class="title class_">Type</span>&gt; =</span><br><span class="line">  <span class="title class_">Type</span> <span class="keyword">extends</span> <span class="title class_">Array</span>&lt;infer <span class="title class_">Item</span>&gt; ? <span class="title class_">Item</span> : <span class="title class_">Type</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>infer Item</code>表示<code>Item</code>这个参数是 TypeScript 自己推断出来的，不用显式传入，而<code>Flatten&lt;Type&gt;</code>则表示<code>Type</code>这个类型参数是外部传入的。<code>Type extends Array&lt;infer Item&gt;</code>则表示，如果参数<code>Type</code>是一个数组，那么就将该数组的成员类型推断为<code>Item</code>，即<code>Item</code>是从<code>Type</code>推断出来的。</p>
+<p>一旦使用<code>Infer Item</code>定义了<code>Item</code>，后面的代码就可以直接调用<code>Item</code>了。下面是上例的泛型<code>Flatten&lt;Type&gt;</code>的用法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// string</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Str</span> = <span class="title class_">Flatten</span>&lt;<span class="built_in">string</span>[]&gt;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// number</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="title class_">Flatten</span>&lt;<span class="built_in">number</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，第一个例子<code>Flatten&lt;string[]&gt;</code>传入的类型参数是<code>string[]</code>，可以推断出<code>Item</code>的类型是<code>string</code>，所以返回的是<code>string</code>。第二个例子<code>Flatten&lt;number&gt;</code>传入的类型参数是<code>number</code>，它不是数组，所以直接返回自身。</p>
+<p>如果不用<code>infer</code>定义类型参数，那么就要传入两个类型参数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Flatten</span>&lt;<span class="title class_">Type</span>, <span class="title class_">Item</span>&gt; =</span><br><span class="line">  <span class="title class_">Type</span> <span class="keyword">extends</span> <span class="title class_">Array</span>&lt;<span class="title class_">Item</span>&gt; ? <span class="title class_">Item</span> : <span class="title class_">Type</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面是不使用<code>infer</code>的写法，每次调用<code>Fleatten</code>的时候，都要传入两个参数，就比较麻烦。</p>
+<p>下面的例子使用<code>infer</code>，推断函数的参数类型和返回值类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">ReturnPromise</span>&lt;T&gt; =</span><br><span class="line">  T <span class="keyword">extends</span> (...<span class="attr">args</span>: infer A) =&gt; infer R </span><br><span class="line">  ? <span class="function">(<span class="params">...args: A</span>) =&gt;</span> <span class="title class_">Promise</span>&lt;R&gt; </span><br><span class="line">  : T;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，如果<code>T</code>是函数，就返回这个函数的 Promise 版本，否则原样返回。<code>infer A</code>表示该函数的参数类型为<code>A</code>，<code>infer R</code>表示该函数的返回值类型为<code>R</code>。</p>
+<p>如果不使用<code>infer</code>，就不得不把<code>ReturnPromise&lt;T&gt;</code>写成<code>ReturnPromise&lt;T, A, R&gt;</code>，这样就很麻烦，相当于开发者必须人肉推断编译器可以完成的工作。</p>
+<p>下面是<code>infer</code>提取对象指定属性的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">MyType</span>&lt;T&gt; =</span><br><span class="line">  T <span class="keyword">extends</span> &#123;</span><br><span class="line">    <span class="attr">a</span>: infer M,</span><br><span class="line">    <span class="attr">b</span>: infer N</span><br><span class="line">  &#125; ? [M, N] : <span class="built_in">never</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用法示例</span></span><br><span class="line"><span class="keyword">type</span> T = <span class="title class_">MyType</span>&lt;&#123; <span class="attr">a</span>: <span class="built_in">string</span>; <span class="attr">b</span>: <span class="built_in">number</span> &#125;&gt;;</span><br><span class="line"><span class="comment">// [string, number]</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>infer</code>提取了参数对象的属性<code>a</code>和属性<code>b</code>的类型。</p>
+<p>下面是<code>infer</code>通过正则匹配提取类型参数的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Str</span> = <span class="string">&#x27;foo-bar&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Bar</span> = <span class="title class_">Str</span> <span class="keyword">extends</span> <span class="string">`foo-<span class="subst">$&#123;infer rest&#125;</span>`</span> ? rest : <span class="built_in">never</span> <span class="comment">// &#x27;bar&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>rest</code>是从模板字符串提取的类型参数。</p>
+<h2 id="is-运算符"><a href="#is-运算符" class="headerlink" title="is 运算符"></a>is 运算符</h2><p>函数返回布尔值的时候，可以使用<code>is</code>运算符，限定返回值与参数之间的关系。</p>
+<p><code>is</code>运算符用来描述返回值属于<code>true</code>还是<code>false</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isFish</span>(<span class="params"></span></span><br><span class="line"><span class="params">  pet: Fish|Bird</span></span><br><span class="line"><span class="params"></span>):pet is <span class="title class_">Fish</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (pet <span class="keyword">as</span> <span class="title class_">Fish</span>).<span class="property">swim</span> !== <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>isFish()</code>的返回值类型为<code>pet is Fish</code>，表示如果参数<code>pet</code>类型为<code>Fish</code>，则返回<code>true</code>，否则返回<code>false</code>。</p>
+<p><code>is</code>运算符总是用于描述函数的返回值类型，写法采用<code>parameterName is Type</code>的形式，即左侧为当前函数的参数名，右侧为某一种类型。它返回一个布尔值，表示左侧参数是否属于右侧的类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123; <span class="attr">a</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> B = &#123; <span class="attr">b</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">isTypeA</span>(<span class="params">x: A|B</span>): x is A &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="string">&#x27;a&#x27;</span> <span class="keyword">in</span> x) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，返回值类型<code>x is A</code>可以准确描述函数体内部的运算逻辑。</p>
+<p><code>is</code>运算符可以用于类型保护。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">isCat</span>(<span class="params">a:<span class="built_in">any</span></span>): a is <span class="title class_">Cat</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> a.<span class="property">name</span> === <span class="string">&#x27;kitty&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="title class_">Cat</span>|<span class="title class_">Dog</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title function_">isCat</span>(x)) &#123;</span><br><span class="line">  x.<span class="title function_">meow</span>(); <span class="comment">// 正确，因为 x 肯定是 Cat 类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>isCat()</code>的返回类型是<code>a is Cat</code>，它是一个布尔值。后面的<code>if</code>语句就用这个返回值进行判断，从而起到类型保护的作用，确保<code>x</code>是 Cat 类型，从而<code>x.meow()</code>不会报错（假定<code>Cat</code>类型拥有<code>meow()</code>方法）。</p>
+<p><code>is</code>运算符还有一种特殊用法，就是用在类（class）的内部，描述类的方法的返回值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Teacher</span> &#123;</span><br><span class="line">  <span class="title function_">isStudent</span>():<span class="variable language_">this</span> is <span class="title class_">Student</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">  <span class="title function_">isStudent</span>():<span class="variable language_">this</span> is <span class="title class_">Student</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>isStudent()</code>方法的返回值类型，取决于该方法内部的<code>this</code>是否为<code>Student</code>对象。如果是的，就返回布尔值<code>true</code>，否则返回<code>false</code>。</p>
+<p>注意，<code>this is T</code>这种写法，只能用来描述方法的返回值类型，而不能用来描述属性的类型。</p>
+<h2 id="模板字符串"><a href="#模板字符串" class="headerlink" title="模板字符串"></a>模板字符串</h2><p>TypeScript 允许使用模板字符串，构建类型。</p>
+<p>模板字符串的最大特点，就是内部可以引用其他类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">World</span> = <span class="string">&quot;world&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &quot;hello world&quot;</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Greeting</span> = <span class="string">`hello <span class="subst">$&#123;World&#125;</span>`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>Greeting</code>是一个模板字符串，里面引用了另一个字符串类型<code>world</code>，因此<code>Greeting</code>实际上是字符串<code>hello world</code>。</p>
+<p>注意，模板字符串可以引用的类型一共6种，分别是 string、number、bigint、boolean、null、undefined。引用这6种以外的类型会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Num</span> = <span class="number">123</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Obj</span> = &#123; n : <span class="number">123</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T1</span> = <span class="string">`<span class="subst">$&#123;Num&#125;</span> received`</span>; <span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T2</span> = <span class="string">`<span class="subst">$&#123;Obj&#125;</span> received`</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，模板字符串引用数值类型的别名<code>Num</code>是可以的，但是引用对象类型的别名<code>Obj</code>就会报错。</p>
+<p>模板字符串里面引用的类型，如果是一个联合类型，那么它返回的也是一个联合类型，即模板字符串可以展开联合类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T = <span class="string">&#x27;A&#x27;</span>|<span class="string">&#x27;B&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &quot;A_id&quot;|&quot;B_id&quot;</span></span><br><span class="line"><span class="keyword">type</span> U = <span class="string">`<span class="subst">$&#123;T&#125;</span>_id`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>U</code>是一个模板字符串，里面引用了一个联合类型<code>T</code>，导致最后得到的也是一个联合类型。</p>
+<p>如果模板字符串引用两个联合类型，它会交叉展开这两个类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T = <span class="string">&#x27;A&#x27;</span>|<span class="string">&#x27;B&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> U = <span class="string">&#x27;1&#x27;</span>|<span class="string">&#x27;2&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#x27;A1&#x27;|&#x27;A2&#x27;|&#x27;B1&#x27;|&#x27;B2&#x27;</span></span><br><span class="line"><span class="keyword">type</span> V = <span class="string">`<span class="subst">$&#123;T&#125;</span><span class="subst">$&#123;U&#125;</span>`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>T</code>和<code>U</code>都是联合类型，各自有两个成员，模板字符串里面引用了这两个类型，最后得到的就是一个4个成员的联合类型。</p>
+<h2 id="satisfies-运算符"><a href="#satisfies-运算符" class="headerlink" title="satisfies 运算符"></a>satisfies 运算符</h2><p><code>satisfies</code>运算符用来检测某个值是否符合指定类型。有时候，不方便将某个值指定为某种类型，但是希望这个值符合类型条件，这时候就可以用<code>satisfies</code>运算符对其进行检测。<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator">TypeScript 4.9</a>添加了这个运算符。</p>
+<p>举例来说，有一个对象的属性名拼写错误。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> palette = &#123;</span><br><span class="line">  <span class="attr">red</span>: [<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  <span class="attr">green</span>: <span class="string">&quot;#00ff00&quot;</span>,</span><br><span class="line">  <span class="attr">bleu</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>] <span class="comment">// 属性名拼写错误</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，对象<code>palette</code>的属性名拼写错了，将<code>blue</code>拼成了<code>bleu</code>，我们希望通过指定类型，发现这个错误。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Colors</span> = <span class="string">&quot;red&quot;</span> | <span class="string">&quot;green&quot;</span> | <span class="string">&quot;blue&quot;</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">RGB</span> = [<span class="built_in">number</span>, <span class="built_in">number</span>, <span class="built_in">number</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">palette</span>: <span class="title class_">Record</span>&lt;<span class="title class_">Colors</span>, <span class="built_in">string</span>|<span class="variable constant_">RGB</span>&gt; = &#123;</span><br><span class="line">  <span class="attr">red</span>: [<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  <span class="attr">green</span>: <span class="string">&quot;#00ff00&quot;</span>,</span><br><span class="line">  <span class="attr">bleu</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>] <span class="comment">// 报错</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>palette</code>的类型被指定为<code>Record&lt;Colors, string|RGB&gt;</code>，这是一个类型工具，用来返回一个对象，详细介绍见《类型工具》一章。简单说，它的第一个类型参数指定对象的属性名，第二个类型参数指定对象的属性值。</p>
+<p>本例的<code>Record&lt;Colors, string|RGB&gt;</code>，就表示变量<code>palette</code>的属性名应该符合类型<code>Colors</code>，属性值应该符合类型<code>string|RGB</code>，要么是字符串，要么是元组<code>RGB</code>。属性名<code>bleu</code>不符合类型<code>Colors</code>，所以就报错了。</p>
+<p>这样的写法，虽然可以发现属性名的拼写错误，但是带来了新的问题。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> greenComponent = palette.<span class="property">green</span>.<span class="title function_">substring</span>(<span class="number">1</span>, <span class="number">6</span>); <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>palette.green</code>属性调用<code>substring()</code>方法会报错，原因是这个方法只有字符串才有，而<code>palette.green</code>的类型是<code>srting|RGB</code>，除了字符串，还可能是元组<code>RGB</code>，而元组并不存在<code>substring()</code>方法，所以报错了。</p>
+<p>如果要避免报错，要么精确给出变量<code>palette</code>每个属性的类型，要么对<code>palette.green</code>的值进行类型缩小。两种做法都比较麻烦，也不是很有必要。</p>
+<p>这时就可以使用<code>satisfies</code>运算符，对<code>palette</code>进行类型检测，但是不改变 TypeScript 对<code>palette</code>的类型推断。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Colors</span> = <span class="string">&quot;red&quot;</span> | <span class="string">&quot;green&quot;</span> | <span class="string">&quot;blue&quot;</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">RGB</span> = [<span class="built_in">number</span>, <span class="built_in">number</span>, <span class="built_in">number</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> palette = &#123;</span><br><span class="line">  <span class="attr">red</span>: [<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  <span class="attr">green</span>: <span class="string">&quot;#00ff00&quot;</span>,</span><br><span class="line">  <span class="attr">bleu</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">255</span>] <span class="comment">// 报错</span></span><br><span class="line">&#125; satisfies <span class="title class_">Record</span>&lt;<span class="title class_">Colors</span>, <span class="built_in">string</span>|<span class="variable constant_">RGB</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> greenComponent = palette.<span class="property">green</span>.<span class="title function_">substring</span>(<span class="number">1</span>); <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>palette</code>的值后面增加了<code>satisfies Record&lt;Colors, string|RGB&gt;</code>，表示该值必须满足<code>Record&lt;Colors, string|RGB&gt;</code>这个条件，所以能够检测出属性名<code>bleu</code>的拼写错误。同时，它不会改变<code>palette</code>的类型推断，所以，TypeScript 知道<code>palette.green</code>是一个字符串，对其调用<code>substring()</code>方法就不会报错。</p>
+<p><code>satisfies</code>也可以检测属性值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> palette = &#123;</span><br><span class="line">  <span class="attr">red</span>: [<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">  <span class="attr">green</span>: <span class="string">&quot;#00ff00&quot;</span>,</span><br><span class="line">  <span class="attr">blue</span>: [<span class="number">0</span>, <span class="number">0</span>] <span class="comment">// 报错</span></span><br><span class="line">&#125; satisfies <span class="title class_">Record</span>&lt;<span class="title class_">Colors</span>, <span class="built_in">string</span>|<span class="variable constant_">RGB</span>&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，属性<code>blue</code>的值只有两个成员，不符合元组<code>RGB</code>必须有三个成员的条件，从而报错了。</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-operator/" data-id="clm609r3m001nt4wl5b4c9oux" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-npm/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 项目使用 npm 模块
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-react/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 的 React 支持</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    any 类型，unknown 类型，never 类型 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-any" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    any 类型，unknown 类型，never 类型
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-any/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><p>本章介绍 TypeScript 的三种特殊类型，它们可以作为学习 TypeScript 类型系统的起点。</p>
+<h2 id="any-类型"><a href="#any-类型" class="headerlink" title="any 类型"></a>any 类型</h2><h3 id="基本含义"><a href="#基本含义" class="headerlink" title="基本含义"></a>基本含义</h3><p>any 类型表示没有任何限制，该类型的变量可以赋予任意类型的值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">any</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="number">1</span>; <span class="comment">// 正确</span></span><br><span class="line">x = <span class="string">&#x27;foo&#x27;</span>; <span class="comment">// 正确</span></span><br><span class="line">x = <span class="literal">true</span>; <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型是<code>any</code>，就可以被赋值为任意类型的值。</p>
+<p>变量类型一旦设为<code>any</code>，TypeScript 实际上会关闭这个变量的类型检查。即使有明显的类型错误，只要句法正确，都不会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">any</span> = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">x</span>(<span class="number">1</span>) <span class="comment">// 不报错</span></span><br><span class="line">x.<span class="property">foo</span> = <span class="number">100</span>; <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的值是一个字符串，但是把它当作函数调用，或者当作对象读取任意属性，TypeScript 编译时都不报错。原因就是<code>x</code>的类型是<code>any</code>，TypeScript 不对其进行类型检查。</p>
+<p>由于这个原因，应该尽量避免使用<code>any</code>类型，否则就失去了使用 TypeScript 的意义。</p>
+<p>实际开发中，<code>any</code>类型主要适用以下两个场合。</p>
+<p>（1）出于特殊原因，需要关闭某些变量的类型检查，就可以把该变量的类型设为<code>any</code>。</p>
+<p>（2）为了适配以前老的 JavaScript 项目，让代码快速迁移到 TypeScript，可以把变量类型设为<code>any</code>。有些年代很久的大型 JavaScript 项目，尤其是别人的代码，很难为每一行适配正确的类型，这时你为那些类型复杂的变量加上<code>any</code>，TypeScript 编译时就不会报错。</p>
+<p>总之，TypeScript 认为，只要开发者使用了<code>any</code>类型，就表示开发者想要自己来处理这些代码，所以就不对<code>any</code>类型进行任何限制，怎么使用都可以。</p>
+<p>从集合论的角度看，<code>any</code>类型可以看成是所有其他类型的全集，包含了一切可能的类型。TypeScript 将这种类型称为“顶层类型”（top type），意为涵盖了所有下层。</p>
+<h3 id="类型推断问题"><a href="#类型推断问题" class="headerlink" title="类型推断问题"></a>类型推断问题</h3><p>对于开发者没有指定类型、TypeScript 必须自己推断类型的那些变量，如果无法推断出类型，TypeScript 就会认为该变量的类型是<code>any</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">x, y</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> x + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(<span class="number">1</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]) <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>add()</code>的参数变量<code>x</code>和<code>y</code>，都没有足够的信息，TypeScript 无法推断出它们的类型，就会认为这两个变量和函数返回值的类型都是<code>any</code>。以至于后面就不再对函数<code>add()</code>进行类型检查了，怎么用都可以。</p>
+<p>这显然是很糟糕的情况，所以对于那些类型不明显的变量，一定要显式声明类型，防止被推断为<code>any</code>。</p>
+<p>TypeScript 提供了一个编译选项<code>noImplicitAny</code>，打开该选项，只要推断出<code>any</code>类型就会报错。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tsc --noImplicitAny app.ts</span><br></pre></td></tr></table></figure>
+
+<p>上面命令使用了<code>noImplicitAny</code>编译选项进行编译，这时上面的函数<code>add()</code>就会报错。</p>
+<p>这里有一个特殊情况，即使打开了<code>noImplicitAny</code>，使用<code>let</code>和<code>var</code>命令声明变量，但不赋值也不指定类型，是不会报错的。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> x; <span class="comment">// 不报错</span></span><br><span class="line"><span class="keyword">let</span> y; <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>和<code>y</code>声明时没有赋值，也没有指定类型，TypeScript 会推断它们的类型为<code>any</code>。这时即使打开了<code>noImplicitAny</code>，也不会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x;</span><br><span class="line"></span><br><span class="line">x = <span class="number">123</span>;</span><br><span class="line">x = &#123; <span class="attr">foo</span>: <span class="string">&#x27;hello&#x27;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型推断为<code>any</code>，但是不报错，可以顺利通过编译。</p>
+<p>由于这个原因，建议使用<code>let</code>和<code>var</code>声明变量时，如果不赋值，就一定要显式声明类型，否则可能存在安全隐患。</p>
+<p><code>const</code>命令没有这个问题，因为 JavaScript 语言规定<code>const</code>声明变量时，必须同时进行初始化（赋值）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> x; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>const</code>命令声明的<code>x</code>是不能改变值的，声明时必须同时赋值，否则报错，所以它不存在类型推断为<code>any</code>的问题。</p>
+<h3 id="污染问题"><a href="#污染问题" class="headerlink" title="污染问题"></a>污染问题</h3><p><code>any</code>类型除了关闭类型检查，还有一个很大的问题，就是它会“污染”其他变量。它可以赋值给其他任何类型的变量（因为没有类型检查），导致其他变量出错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">any</span> = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">y</span>:<span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">y = x; <span class="comment">// 不报错</span></span><br><span class="line"></span><br><span class="line">y * <span class="number">123</span> <span class="comment">// 不报错</span></span><br><span class="line">y.<span class="title function_">toFixed</span>() <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型是<code>any</code>，实际的值是一个字符串。变量<code>y</code>的类型是<code>number</code>，表示这是一个数值变量，但是它被赋值为<code>x</code>，这时并不会报错。然后，变量<code>y</code>继续进行各种数值运算，TypeScript 也检查不出错误，问题就这样留到运行时才会暴露。</p>
+<p>污染其他具有正确类型的变量，把错误留到运行时，这就是不宜使用<code>any</code>类型的另一个主要原因。</p>
+<h2 id="unknown-类型"><a href="#unknown-类型" class="headerlink" title="unknown 类型"></a>unknown 类型</h2><p>为了解决<code>any</code>类型“污染”其他变量的问题，TypeScript 3.0 引入了<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type"><code>unknown</code>类型</a>。它与<code>any</code>含义相同，表示类型不确定，可能是任意类型，但是它的使用有一些限制，不像<code>any</code>那样自由，可以视为严格版的<code>any</code>。</p>
+<p><code>unknown</code>跟<code>any</code>的相似之处，在于所有类型的值都可以分配给<code>unknown</code>类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">unknown</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="literal">true</span>; <span class="comment">// 正确</span></span><br><span class="line">x = <span class="number">42</span>; <span class="comment">// 正确</span></span><br><span class="line">x = <span class="string">&#x27;Hello World&#x27;</span>; <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型是<code>unknown</code>，可以赋值为各种类型的值。这与<code>any</code>的行为一致。</p>
+<p><code>unknown</code>类型跟<code>any</code>类型的不同之处在于，它不能直接使用。主要有以下几个限制。</p>
+<p>首先，<code>unknown</code>类型的变量，不能直接赋值给其他类型的变量（除了<code>any</code>类型和<code>unknown</code>类型）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">v</span>:<span class="built_in">unknown</span> = <span class="number">123</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v1</span>:<span class="built_in">boolean</span> = v; <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v2</span>:<span class="built_in">number</span> = v; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>v</code>是<code>unknown</code>类型，赋值给<code>any</code>和<code>unknown</code>以外类型的变量都会报错，这就避免了污染问题，从而克服了<code>any</code>类型的一大缺点。</p>
+<p>其次，不能直接调用<code>unknown</code>类型变量的方法和属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">v1</span>:<span class="built_in">unknown</span> = &#123; <span class="attr">foo</span>: <span class="number">123</span> &#125;;</span><br><span class="line">v1.<span class="property">foo</span>  <span class="comment">// 报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v2</span>:<span class="built_in">unknown</span> = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">v2.<span class="title function_">trim</span>() <span class="comment">// 报错</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v3</span>:<span class="built_in">unknown</span> = <span class="function">(<span class="params">n = <span class="number">0</span></span>) =&gt;</span> n + <span class="number">1</span>;</span><br><span class="line"><span class="title function_">v3</span>() <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，直接调用<code>unknown</code>类型变量的属性和方法，或者直接当作函数执行，都会报错。</p>
+<p>再次，<code>unknown</code>类型变量能够进行的运算是有限的，只能进行比较运算（运算符<code>==</code>、<code>===</code>、<code>!=</code>、<code>!==</code>、<code>||</code>、<code>&amp;&amp;</code>、<code>?</code>）、取反运算（运算符<code>!</code>）、<code>typeof</code>运算符和<code>instanceof</code>运算符这几种，其他运算都会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:<span class="built_in">unknown</span> = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">a + <span class="number">1</span> <span class="comment">// 报错</span></span><br><span class="line">a === <span class="number">1</span> <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>unknown</code>类型的变量<code>a</code>进行加法运算会报错，因为这是不允许的运算。但是，进行比较运算就是可以的。</p>
+<p>那么，怎么才能使用<code>unknown</code>类型变量呢？</p>
+<p>答案是只有经过“类型缩小”，<code>unknown</code>类型变量才可以使用。所谓“类型缩小”，就是缩小<code>unknown</code>变量的类型范围，确保不会出错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:<span class="built_in">unknown</span> = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> a === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> r = a + <span class="number">10</span>; <span class="comment">// 正确</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>unknown</code>类型的变量<code>a</code>经过<code>typeof</code>运算以后，能够确定实际类型是<code>number</code>，就能用于加法运算了。这就是“类型缩小”，即将一个不确定的类型缩小为更明确的类型。</p>
+<p>下面是另一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">s</span>:<span class="built_in">unknown</span> = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> s === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">  s.<span class="property">length</span>; <span class="comment">// 正确</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，确定变量<code>s</code>的类型为字符串以后，才能调用它的<code>length</code>属性。</p>
+<p>这样设计的目的是，只有明确<code>unknown</code>变量的实际类型，才允许使用它，防止像<code>any</code>那样可以随意乱用，“污染”其他变量。类型缩小以后再使用，就不会报错。</p>
+<p>总之，<code>unknown</code>可以看作是更安全的<code>any</code>。一般来说，凡是需要设为<code>any</code>类型的地方，通常都应该优先考虑设为<code>unknown</code>类型。</p>
+<p>在集合论上，<code>unknown</code>也可以视为所有其他类型（除了<code>any</code>）的全集，所以它和<code>any</code>一样，也属于 TypeScript 的顶层类型。</p>
+<h2 id="never-类型"><a href="#never-类型" class="headerlink" title="never 类型"></a>never 类型</h2><p>为了保持与集合论的对应关系，以及类型运算的完整性，TypeScript 还引入了“空类型”的概念，即该类型为空，不包含任何值。</p>
+<p>由于不存在任何属于“空类型”的值，所以该类型被称为<code>never</code>，即不可能有这样的值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">never</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型是<code>never</code>，就不可能赋给它任何值，否则都会报错。</p>
+<p><code>never</code>类型的使用场景，主要是在一些类型运算之中，保证类型运算的完整性，详见后面章节。另外，不可能返回值的函数，返回值的类型就可以写成<code>never</code>，详见《函数》一章。</p>
+<p>如果一个变量可能有多种类型（即联合类型），通常需要使用分支处理每一种类型。这时，处理所有可能的类型之后，剩余的情况就属于<code>never</code>类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params">x:<span class="built_in">string</span>|<span class="built_in">number</span></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    x; <span class="comment">// never 类型</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，参数变量<code>x</code>可能是字符串，也可能是数值，判断了这两种情况后，剩下的最后那个<code>else</code>分支里面，<code>x</code>就是<code>never</code>类型了。</p>
+<p><code>never</code>类型的一个重要特点是，可以赋值给任意其他类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params"></span>):<span class="built_in">never</span> &#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&#x27;Error&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v1</span>:<span class="built_in">number</span> = <span class="title function_">f</span>(); <span class="comment">// 不报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v2</span>:<span class="built_in">string</span> = <span class="title function_">f</span>(); <span class="comment">// 不报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">v3</span>:<span class="built_in">boolean</span> = <span class="title function_">f</span>(); <span class="comment">// 不报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>f()</code>会抛出错误，所以返回值类型可以写成<code>never</code>，即不可能返回任何值。各种其他类型的变量都可以赋值为<code>f()</code>的运行结果（<code>never</code>类型）。</p>
+<p>为什么<code>never</code>类型可以赋值给任意其他类型呢？这也跟集合论有关，空集是任何集合的子集。TypeScript 就相应规定，任何类型都包含了<code>never</code>类型。因此，<code>never</code>类型是任何其他类型所共有的，TypeScript 把这种情况称为“底层类型”（bottom type）。</p>
+<p>总之，TypeScript 有两个“顶层类型”（<code>any</code>和<code>unknown</code>），但是“底层类型”只有<code>never</code>唯一一个。</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-any/" data-id="clm609r2q000bt4wl2su09a90" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-assert/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 的类型断言
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-basic/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 基本用法</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

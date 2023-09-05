@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 的类型系统 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-types" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 的类型系统
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-types/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><p>本章是 TypeScript 类型系统的总体介绍。</p>
+<p>TypeScript 继承了 JavaScript 的类型，在这个基础上，定义了一套自己的类型系统。</p>
+<h2 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>JavaScript 语言（注意，不是 TypeScript）将值分成8种类型。</p>
+<ul>
+<li>boolean</li>
+<li>string</li>
+<li>number</li>
+<li>bigint</li>
+<li>symbol</li>
+<li>object</li>
+<li>undefined</li>
+<li>null</li>
+</ul>
+<p>TypeScript 继承了 JavaScript 的类型设计，以上8种类型可以看作 TypeScript 的基本类型。</p>
+<p>注意，上面所有类型的名称都是小写字母，首字母大写的<code>Number</code>、<code>String</code>、<code>Boolean</code>等在 JavaScript  语言中都是内置对象，而不是类型名称。</p>
+<p>另外，undefined 和 null 既可以作为值，也可以作为类型，取决于在哪里使用它们。</p>
+<p>这8种基本类型是 TypeScript 类型系统的基础，复杂类型由它们组合而成。</p>
+<p>以下是它们的简单介绍。</p>
+<h3 id="boolean-类型"><a href="#boolean-类型" class="headerlink" title="boolean 类型"></a>boolean 类型</h3><p><code>boolean</code>类型只包含<code>true</code>和<code>false</code>两个布尔值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">boolean</span> = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">boolean</span> = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>和<code>y</code>就属于 boolean 类型。</p>
+<h3 id="string-类型"><a href="#string-类型" class="headerlink" title="string 类型"></a>string 类型</h3><p><code>string</code>类型包含所有字符串。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">string</span> = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">string</span> = <span class="string">`<span class="subst">$&#123;x&#125;</span> world`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，普通字符串和模板字符串都属于 string 类型。</p>
+<h3 id="number-类型"><a href="#number-类型" class="headerlink" title="number 类型"></a>number 类型</h3><p><code>number</code>类型包含所有整数和浮点数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">number</span> = <span class="number">123</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">number</span> = <span class="number">3.14</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">z</span>:<span class="built_in">number</span> = <span class="number">0xffff</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，整数、浮点数和非十进制数都属于 number 类型。</p>
+<h3 id="bigint-类型"><a href="#bigint-类型" class="headerlink" title="bigint 类型"></a>bigint 类型</h3><p>bigint 类型包含所有的大整数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">bigint</span> = <span class="number">123n</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">bigint</span> = <span class="number">0xffffn</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>和<code>y</code>就属于 bigint 类型。</p>
+<p>bigint 与 number 类型不兼容。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">bigint</span> = <span class="number">123</span>; <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">bigint</span> = <span class="number">3.14</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>bigint</code>类型赋值为整数和小数，都会报错。</p>
+<p>注意，bigint 类型是 ES2020 标准引入的。如果使用这个类型，TypeScript 编译的目标 JavaScript 版本不能低于 ES2020（即编译参数<code>target</code>不低于<code>es2020</code>）。</p>
+<h3 id="symbol-类型"><a href="#symbol-类型" class="headerlink" title="symbol 类型"></a>symbol 类型</h3><p>symbol 类型包含所有的 Symbol 值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">symbol</span> = <span class="title class_">Symbol</span>();</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Symbol()</code>函数的返回值就是 symbol 类型。</p>
+<p>symbol 类型的详细介绍，参见《Symbol》一章。</p>
+<h3 id="object-类型"><a href="#object-类型" class="headerlink" title="object 类型"></a>object 类型</h3><p>根据 JavaScript 的设计，object 类型包含了所有对象、数组和函数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="built_in">object</span> = &#123; <span class="attr">foo</span>: <span class="number">123</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">object</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="keyword">const</span> <span class="attr">z</span>:<span class="built_in">object</span> = <span class="function">(<span class="params">n:<span class="built_in">number</span></span>) =&gt;</span> n + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，对象、数组、函数都属于 object 类型。</p>
+<h3 id="undefined-类型，null-类型"><a href="#undefined-类型，null-类型" class="headerlink" title="undefined 类型，null 类型"></a>undefined 类型，null 类型</h3><p>undefined 和 null 是两种独立类型，它们各自都只有一个值。</p>
+<p>undefined 类型只包含一个值<code>undefined</code>，表示未定义（即还未给出定义，以后可能会有定义）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="literal">undefined</span> = <span class="literal">undefined</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>就属于 undefined 类型。两个<code>undefined</code>里面，第一个是类型，第二个是值。</p>
+<p>null 类型也只包含一个值<code>null</code>，表示为空（即此处没有值）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="literal">null</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>就属于 null 类型。</p>
+<p>注意，如果没有声明类型的变量，被赋值为<code>undefined</code>或<code>null</code>，在关闭编译设置<code>noImplicitAny</code>和<code>strictNullChecks</code>时，它们的类型会被推断为<code>any</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 关闭 noImplicitAny 和 strictNullChecks</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="literal">undefined</span>;   <span class="comment">// any</span></span><br><span class="line"><span class="keyword">const</span> b = <span class="literal">undefined</span>; <span class="comment">// any</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c = <span class="literal">null</span>;        <span class="comment">// any</span></span><br><span class="line"><span class="keyword">const</span> d = <span class="literal">null</span>;      <span class="comment">// any</span></span><br></pre></td></tr></table></figure>
+
+<p>如果希望避免这种情况，则需要打开编译选项<code>strictNullChecks</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打开编译设置 strictNullChecks</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> a = <span class="literal">undefined</span>;   <span class="comment">// undefined</span></span><br><span class="line"><span class="keyword">const</span> b = <span class="literal">undefined</span>; <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> c = <span class="literal">null</span>;        <span class="comment">// null</span></span><br><span class="line"><span class="keyword">const</span> d = <span class="literal">null</span>;      <span class="comment">// null</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，打开编译设置<code>strictNullChecks</code>以后，赋值为<code>undefined</code>的变量会被推断为<code>undefined</code>类型，赋值为<code>null</code>的变量会被推断为<code>null</code>类型。</p>
+<h2 id="包装对象类型"><a href="#包装对象类型" class="headerlink" title="包装对象类型"></a>包装对象类型</h2><h3 id="包装对象的概念"><a href="#包装对象的概念" class="headerlink" title="包装对象的概念"></a>包装对象的概念</h3><p>JavaScript 的8种类型之中，<code>undefined</code>和<code>null</code>其实是两个特殊值，<code>object</code>属于复合类型，剩下的五种属于原始类型（primitive value），代表最基本的、不可再分的值。</p>
+<ul>
+<li>boolean</li>
+<li>string</li>
+<li>number</li>
+<li>bigint</li>
+<li>symbol</li>
+</ul>
+<p>上面这五种原始类型的值，都有对应的包装对象（wrapper object）。所谓“包装对象”，指的是这些值在需要时，会自动产生的对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;hello&#x27;</span>.<span class="title function_">charAt</span>(<span class="number">1</span>) <span class="comment">// &#x27;e&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，字符串<code>hello</code>执行了<code>charAt()</code>方法。但是，在 JavaScript 语言中，只有对象才有方法，原始类型的值本身没有方法。这行代码之所以可以运行，就是因为在调用方法时，字符串会自动转为包装对象，<code>charAt()</code>方法其实是定义在包装对象上。</p>
+<p>这样的设计大大方便了字符串处理，省去了将原始类型的值手动转成对象实例的麻烦。</p>
+<p>五种包装对象之中，symbol 类型和 bigint 类型无法直接获取它们的包装对象（即<code>Symbol()</code>和<code>BigInt()</code>不能作为构造函数使用），但是剩下三种可以。</p>
+<ul>
+<li><code>Boolean()</code></li>
+<li><code>String()</code></li>
+<li><code>Number()</code></li>
+</ul>
+<p>以上三个构造函数，执行后可以直接获取某个原始类型值的包装对象。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> s = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&#x27;hello&#x27;</span>);</span><br><span class="line"><span class="keyword">typeof</span> s <span class="comment">// &#x27;object&#x27;</span></span><br><span class="line">s.<span class="title function_">charAt</span>(<span class="number">1</span>) <span class="comment">// &#x27;e&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>s</code>就是字符串<code>hello</code>的包装对象，<code>typeof</code>运算符返回<code>object</code>，不是<code>string</code>，但是本质上它还是字符串，可以使用所有的字符串方法。</p>
+<p>注意，<code>String()</code>只有当作构造函数使用时（即带有<code>new</code>命令调用），才会返回包装对象。如果当作普通函数使用（不带有<code>new</code>命令），返回就是一个普通字符串。其他两个构造函数<code>Number()</code>和<code>Boolean()</code>也是如此。</p>
+<h3 id="包装对象类型与字面量类型"><a href="#包装对象类型与字面量类型" class="headerlink" title="包装对象类型与字面量类型"></a>包装对象类型与字面量类型</h3><p>由于包装对象的存在，导致每一个原始类型的值都有包装对象和字面量两种情况。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;hello&#x27;</span> <span class="comment">// 字面量</span></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">// 包装对象</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，第一行是字面量，第二行是包装对象，它们都是字符串。</p>
+<p>为了区分这两种情况，TypeScript 对五种原始类型分别提供了大写和小写两种类型。</p>
+<ul>
+<li>Boolean 和 boolean</li>
+<li>String 和 string</li>
+<li>Number 和 number</li>
+<li>BigInt 和 bigint</li>
+<li>Symbol 和 symbol</li>
+</ul>
+<p>其中，大写类型同时包含包装对象和字面量两种情况，小写类型只包含字面量，不包含包装对象。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">s1</span>:<span class="title class_">String</span> = <span class="string">&#x27;hello&#x27;</span>; <span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">s2</span>:<span class="title class_">String</span> = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&#x27;hello&#x27;</span>); <span class="comment">// 正确</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">s3</span>:<span class="built_in">string</span> = <span class="string">&#x27;hello&#x27;</span>; <span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">s4</span>:<span class="built_in">string</span> = <span class="keyword">new</span> <span class="title class_">String</span>(<span class="string">&#x27;hello&#x27;</span>); <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>String</code>类型可以赋值为字符串的字面量，也可以赋值为包装对象。但是，<code>string</code>类型只能赋值为字面量，赋值为包装对象就会报错。</p>
+<p>建议只使用小写类型，不使用大写类型。因为绝大部分使用原始类型的场合，都是使用字面量，不使用包装对象。而且，TypeScript 把很多内置方法的参数，定义成小写类型，使用大写类型会报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">n1</span>:<span class="built_in">number</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">n2</span>:<span class="title class_">Number</span> = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">abs</span>(n1) <span class="comment">// 1</span></span><br><span class="line"><span class="title class_">Math</span>.<span class="title function_">abs</span>(n2) <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Math.abs()</code>方法的参数类型被定义成小写的<code>number</code>，传入大写的<code>Number</code>类型就会报错。</p>
+<p>上一小节说过，<code>Symbol()</code>和<code>BigInt()</code>这两个函数不能当作构造函数使用，所以没有办法直接获得 symbol 类型和 bigint 类型的包装对象，除非使用下面的写法。但是，它们没有使用场景，因此<code>Symbol</code>和<code>BigInt</code>这两个类型虽然存在，但是完全没有使用的理由。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="title class_">Object</span>(<span class="title class_">Symbol</span>());</span><br><span class="line"><span class="keyword">let</span> b = <span class="title class_">Object</span>(<span class="title class_">BigInt</span>());</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，得到的就是 Symbol 和 BigInt 的包装对象，但是没有使用的意义。</p>
+<p>注意，目前在 TypeScript 里面，<code>symbol</code>和<code>Symbol</code>两种写法没有差异，<code>bigint</code>和<code>BigInt</code>也是如此，不知道是否属于官方的疏忽。建议始终使用小写的<code>symbol</code>和<code>bigint</code>，不使用大写的<code>Symbol</code>和<code>BigInt</code>。</p>
+<h2 id="Object-类型与-object-类型"><a href="#Object-类型与-object-类型" class="headerlink" title="Object 类型与 object 类型"></a>Object 类型与 object 类型</h2><p>TypeScript 的对象类型也有大写<code>Object</code>和小写<code>object</code>两种。</p>
+<h3 id="Object-类型"><a href="#Object-类型" class="headerlink" title="Object 类型"></a>Object 类型</h3><p>大写的<code>Object</code>类型代表 JavaScript 语言里面的广义对象。所有可以转成对象的值，都是<code>Object</code>类型，这囊括了几乎所有的值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>:<span class="title class_">Object</span>;</span><br><span class="line"> </span><br><span class="line">obj = <span class="literal">true</span>;</span><br><span class="line">obj = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">obj = <span class="number">1</span>;</span><br><span class="line">obj = &#123; <span class="attr">foo</span>: <span class="number">123</span> &#125;;</span><br><span class="line">obj = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">obj = <span class="function">(<span class="params">a:<span class="built_in">number</span></span>) =&gt;</span> a + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，原始类型值、对象、数组、函数都是合法的<code>Object</code>类型。</p>
+<p>事实上，除了<code>undefined</code>和<code>null</code>这两个值不能转为对象，其他任何值都可以赋值给<code>Object</code>类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>:<span class="title class_">Object</span>;</span><br><span class="line"></span><br><span class="line">obj = <span class="literal">undefined</span>; <span class="comment">// 报错</span></span><br><span class="line">obj = <span class="literal">null</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>undefined</code>和<code>null</code>赋值给<code>Object</code>类型，就会报错。</p>
+<p>另外，空对象<code>&#123;&#125;</code>是<code>Object</code>类型的简写形式，所以使用<code>Object</code>时常常用空对象代替。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>:&#123;&#125;;</span><br><span class="line"> </span><br><span class="line">obj = <span class="literal">true</span>;</span><br><span class="line">obj = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line">obj = <span class="number">1</span>;</span><br><span class="line">obj = &#123; <span class="attr">foo</span>: <span class="number">123</span> &#125;;</span><br><span class="line">obj = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">obj = <span class="function">(<span class="params">a:<span class="built_in">number</span></span>) =&gt;</span> a + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>obj</code>的类型是空对象<code>&#123;&#125;</code>，就代表<code>Object</code>类型。</p>
+<p>显然，无所不包的<code>Object</code>类型既不符合直觉，也不方便使用。</p>
+<h3 id="object-类型-1"><a href="#object-类型-1" class="headerlink" title="object 类型"></a>object 类型</h3><p>小写的<code>object</code>类型代表 JavaScript 里面的狭义对象，即可以用字面量表示的对象，只包含对象、数组和函数，不包括原始类型的值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>:<span class="built_in">object</span>;</span><br><span class="line"> </span><br><span class="line">obj = &#123; <span class="attr">foo</span>: <span class="number">123</span> &#125;;</span><br><span class="line">obj = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">obj = <span class="function">(<span class="params">a:<span class="built_in">number</span></span>) =&gt;</span> a + <span class="number">1</span>;</span><br><span class="line">obj = <span class="literal">true</span>; <span class="comment">// 报错</span></span><br><span class="line">obj = <span class="string">&#x27;hi&#x27;</span>; <span class="comment">// 报错</span></span><br><span class="line">obj = <span class="number">1</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>object</code>类型不包含原始类型值，只包含对象、数组和函数。</p>
+<p>大多数时候，我们使用对象类型，只希望包含真正的对象，不希望包含原始类型。所以，建议总是使用小写类型<code>object</code>，不使用大写类型<code>Object</code>。</p>
+<p>注意，无论是大写的<code>Object</code>类型，还是小写的<code>object</code>类型，都只包含 JavaScript  内置对象原生的属性和方法，用户自定义的属性和方法都不存在于这两个类型之中。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">o1</span>:<span class="title class_">Object</span> = &#123; <span class="attr">foo</span>: <span class="number">0</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">o2</span>:<span class="built_in">object</span> = &#123; <span class="attr">foo</span>: <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line">o1.<span class="title function_">toString</span>() <span class="comment">// 正确</span></span><br><span class="line">o1.<span class="property">foo</span> <span class="comment">// 报错</span></span><br><span class="line"></span><br><span class="line">o2.<span class="title function_">toString</span>() <span class="comment">// 正确</span></span><br><span class="line">o2.<span class="property">foo</span> <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>toString()</code>是对象的原生方法，可以正确访问。<code>foo</code>是自定义属性，访问就会报错。如何描述对象的自定义属性，详见《对象类型》一章。</p>
+<h2 id="undefined-和-null-的特殊性"><a href="#undefined-和-null-的特殊性" class="headerlink" title="undefined 和 null 的特殊性"></a>undefined 和 null 的特殊性</h2><p><code>undefined</code>和<code>null</code>既是值，又是类型。</p>
+<p>作为值，它们有一个特殊的地方：任何其他类型的变量都可以赋值为<code>undefined</code>或<code>null</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">age</span>:<span class="built_in">number</span> = <span class="number">24</span>;</span><br><span class="line"></span><br><span class="line">age = <span class="literal">null</span>;      <span class="comment">// 正确</span></span><br><span class="line">age = <span class="literal">undefined</span>; <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，变量<code>age</code>的类型是<code>number</code>，但是赋值为<code>null</code>或<code>undefined</code>并不报错。</p>
+<p>这并不是因为<code>undefined</code>和<code>null</code>包含在<code>number</code>类型里面，而是故意这样设计，任何类型的变量都可以赋值为<code>undefined</code>和<code>null</code>，以便跟 JavaScript 的行为保持一致。</p>
+<p>JavaScript 的行为是，变量如果等于<code>undefined</code>就表示还没有赋值，如果等于<code>null</code>就表示值为空。所以，TypeScript 就允许了任何类型的变量都可以赋值为这两个值。</p>
+<p>但是有时候，这并不是开发者想要的行为，也不利于发挥类型系统的优势。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">obj</span>:<span class="built_in">object</span> = <span class="literal">undefined</span>;</span><br><span class="line">obj.<span class="title function_">toString</span>() <span class="comment">// 编译不报错，运行就报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>obj</code>等于<code>undefined</code>，编译不会报错。但是，实际执行时，调用<code>obj.toString()</code>就报错了，因为<code>undefined</code>不是对象，没有这个方法。</p>
+<p>为了避免这种情况，及早发现错误，TypeScript 提供了一个编译选项<code>strictNullChecks</code>。只要打开这个选项，<code>undefined</code>和<code>null</code>就不能赋值给其他类型的变量（除了<code>any</code>类型和<code>unknown</code>类型）。</p>
+<p>下面是 tsc 命令打开这个编译选项的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// tsc --strictNullChecks app.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">age</span>:<span class="built_in">number</span> = <span class="number">24</span>;</span><br><span class="line"></span><br><span class="line">age = <span class="literal">null</span>;      <span class="comment">// 报错</span></span><br><span class="line">age = <span class="literal">undefined</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，打开<code>--strictNullChecks</code>以后，<code>number</code>类型的变量<code>age</code>就不能赋值为<code>undefined</code>和<code>null</code>。</p>
+<p>这个选项在配置文件<code>tsconfig.json</code>的写法如下。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;strictNullChecks&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>打开<code>strictNullChecks</code>以后，<code>undefined</code>和<code>null</code>这两种值也不能互相赋值了。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 打开 strictNullChecks</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="literal">undefined</span> = <span class="literal">null</span>; <span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">y</span>:<span class="literal">null</span> = <span class="literal">undefined</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>undefined</code>类型的变量赋值为<code>null</code>，或者<code>null</code>类型的变量赋值为<code>undefined</code>，都会报错。</p>
+<p>总之，打开<code>strictNullChecks</code>以后，<code>undefined</code>和<code>null</code>只能赋值给自身，或者<code>any</code>类型和<code>unknown</code>类型的变量。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">any</span>     = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">y</span>:<span class="built_in">unknown</span> = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="值类型"><a href="#值类型" class="headerlink" title="值类型"></a>值类型</h2><p>TypeScript 规定，单个值也是一种类型，称为“值类型”。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="string">&#x27;hello&#x27;</span>; <span class="comment">// 正确</span></span><br><span class="line">x = <span class="string">&#x27;world&#x27;</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型是字符串<code>hello</code>，导致它只能赋值为这个字符串，赋值为其他字符串就会报错。</p>
+<p>TypeScript 推断类型时，遇到<code>const</code>命令声明的变量，如果代码里面没有注明类型，就会推断该变量是值类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// x 的类型是 &quot;https&quot;</span></span><br><span class="line"><span class="keyword">const</span> x = <span class="string">&#x27;https&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// y 的类型是 string</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">y</span>:<span class="built_in">string</span> = <span class="string">&#x27;https&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>是<code>const</code>命令声明的，TypeScript 就会推断它的类型是值<code>https</code>，而不是<code>string</code>类型。</p>
+<p>这样推断是合理的，因为<code>const</code>命令声明的变量，一旦声明就不能改变，相当于常量。值类型就意味着不能赋为其他值。</p>
+<p>注意，<code>const</code>命令声明的变量，如果赋值为对象，并不会推断为值类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// x 的类型是 &#123; foo: number &#125;</span></span><br><span class="line"><span class="keyword">const</span> x = &#123; <span class="attr">foo</span>: <span class="number">1</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>没有被推断为值类型，而是推断属性<code>foo</code>的类型是<code>number</code>。这是因为 JavaScript 里面，<code>const</code>变量赋值为对象时，属性值是可以改变的。</p>
+<p>值类型可能会出现一些很奇怪的报错。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="number">5</span> = <span class="number">4</span> + <span class="number">1</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，等号左侧的类型是数值<code>5</code>，等号右侧<code>4 + 1</code>的类型，TypeScript 推测为<code>number</code>。由于<code>5</code>是<code>number</code>的子类型，<code>number</code>是<code>5</code>的父类型，父类型不能赋值给子类型，所以报错了（详见本章后文）。</p>
+<p>但是，反过来是可以的，子类型可以赋值给父类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="number">5</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">y</span>:<span class="built_in">number</span> = <span class="number">4</span> + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">x = y; <span class="comment">// 报错</span></span><br><span class="line">y = x; <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>属于子类型，变量<code>y</code>属于父类型。子类型<code>x</code>不能赋值为父类型<code>y</code>，但是反过来是可以的。</p>
+<p>如果一定要让子类型可以赋值为父类型的值，就要用到类型断言（详见《类型断言》一章）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">x</span>:<span class="number">5</span> = (<span class="number">4</span> + <span class="number">1</span>) <span class="keyword">as</span> <span class="number">5</span>; <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，在<code>4 + 1</code>后面加上<code>as 5</code>，就是告诉编译器，可以把<code>4 + 1</code>的类型视为值类型<code>5</code>，这样就不会报错了。</p>
+<p>只包含单个值的值类型，用处不大。实际开发中，往往将多个值结合，作为联合类型使用。</p>
+<h2 id="联合类型"><a href="#联合类型" class="headerlink" title="联合类型"></a>联合类型</h2><p>联合类型（union types）指的是多个类型组成的一个新类型，使用符号<code>|</code>表示。</p>
+<p>联合类型<code>A|B</code>表示，任何一个类型只要属于<code>A</code>或<code>B</code>，就属于联合类型<code>A|B</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">string</span>|<span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">x = <span class="number">123</span>; <span class="comment">// 正确</span></span><br><span class="line">x = <span class="string">&#x27;abc&#x27;</span>; <span class="comment">// 正确</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>就是联合类型<code>string|number</code>，表示它的值既可以是字符串，也可以是数值。</p>
+<p>联合类型可以与值类型相结合，表示一个变量的值有若干种可能。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">setting</span>:<span class="literal">true</span>|<span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">gender</span>:<span class="string">&#x27;male&#x27;</span>|<span class="string">&#x27;female&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">rainbowColor</span>:<span class="string">&#x27;赤&#x27;</span>|<span class="string">&#x27;橙&#x27;</span>|<span class="string">&#x27;黄&#x27;</span>|<span class="string">&#x27;绿&#x27;</span>|<span class="string">&#x27;青&#x27;</span>|<span class="string">&#x27;蓝&#x27;</span>|<span class="string">&#x27;紫&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面的示例都是由值类型组成的联合类型，非常清晰地表达了变量的取值范围。其中，<code>true|false</code>其实就是布尔类型<code>boolean</code>。</p>
+<p>前面提到，打开编译选项<code>strictNullChecks</code>后，其他类型的变量不能赋值为<code>undefined</code>或<code>null</code>。这时，如果某个变量确实可能包含空值，就可以采用联合类型的写法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">name</span>:<span class="built_in">string</span>|<span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">name = <span class="string">&#x27;John&#x27;</span>;</span><br><span class="line">name = <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>name</code>的值可以是字符串，也可以是<code>null</code>。</p>
+<p>联合类型的第一个成员前面，也可以加上竖杠<code>|</code>，这样便于多行书写。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:</span><br><span class="line">  | <span class="string">&#x27;one&#x27;</span></span><br><span class="line">  | <span class="string">&#x27;two&#x27;</span></span><br><span class="line">  | <span class="string">&#x27;three&#x27;</span></span><br><span class="line">  | <span class="string">&#x27;four&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，联合类型的第一个成员<code>one</code>前面，加上了竖杠。</p>
+<p>如果一个变量有多种类型，读取该变量时，往往需要进行“类型缩小”（type narrowing），区分该值到底属于哪一种类型，然后再进一步处理。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">printId</span>(<span class="params"></span></span><br><span class="line"><span class="params">  id:<span class="built_in">number</span>|<span class="built_in">string</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(id.<span class="title function_">toUpperCase</span>()); <span class="comment">// 报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，参数变量<code>id</code>可能是数值，也可能是字符串，这时直接对这个变量调用<code>toUpperCase()</code>方法会报错，因为这个方法只存在于字符串，不存在于数值。</p>
+<p>解决方法就是对参数<code>id</code>做一下类型缩小，确定它的类型以后再进行处理。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">printId</span>(<span class="params"></span></span><br><span class="line"><span class="params">  id:<span class="built_in">number</span>|<span class="built_in">string</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> id === <span class="string">&#x27;string&#x27;</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(id.<span class="title function_">toUpperCase</span>());</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(id);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数体内部会判断一下变量<code>id</code>的类型，如果是字符串，就对其执行<code>toUpperCase()</code>方法。</p>
+<p>“类型缩小”是 TypeScript 处理联合类型的标准方法，凡是遇到可能为多种类型的场合，都需要先缩小类型，再进行处理。实际上，联合类型本身可以看成是一种“类型放大”（type widening），处理时就需要“类型缩小”（type narrowing）。</p>
+<p>下面是“类型缩小”的另一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getPort</span>(<span class="params"></span></span><br><span class="line"><span class="params">  scheme: <span class="string">&#x27;http&#x27;</span>|<span class="string">&#x27;https&#x27;</span></span></span><br><span class="line"><span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">switch</span> (scheme) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;http&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="number">80</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="string">&#x27;https&#x27;</span>:</span><br><span class="line">      <span class="keyword">return</span> <span class="number">443</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数体内部对参数变量<code>scheme</code>进行类型缩小，根据不同的值类型，返回不同的结果。</p>
+<h2 id="交叉类型"><a href="#交叉类型" class="headerlink" title="交叉类型"></a>交叉类型</h2><p>交叉类型（intersection types）指的多个类型组成的一个新类型，使用符号<code>&amp;</code>表示。</p>
+<p>交叉类型<code>A&amp;B</code>表示，任何一个类型必须同时属于<code>A</code>和<code>B</code>，才属于交叉类型<code>A&amp;B</code>，即交叉类型同时满足<code>A</code>和<code>B</code>的特征。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">number</span>&amp;<span class="built_in">string</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>同时是数值和字符串，这当然是不可能的，所以 TypeScript 会认为<code>x</code>的类型实际是<code>never</code>。</p>
+<p>交叉类型的主要用途是表示对象的合成。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>:</span><br><span class="line">  &#123; <span class="attr">foo</span>: <span class="built_in">string</span> &#125; &amp;</span><br><span class="line">  &#123; <span class="attr">bar</span>: <span class="built_in">string</span> &#125;;</span><br><span class="line"></span><br><span class="line">obj = &#123;</span><br><span class="line">  <span class="attr">foo</span>: <span class="string">&#x27;hello&#x27;</span>,</span><br><span class="line">  <span class="attr">bar</span>: <span class="string">&#x27;world&#x27;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>obj</code>同时具有属性<code>foo</code>和属性<code>bar</code>。</p>
+<p>交叉类型常常用来为对象类型添加新属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> A = &#123; <span class="attr">foo</span>: <span class="built_in">number</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> B = A &amp; &#123; <span class="attr">bar</span>: <span class="built_in">number</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，类型<code>B</code>是一个交叉类型，用来在<code>A</code>的基础上增加了属性<code>bar</code>。</p>
+<h2 id="type-命令"><a href="#type-命令" class="headerlink" title="type 命令"></a>type 命令</h2><p><code>type</code>命令用来定义一个类型的别名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Age</span> = <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">age</span>:<span class="title class_">Age</span> = <span class="number">55</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>type</code>命令为<code>number</code>类型定义了一个别名<code>Age</code>。这样就能像使用<code>number</code>一样，使用<code>Age</code>作为类型。</p>
+<p>别名可以让类型的名字变得更有意义，也能增加代码的可读性，还可以使复杂类型用起来更方便，便于以后修改变量的类型。</p>
+<p>别名不允许重名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Color</span> = <span class="string">&#x27;red&#x27;</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Color</span> = <span class="string">&#x27;blue&#x27;</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，同一个别名<code>Color</code>声明了两次，就报错了。</p>
+<p>别名的作用域是块级作用域。这意味着，代码块内部定义的别名，影响不到外部。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Color</span> = <span class="string">&#x27;red&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="title class_">Math</span>.<span class="title function_">random</span>() &lt; <span class="number">0.5</span>) &#123;</span><br><span class="line">  <span class="keyword">type</span> <span class="title class_">Color</span> = <span class="string">&#x27;blue&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>if</code>代码块内部的类型别名<code>Color</code>，跟外部的<code>Color</code>是不一样的。</p>
+<p>别名支持使用表达式，也可以在定义一个别名时，使用另一个别名，即别名允许嵌套。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">World</span> = <span class="string">&quot;world&quot;</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Greeting</span> = <span class="string">`hello <span class="subst">$&#123;World&#125;</span>`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，别名<code>Greeting</code>使用了模板字符串，读取另一个别名<code>World</code>。</p>
+<p><code>type</code>命令属于类型相关的代码，编译成 JavaScript 的时候，会被全部删除。</p>
+<h2 id="typeof-运算符"><a href="#typeof-运算符" class="headerlink" title="typeof 运算符"></a>typeof 运算符</h2><p>JavaScript 语言中，typeof 运算符是一个一元运算符，返回一个字符串，代表操作数的类型。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="string">&#x27;foo&#x27;</span>; <span class="comment">// &#x27;string&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>typeof</code>运算符返回字符串<code>foo</code>的类型是<code>string</code>。</p>
+<p>注意，这时 typeof 的操作数是一个值。</p>
+<p>JavaScript 里面，<code>typeof</code>运算符只可能返回八种结果，而且都是字符串。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="literal">undefined</span>; <span class="comment">// &quot;undefined&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">true</span>; <span class="comment">// &quot;boolean&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="number">1337</span>; <span class="comment">// &quot;number&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">&quot;foo&quot;</span>; <span class="comment">// &quot;string&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> &#123;&#125;; <span class="comment">// &quot;object&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="built_in">parseInt</span>; <span class="comment">// &quot;function&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="title class_">Symbol</span>(); <span class="comment">// &quot;symbol&quot;</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="number">127n</span> <span class="comment">// &quot;bigint&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例是<code>typeof</code>运算符在 JavaScript 语言里面，可能返回的八种结果。</p>
+<p>TypeScript 将<code>typeof</code>运算符移植到了类型运算，它的操作数依然是一个值，但是返回的不是字符串，而是该值的 TypeScript 类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = &#123; <span class="attr">x</span>: <span class="number">0</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T0</span> = <span class="keyword">typeof</span> a;   <span class="comment">// &#123; x: number &#125;</span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">T1</span> = <span class="keyword">typeof</span> a.<span class="property">x</span>; <span class="comment">// number</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>typeof a</code>表示返回变量<code>a</code>的 TypeScript 类型（<code>&#123; x: number &#125;</code>）。同理，<code>typeof a.x</code>返回的是属性<code>x</code>的类型（<code>number</code>）。</p>
+<p>这种用法的<code>typeof</code>返回的是 TypeScript 类型，所以只能用在类型运算之中（即跟类型相关的代码之中），不能用在值运算。</p>
+<p>也就是说，同一段代码可能存在两种<code>typeof</code>运算符，一种用在值相关的 JavaScript 代码部分，另一种用在类型相关的 TypeScript 代码部分。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">b</span>:<span class="keyword">typeof</span> a;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> a === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">  b = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，用到了两个<code>typeof</code>，第一个是类型运算，第二个是值运算。它们是不一样的，不要混淆。</p>
+<p>JavaScript 的 typeof 遵守 JavaScript 规则，TypeScript 的 typeof 遵守 TypeScript 规则。它们的一个重要区别在于，编译后，前者会保留，后者会被全部删除。</p>
+<p>上例的代码编译结果如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> a === <span class="string">&#x27;number&#x27;</span>) &#123;</span><br><span class="line">    b = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，只保留了原始代码的第二个 typeof，删除了第一个 typeof。</p>
+<p>由于编译时不会进行 JavaScript 的值运算，所以TypeScript 规定，typeof 的参数只能是标识符，不能是需要运算的表达式。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T = <span class="keyword">typeof</span> <span class="title class_">Date</span>(); <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例会报错，原因是 typeof 的参数不能是一个值的运算式，而<code>Date()</code>需要运算才知道结果。</p>
+<p>另外，<code>typeof</code>命令的参数不能是类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Age</span> = <span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">MyAge</span> = <span class="keyword">typeof</span> <span class="title class_">Age</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>Age</code>是一个类型别名，用作<code>typeof</code>命令的参数就会报错。</p>
+<p>typeof 是一个很重要的 TypeScript 运算符，有些场合不知道某个变量<code>foo</code>的类型，这时使用<code>typeof foo</code>就可以获得它的类型。</p>
+<h2 id="块级类型声明"><a href="#块级类型声明" class="headerlink" title="块级类型声明"></a>块级类型声明</h2><p>TypeScript 支持块级类型声明，即类型可以声明在代码块（用大括号表示）里面，并且只在当前代码块有效。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">type</span> T = <span class="built_in">number</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">v</span>:T = <span class="number">5</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="keyword">type</span> T = <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">v</span>:T = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，存在两个代码块，其中分别有一个类型<code>T</code>的声明。这两个声明都只在自己的代码块内部有效，在代码块外部无效。</p>
+<h2 id="类型的兼容"><a href="#类型的兼容" class="headerlink" title="类型的兼容"></a>类型的兼容</h2><p>TypeScript 的类型存在兼容关系，某些类型可以兼容其他类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> T = <span class="built_in">number</span>|<span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:<span class="built_in">number</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">b</span>:T = a;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>a</code>和<code>b</code>的类型是不一样的，但是变量<code>a</code>赋值给变量<code>b</code>并不会报错。这时，我们就认为，<code>b</code>的类型兼容<code>a</code>的类型。</p>
+<p>TypeScript 为这种情况定义了一个专门术语。如果类型<code>A</code>的值可以赋值给类型<code>B</code>，那么类型<code>A</code>就称为类型<code>B</code>的子类型（subtype）。在上例中，类型<code>number</code>就是类型<code>number|string</code>的子类型。</p>
+<p>TypeScript 的一个规则是，凡是可以使用父类型的地方，都可以使用子类型，但是反过来不行。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:<span class="string">&#x27;hi&#x27;</span> = <span class="string">&#x27;hi&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">b</span>:<span class="built_in">string</span> = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"></span><br><span class="line">b = a; <span class="comment">// 正确</span></span><br><span class="line">a = b; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>hi</code>是<code>string</code>的子类型，<code>string</code>是<code>hi</code>的父类型。所以，变量<code>a</code>可以赋值给变量<code>b</code>，但是反过来就会报错。</p>
+<p>之所以有这样的规则，是因为子类型继承了父类型的所有特征，所以可以用在父类型的场合。但是，子类型还可能有一些父类型没有的特征，所以父类型不能用在子类型的场合。</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-types/" data-id="clm609r3t0021t4wlcyqs0n4t" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-type-operations/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      类型运算
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-utility/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 类型工具</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript namespace |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-namespace" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript namespace
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-namespace/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><p>namespace 是一种将相关代码组织在一起的方式，中文译为“命名空间”。</p>
+<p>它出现在 ES 模块诞生之前，作为 TypeScript 自己的模块格式而发明的。但是，自从有了 ES 模块，官方已经不推荐使用 namespace 了。</p>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>namespace 用来建立一个容器，内部的所有变量和函数，都必须在这个容器里面使用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Utils</span> &#123;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">isString</span>(<span class="params">value:<span class="built_in">any</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">&#x27;string&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 正确</span></span><br><span class="line">  <span class="title function_">isString</span>(<span class="string">&#x27;yes&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Utils</span>.<span class="title function_">isString</span>(<span class="string">&#x27;no&#x27;</span>); <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，命名空间<code>Utils</code>里面定义了一个函数<code>isString()</code>，它只能在<code>Utils</code>里面使用，如果用于外部就会报错。</p>
+<p>如果要在命名空间以外使用内部成员，就必须为该成员加上<code>export</code>前缀，表示对外输出该成员。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Utility</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">msg:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">error</span>(<span class="params">msg:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Utility</span>.<span class="title function_">log</span>(<span class="string">&#x27;Call me&#x27;</span>);</span><br><span class="line"><span class="title class_">Utility</span>.<span class="title function_">error</span>(<span class="string">&#x27;maybe!&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，只要加上<code>export</code>前缀，就可以在命名空间外部使用内部成员。</p>
+<p>编译出来的 JavaScript 代码如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="title class_">Utility</span>;</span><br><span class="line"></span><br><span class="line">(<span class="keyword">function</span> (<span class="params">Utility</span>) &#123;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title class_">Utility</span>.<span class="property">log</span> = log;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">error</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(msg);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title class_">Utility</span>.<span class="property">error</span> = error;</span><br><span class="line">&#125;)(<span class="title class_">Utility</span> || (<span class="title class_">Utility</span> = &#123;&#125;));</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，命名空间<code>Utility</code>变成了 JavaScript 的一个对象，凡是<code>export</code>的内部成员，都成了该对象的属性。</p>
+<p>这就是说，namespace 会变成一个值，保留在编译后的代码中。这一点要小心，它不是纯的类型代码。</p>
+<p>namespace 内部还可以使用<code>import</code>命令输入外部成员，相当于为外部成员起别名。当外部成员的名字比较长时，别名能够简化代码。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Utils</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">isString</span>(<span class="params">value:<span class="built_in">any</span></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">typeof</span> value === <span class="string">&#x27;string&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">App</span> &#123;</span><br><span class="line">  <span class="keyword">import</span> isString = <span class="title class_">Utils</span>.<span class="property">isString</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">isString</span>(<span class="string">&#x27;yes&#x27;</span>);</span><br><span class="line">  <span class="comment">// 等同于</span></span><br><span class="line">  <span class="title class_">Utils</span>.<span class="title function_">isString</span>(<span class="string">&#x27;yes&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>import</code>命令指定在命名空间<code>App</code>里面，外部成员<code>Utils.isString</code>的别名为<code>isString</code>。</p>
+<p><code>import</code>命令也可以在 namespace 外部，指定别名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Shapes</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">namespace</span> <span class="title class_">Polygons</span> &#123;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Triangle</span> &#123;&#125;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Square</span> &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> polygons = <span class="title class_">Shapes</span>.<span class="property">Polygons</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于 new Shapes.Polygons.Square()</span></span><br><span class="line"><span class="keyword">let</span> sq = <span class="keyword">new</span> polygons.<span class="title class_">Square</span>();</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>import</code>命令在命名空间<code>Shapes</code>的外部，指定<code> Shapes.Polygons</code>的别名为<code>polygons</code>。</p>
+<p>namespace 可以嵌套。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Utils</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">namespace</span> <span class="title class_">Messaging</span> &#123;</span><br><span class="line">    <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">log</span>(<span class="params">msg:<span class="built_in">string</span></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(msg);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Utils</span>.<span class="property">Messaging</span>.<span class="title function_">log</span>(<span class="string">&#x27;hello&#x27;</span>) <span class="comment">// &quot;hello&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，命名空间<code>Utils</code>内部还有一个命名空间<code>Messaging</code>。注意，如果要在外部使用<code>Messaging</code>，必须在它前面加上<code>export</code>命令。</p>
+<p>使用嵌套的命名空间，必须从最外层开始引用，比如<code>Utils.Messaging.log()</code>。</p>
+<p>namespace 不仅可以包含实义代码，还可以包括类型代码。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> N &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">MyInterface</span>&#123;&#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">MyClass</span>&#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，命令空间<code>N</code>不仅对外输出类，还对外输出一个接口，它们都可以用作类型。</p>
+<p>namespace 与模块的作用是一致的，都是把相关代码组织在一起，对外输出接口。区别是一个文件只能有一个模块，但可以有多个 namespace。由于模块可以取代 namespace，而且是 JavaScript 的标准语法，还不需要编译转换，所以建议总是使用模块，替代 namespace。</p>
+<p>如果 namespace 代码放在一个单独的文件里，那么引入这个文件需要使用三斜杠的语法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;reference path = &quot;SomeFileName.ts&quot; /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="namespace-的输出"><a href="#namespace-的输出" class="headerlink" title="namespace 的输出"></a>namespace 的输出</h2><p>namespace 本身也可以使用<code>export</code>命令输出，供其他文件使用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shapes.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">namespace</span> <span class="title class_">Shapes</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Triangle</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Square</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例是一个文件<code>shapes.ts</code>，里面使用<code>export</code>命令，输出了一个命名空间<code>Shapes</code>。</p>
+<p>其他脚本文件使用<code>import</code>命令，加载这个命名空间。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 写法一</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Shapes</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;./shapes&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> t = <span class="keyword">new</span> <span class="title class_">Shapes</span>.<span class="title class_">Triangle</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 写法二</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> shapes <span class="keyword">from</span> <span class="string">&quot;./shapes&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> t = <span class="keyword">new</span> shapes.<span class="property">Shapes</span>.<span class="title class_">Triangle</span>();</span><br></pre></td></tr></table></figure>
+
+<p>不过，更好的方法还是建议使用模块，采用模块的输出和输入。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// shapes.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Triangle</span> &#123;</span><br><span class="line">  <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Square</span> &#123;</span><br><span class="line">  <span class="comment">/* ... */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// shapeConsumer.ts</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> shapes <span class="keyword">from</span> <span class="string">&quot;./shapes&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> t = <span class="keyword">new</span> shapes.<span class="title class_">Triangle</span>();</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，使用模块的输出和输入，改写了前面的例子。</p>
+<h2 id="namespace-的合并"><a href="#namespace-的合并" class="headerlink" title="namespace 的合并"></a>namespace 的合并</h2><p>多个同名的 namespace 会自动合并，这一点跟 interface 一样。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title class_">Animals</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Cat</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Animals</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">Legged</span> &#123;</span><br><span class="line">    <span class="attr">numberOfLegs</span>: <span class="built_in">number</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Dog</span> &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 等同于</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title class_">Animals</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">Legged</span> &#123;</span><br><span class="line">    <span class="attr">numberOfLegs</span>: <span class="built_in">number</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Cat</span> &#123;&#125;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">Dog</span> &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样做的目的是，如果同名的命名空间分布在不同的文件中，TypeScript 最终会将它们合并在一起。这样就比较方便扩展别人的代码。</p>
+<p>合并命名空间时，命名空间中的非<code>export</code>的成员不会被合并，但是它们只能在各自的命名空间中使用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> N &#123;</span><br><span class="line">  <span class="keyword">const</span> a = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a);  <span class="comment">// 正确</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> N &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">foo</span>(); <span class="comment">// 正确</span></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(a);  <span class="comment">// 报错</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>a</code>是第一个名称空间<code>N</code>的非对外成员，它只在第一个名称空间可用。</p>
+<p>命名空间还可以跟同名函数合并，但是要求同名函数必须在命名空间之前声明。这样做是为了确保先创建出一个函数对象，然后同名的命名空间就相当于给这个函数对象添加额外的属性。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> f.<span class="property">version</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> f &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">const</span> version = <span class="string">&#x27;1.0&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>()   <span class="comment">// &#x27;1.0&#x27;</span></span><br><span class="line">f.<span class="property">version</span> <span class="comment">// &#x27;1.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，函数<code>f()</code>与命名空间<code>f</code>合并，相当于命名空间为函数对象<code>f</code>添加属性。</p>
+<p>命名空间也能与同名 class 合并，同样要求class 必须在命名空间之前声明，原因同上。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  foo = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> C &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">const</span> bar = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">C.<span class="property">bar</span> <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，名称空间<code>C</code>为类<code>C</code>添加了一个静态属性<code>bar</code>。</p>
+<p>命名空间还能与同名 Enum 合并。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> E &#123;</span><br><span class="line">  A,</span><br><span class="line">  B,</span><br><span class="line">  C,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> E &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">foo</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(E.<span class="property">C</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">E.<span class="title function_">foo</span>() <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，命名空间<code>E</code>为枚举<code>E</code>添加了一个<code>foo()</code>方法。</p>
+<p>注意，Enum 成员与命名空间导出成员不允许同名。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> E &#123;</span><br><span class="line">  A, <span class="comment">// 报错</span></span><br><span class="line">  B,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> E &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">A</span>(<span class="params"></span>) &#123;&#125; <span class="comment">// 报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，同名 Enum 与命名空间有同名成员，结果报错。</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-namespace/" data-id="clm609r3f001ht4wl7vz39qtz" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-narrowing/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      TypeScript 类型缩小
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-object/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 的对象类型</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    TypeScript 的 ES6 类型 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-es6" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    TypeScript 的 ES6 类型
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-es6/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><h2 id="Map-lt-K-V-gt"><a href="#Map-lt-K-V-gt" class="headerlink" title="Map&lt;K, V&gt;"></a><code>Map&lt;K, V&gt;</code></h2><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> map2 = <span class="keyword">new</span> <span class="title class_">Map</span>(); <span class="comment">// Key any, value any</span></span><br><span class="line"><span class="keyword">let</span> map3 = <span class="keyword">new</span> <span class="title class_">Map</span>&lt;<span class="built_in">string</span>, <span class="built_in">number</span>&gt;(); <span class="comment">// Key string, value number</span></span><br></pre></td></tr></table></figure>
+
+<p>TypeScript 使用 Map 类型，描述 Map 结构。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">myMap</span>: <span class="title class_">Map</span>&lt;<span class="built_in">boolean</span>,<span class="built_in">string</span>&gt; = <span class="keyword">new</span> <span class="title class_">Map</span>([</span><br><span class="line">  [<span class="literal">false</span>, <span class="string">&#x27;no&#x27;</span>],</span><br><span class="line">  [<span class="literal">true</span>, <span class="string">&#x27;yes&#x27;</span>],</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<p>Map 是一个泛型，使用时，比如给出类型变量。</p>
+<p>由于存在类型推断，也可以省略类型参数。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myMap = <span class="keyword">new</span> <span class="title class_">Map</span>([</span><br><span class="line">  [<span class="literal">false</span>, <span class="string">&#x27;no&#x27;</span>],</span><br><span class="line">  [<span class="literal">true</span>, <span class="string">&#x27;yes&#x27;</span>],</span><br><span class="line">]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Set-lt-T-gt"><a href="#Set-lt-T-gt" class="headerlink" title="Set&lt;T&gt;"></a><code>Set&lt;T&gt;</code></h2><h2 id="Promise-lt-T-gt"><a href="#Promise-lt-T-gt" class="headerlink" title="Promise&lt;T&gt;"></a><code>Promise&lt;T&gt;</code></h2><h2 id="async-函数"><a href="#async-函数" class="headerlink" title="async 函数"></a>async 函数</h2><p>async 函数的的返回值是一个 Promise 对象。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="attr">p</span>:<span class="title class_">Promise</span>&lt;<span class="built_in">number</span>&gt; = <span class="comment">/* ... */</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>): <span class="title class_">Promise</span>&lt;<span class="built_in">number</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="keyword">await</span> p;</span><br><span class="line">  <span class="keyword">return</span> i + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Iterable-lt-T-gt"><a href="#Iterable-lt-T-gt" class="headerlink" title="Iterable&lt;T&gt;"></a><code>Iterable&lt;T&gt;</code></h2><p>对象只要部署了 Iterator 接口，就可以用<code>for...of</code>循环遍历。Generator 函数（生成器）返回的就是一个具有 Iterator 接口的对象。</p>
+<p>TypeScript 使用泛型<code>Iterable&lt;T&gt;</code>表示具有 Iterator 接口的对象，其中<code>T</code>表示 Iterator 接口包含的值类型（每一轮遍历获得的值）。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Iterable</span>&lt;T&gt; &#123;</span><br><span class="line">  [<span class="title class_">Symbol</span>.<span class="property">iterator</span>](): <span class="title class_">Iterator</span>&lt;T&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面是<code>Iterable&lt;T&gt;</code>接口的定义，表示一个具有<code>Symbol.iterator</code>属性的对象，该属性是一个函数，调用后返回的是一个 Iterator 对象。</p>
+<p>Iterator 对象必须具有<code>next()</code>方法，另外还具有两个可选方法<code>return()</code>和<code>throw()</code>，类型表述如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Iterator</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="title function_">next</span>(value?: <span class="built_in">any</span>): <span class="title class_">IteratorResult</span>&lt;T&gt;;</span><br><span class="line">  <span class="keyword">return</span>?(value?: <span class="built_in">any</span>): <span class="title class_">IteratorResult</span>&lt;T&gt;;</span><br><span class="line">  <span class="keyword">throw</span>?(e?: <span class="built_in">any</span>): <span class="title class_">IteratorResult</span>&lt;T&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的类型定义中，可以看到<code>next()</code>、<code>return()</code>、<code>throw()</code>这三个方法的返回值是一个部署了<code>IteratorResult&lt;T&gt;</code>接口的对象。</p>
+<p><code>IteratorResult&lt;T&gt;</code>接口的定义如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">IteratorResult</span>&lt;T&gt; &#123;</span><br><span class="line">  <span class="attr">done</span>: <span class="built_in">boolean</span>; <span class="comment">//表示遍历是否结束</span></span><br><span class="line">  <span class="attr">value</span>: T; <span class="comment">// 当前遍历得到的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面的类型定义表示，Iterator 对象的<code>next()</code>等方法的返回值，具有<code>done</code>和<code>value</code>两个属性。</p>
+<p>下面的例子是 Generator 函数返回一个具有 Iterator 接口的对象。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">g</span>():<span class="title class_">Iterable</span>&lt;<span class="built_in">string</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">yield</span>* <span class="title function_">otherStringGenerator</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，生成器<code>g()</code>返回的类型是<code>Iterable&lt;string&gt;</code>，其中<code>string</code>表示 Iterator 接口包含的是字符串。</p>
+<p>这个例子的类型声明可以省略，因为 TypeScript 可以自己推断出来 Iterator 接口的类型。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">g</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">&quot;&quot;</span>; <span class="comment">// infer string</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">yield</span>* <span class="title function_">otherStringGenerator</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，扩展运算符（<code>...</code>）后面的值必须具有 Iterator 接口，下面是一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> toArray&lt;X&gt;(<span class="attr">xs</span>: <span class="title class_">Iterable</span>&lt;X&gt;):X[] &#123;</span><br><span class="line">  <span class="keyword">return</span> [...xs]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Generator-函数"><a href="#Generator-函数" class="headerlink" title="Generator 函数"></a>Generator 函数</h2><p>Generator 函数返回一个同时具有 Iterable 接口（具有<code>[Symbol.iterator]</code>属性）和 Iterator 接口（具有<code>next()</code>方法）的对象，因此 TypeScript 提供了一个泛型<code>IterableIterator&lt;T&gt;</code>，表示同时满足<code>Iterable&lt;T&gt;</code>和<code>Iterator&lt;T&gt;</code>两个接口。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">IterableIterator</span>&lt;T&gt; <span class="keyword">extends</span> <span class="title class_">Iterator</span>&lt;T&gt; &#123;</span><br><span class="line">    [<span class="title class_">Symbol</span>.<span class="property">iterator</span>](): <span class="title class_">IterableIterator</span>&lt;T&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面类型定义中，<code>IterableIterator&lt;T&gt;</code>接口就是在<code>Iterator&lt;T&gt;</code>接口的基础上，加上<code>[Symbol.iterator]</code>属性。</p>
+<p>下面是一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span>* <span class="title function_">createNumbers</span>(): <span class="title class_">IterableIterator</span>&lt;<span class="built_in">number</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> n = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">yield</span> n++;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> numbers = <span class="title function_">createNumbers</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;value: 0, done: false&#125;</span></span><br><span class="line">numbers.<span class="title function_">next</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;value: 1, done: false&#125;</span></span><br><span class="line">numbers.<span class="title function_">next</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;value: 2, done: false&#125;</span></span><br><span class="line">numbers.<span class="title function_">next</span>()</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>createNumbers()</code>返回的对象<code>numbers</code>即具有<code>next()</code>方法，也具有<code>[Symbol.iterator]</code>属性，所以满足<code>IterableIterator&lt;T&gt;</code>接口。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.geekabyte.io/2019/06/typing-iterables-and-iterators-with.html">Typing Iterables and Iterators with TypeScript</a></li>
+</ul>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-es6/" data-id="clm609r36000zt4wl985fdqg9" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-decorator-legacy/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      装饰器（旧语法）
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-generics/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 泛型</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

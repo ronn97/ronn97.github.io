@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    基于 GitHub Pages + Hexo 搭建个人博客 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-my-blog-build-remark" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    基于 GitHub Pages + Hexo 搭建个人博客
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/06/08/my-blog-build-remark/" class="article-date">
+  <time datetime="2023-06-08T05:44:32.000Z" itemprop="datePublished">2023-06-08</time>
+</a>
+      
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><img src="/2023/06/08/my-blog-build-remark/img.png" class="" title="头部">
+<h1 id="PersonalBlog"><a href="#PersonalBlog" class="headerlink" title="PersonalBlog"></a>PersonalBlog</h1><h4 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h4><p>基于 Github Pages + Hexo 的方式，搭建个人博客。<br>本站参考链接<a target="_blank" rel="noopener" href="https://my.oschina.net/u/5057806/blog/5602898">白嫖 GitHub Pages，轻松搭建个人博客</a></p>
+<h4 id="软件架构"><a href="#软件架构" class="headerlink" title="软件架构"></a>软件架构</h4><p>软件架构说明<br>Hexo 是一个快速、简单且功能强大的博客框架。使用 Markdown 解析文档，Hexo 能在几秒内生成带有自定义主题并集成各项功能的网站页面。</p>
+<h4 id="安装教程"><a href="#安装教程" class="headerlink" title="安装教程"></a>安装教程</h4><ol>
+<li>全局安装 hexo-cli 工具</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br><span class="line">hexo -v # 查看版本，目前最新版本为 4.3.0</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建一个项目 my-blog 并初始化</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo init my-blog</span><br><span class="line">cd my-blog</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>生成网页文件 &amp; 本地启动</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo generate # 生成页面，此命令可以简写为 `hexo g`</span><br><span class="line">hexo server # 本地启动，可简写为 `hexo s`</span><br></pre></td></tr></table></figure>
+
+<p>通过 hexo g 生成的页面文件在项目 public 目录下；<br>使用 hexo clean 命令可以清理生成的页面文件。当配置未生效时，建议执行清理命令。</p>
+<ol start="4">
+<li>本地访问</li>
+</ol>
+<p>浏览器访问：<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 会看到一个比较简陋的页面。</p>
+<h4 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h4><ol>
+<li>创建「关于页」<br>首次使用主题的「关于页」需要手动创建。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
+
+<p>创建成功后修改 &#x2F;source&#x2F;about&#x2F;index.md，添加 layout 属性。修改后的文件示例如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 标题</span><br><span class="line">layout: about</span><br><span class="line">---</span><br><span class="line">这里写关于页的正文，支持 Markdown, HTML</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是， layout: about 必须存在，并且不能修改成其他值，否则不会显示头像等样式。</p>
+<ol start="2">
+<li>创建文章<br>修改 _config.yml 文件。这项配置是为了在生成文章的同时，生成一个同名的资源目录用于存放图片等资源文件。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
+
+<p>创建文件名为 my-blog-build-remark 文章。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new post my-blog-build-remark</span><br></pre></td></tr></table></figure>
+
+<p>设置文章的标题及其他元数据信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 基于 GitHub Pages + Hexo 搭建个人博客</span><br><span class="line">date: 2022-10-16 19:42:53</span><br><span class="line">tags: [&#x27;hexo&#x27;,&#x27;fluid&#x27;]</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>如上命令执行成功后，在 source&#x2F;_posts&#x2F; 目录下生成了一个 Markdown 文件和一个同名的资源目录。</p>
+<p>在 source&#x2F;_posts&#x2F;my-blog-build-remark 目录中放置一个图片文件 posts-file-tree.png，整体目录结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ source/_posts (main)&gt; tree</span><br><span class="line">.</span><br><span class="line">├── hello-world.md</span><br><span class="line">├── my-blog-build-remark</span><br><span class="line">│   └── posts-file-tree.png</span><br><span class="line">└── my-blog-build-remark.md</span><br></pre></td></tr></table></figure>
+
+<p>然后在文章的 Markdown 文件里，通过以下方式即可引用对应的图片。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img posts-file-tree.png 目录结构 %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>图片的引用方式也不只一种，更多详细介绍可参考官方文档 (<a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders.html)%E3%80%82">https://hexo.io/zh-cn/docs/asset-folders.html)。</a></p>
+<p>文章创建并编辑好之后，就可以通过 hexo g &amp;&amp; hexo s 命令启动服务，并在本地预览文章。</p>
+<ol start="3">
+<li>本地启动<br>执行如下命令重新生成页面，并启动 Hexo 服务。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+
+<h5 id="发布-GitHub-Pages"><a href="#发布-GitHub-Pages" class="headerlink" title="发布 GitHub Pages"></a>发布 GitHub Pages</h5><ol>
+<li>安装 hexo-deployer-git。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>修改站点配置 _config.yml。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: git</span><br><span class="line">repo: &lt;repository url&gt; # https://github.com/&lt;GitHub用户名&gt;/&lt;GitHub用户名&gt;.github.io.git</span><br><span class="line">branch: [branch]</span><br><span class="line">token: [token]</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>生成站点文件并推送至远程 GitHub 仓库。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>登入 Github，在库设置（Repository Settings）中将默认分支设置为 _config.yml 配置中的分支名称。<br>只需稍等片刻，个人博客站点就会显示在 Github Pages 中。</p>
+<p>个人博客的主页访问地址：https:&#x2F;&#x2F;&lt;GitHub 用户名&gt;.github.io。</p>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/06/08/my-blog-build-remark/" data-id="clm609r2l0006t4wlcy1r5jaf" class="article-share-link">
+        分享
+      </a>
+      
+<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GitHub-Pages/" rel="tag">GitHub Pages</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/06/09/%E8%BD%AF%E4%BB%B6-%E6%8F%92%E4%BB%B6-%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      程序员舍不得删除的软件/插件/工具推荐（持续更新）
+      
+    </div>
+  </a>
+  
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>

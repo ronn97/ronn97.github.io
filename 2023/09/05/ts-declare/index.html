@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--  bing搜索-->
+  <meta name="msvalidate.01" content="C978CEE5B035402910AAC2FD1C19716D" />
+  
+  
+  
+  <meta name="description" content="个人博客">
+  
+  <title>
+    declare 关键字 |
+    
+    没有梦想的程序员
+  </title>
+  <!-- Icon -->
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4620209531301821" crossorigin="anonymous"></script>
+  
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="没有梦想的程序员" type="application/atom+xml">
+</head>
+
+<body>
+  <main class="content">
+    <section class="outer">
+  <article id="post-ts-declare" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+  
+  <h1 class="article-title" itemprop="name">
+    declare 关键字
+  </h1>
+  
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2023/09/05/ts-declare/" class="article-date">
+  <time datetime="2023-09-05T02:50:55.000Z" itemprop="datePublished">2023-09-05</time>
+</a>
+      
+<div class="article-category">
+  <a class="article-category-link" href="/categories/TS%E6%95%99%E7%A8%8B/">TS教程</a>
+</div>
+
+    </div>
+    
+
+    
+    
+<div class="tocbot"></div>
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+      
+        <div id="readmore-container"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>declare 关键字用来告诉编译器，某个类型是存在的，可以在当前文件中使用。</p>
+<p>它的主要作用，就是让当前文件可以使用其他文件声明的类型。举例来说，自己的脚本使用外部库定义的函数，编译器会因为不知道外部函数的类型定义而报错，这时就可以在自己的脚本里面使用<code>declare</code>关键字，告诉编译器外部函数的类型。这样的话，编译单个脚本就不会因为使用了外部类型而报错。</p>
+<p>declare 关键字可以描述以下类型。</p>
+<ul>
+<li>变量（const、let、var 命令声明）</li>
+<li>type 或者 interface 命令声明的类型</li>
+<li>class</li>
+<li>enum</li>
+<li>函数（function）</li>
+<li>模块（module）</li>
+<li>命名空间（namespace）</li>
+</ul>
+<p>declare 关键字的重要特点是，它只是通知编译器某个类型是存在的，不用给出具体实现。比如，只描述函数的类型，不给出函数的实现，如果不使用<code>declare</code>，这是做不到的。</p>
+<p>declare 只能用来描述已经存在的变量和数据结构，不能用来声明新的变量和数据结构。另外，所有 declare 语句都不会出现在编译后的文件里面。</p>
+<h2 id="declare-variable"><a href="#declare-variable" class="headerlink" title="declare variable"></a>declare variable</h2><p>declare 关键字可以给出外部变量的类型描述。</p>
+<p>举例来说，当前脚本使用了其他脚本定义的全局变量<code>x</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">123</span>; <span class="comment">// 报错</span></span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>是其他脚本定义的，当前脚本不知道它的类型，编译器就会报错。</p>
+<p>这时使用 declare 命令给出它的类型，就不会报错了。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">number</span>;</span><br><span class="line">x = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>如果 declare 关键字没有给出变量的具体类型，那么变量类型就是<code>any</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">let</span> x;</span><br><span class="line">x = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，变量<code>x</code>的类型为<code>any</code>。</p>
+<p>下面的例子是脚本使用浏览器全局对象<code>document</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">var</span> <span class="variable language_">document</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="property">title</span> = <span class="string">&#x27;Hello&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，declare 告诉编译器，变量<code>document</code>的类型是外部定义的（具体定义在 TypeScript 内置文件<code>lib.d.ts</code>）。</p>
+<p>如果 TypeScript 没有找到<code>document</code>的外部定义，这里就会假定它的类型是<code>any</code>。</p>
+<p>注意，declare 关键字只用来给出类型描述，是纯的类型代码，不允许设置变量的初始值，即不能涉及值。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">let</span> <span class="attr">x</span>:<span class="built_in">number</span> = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，declare 设置了变量的初始值，结果就报错了。</p>
+<h2 id="declare-function"><a href="#declare-function" class="headerlink" title="declare function"></a>declare function</h2><p>declare 关键字可以给出外部函数的类型描述。</p>
+<p>下面是一个例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params"></span></span><br><span class="line"><span class="params">  name:<span class="built_in">string</span></span></span><br><span class="line"><span class="params"></span>):<span class="built_in">void</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">sayHello</span>(<span class="string">&#x27;张三&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，declare 命令给出了<code>sayHello()</code>的类型描述，因此可以直接使用它。</p>
+<p>注意，这种单独的函数类型声明语句，只能用于<code>declare</code>命令后面。一方面，TypeScript 不支持单独的函数类型声明语句；另一方面，declare 关键字后面也不能带有函数的具体实现。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params"></span></span><br><span class="line"><span class="params">  name:<span class="built_in">string</span></span></span><br><span class="line"><span class="params"></span>):<span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sayHello</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;你好，&#x27;</span> + name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，单独写函数的类型声明就会报错。</p>
+<h2 id="declare-class"><a href="#declare-class" class="headerlink" title="declare class"></a>declare class</h2><p>declare 给出 class 类型描述的写法如下。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span></span>);</span><br><span class="line">  <span class="title function_">eat</span>():<span class="built_in">void</span>;</span><br><span class="line">  <span class="title function_">sleep</span>():<span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个复杂一点的例子。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">class</span> <span class="title class_">C</span> &#123;</span><br><span class="line">  <span class="comment">// 静态成员</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="title function_">s0</span>():<span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> <span class="attr">s1</span>:<span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 属性</span></span><br><span class="line">  <span class="keyword">public</span> <span class="attr">a</span>:<span class="built_in">number</span>;</span><br><span class="line">  <span class="keyword">private</span> <span class="attr">b</span>:<span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 构造函数</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">arg:<span class="built_in">number</span></span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 方法</span></span><br><span class="line">  <span class="title function_">m</span>(<span class="attr">x</span>:<span class="built_in">number</span>, <span class="attr">y</span>:<span class="built_in">number</span>):<span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 存取器</span></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">c</span>():<span class="built_in">number</span>;</span><br><span class="line">  <span class="keyword">set</span> <span class="title function_">c</span>(<span class="params">value:<span class="built_in">number</span></span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 索引签名</span></span><br><span class="line">  [<span class="attr">index</span>:<span class="built_in">string</span>]:<span class="built_in">any</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同样的，declare 后面不能给出 Class 的具体实现或初始值。</p>
+<h2 id="declare-module，declare-namespace"><a href="#declare-module，declare-namespace" class="headerlink" title="declare module，declare namespace"></a>declare module，declare namespace</h2><p>如果想把变量、函数、类组织在一起，可以将 declare 与 module 或 namespace 一起使用。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> <span class="title class_">AnimalLib</span> &#123;</span><br><span class="line">  <span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span></span>);</span><br><span class="line">    <span class="title function_">eat</span>():<span class="built_in">void</span>;</span><br><span class="line">    <span class="title function_">sleep</span>():<span class="built_in">void</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> <span class="title class_">Animals</span> = <span class="string">&#x27;Fish&#x27;</span> | <span class="string">&#x27;Dog&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="title class_">AnimalLib</span> &#123;</span><br><span class="line">  <span class="keyword">class</span> <span class="title class_">Animal</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span></span>);</span><br><span class="line">    <span class="title function_">eat</span>(): <span class="built_in">void</span>;</span><br><span class="line">    <span class="title function_">sleep</span>(): <span class="built_in">void</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">type</span> <span class="title class_">Animals</span> = <span class="string">&#x27;Fish&#x27;</span> | <span class="string">&#x27;Dog&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，declare 关键字给出了 module 或 namespace 的类型描述。</p>
+<p>declare module 和 declare namespace 里面，加不加 export 关键字都可以。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">var</span> <span class="attr">a</span>: <span class="built_in">boolean</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&#x27;io&#x27;</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">readFile</span>(<span class="params">filename:<span class="built_in">string</span></span>):<span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，namespace 和 module 里面使用了 export 关键字。</p>
+<p>下面的例子是当前脚本使用了<code>myLib</code>这个外部库，它有方法<code>makeGreeting()</code>和属性<code>numberOfGreetings</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> result = myLib.<span class="title function_">makeGreeting</span>(<span class="string">&#x27;你好&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;欢迎词：&#x27;</span> + result);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> count = myLib.<span class="property">numberOfGreetings</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>myLib</code>的类型描述就可以这样写。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">namespace</span> myLib &#123;</span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">makeGreeting</span>(<span class="params">s:<span class="built_in">string</span></span>): <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">let</span> <span class="attr">numberOfGreetings</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>declare 关键字的另一个用途，是为外部模块添加属性和方法时，给出新增部分的类型描述。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Foo</span> <span class="keyword">as</span> <span class="title class_">Bar</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;moduleA&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&#x27;moduleA&#x27;</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">Bar</span> <span class="keyword">extends</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">    <span class="attr">custom</span>: &#123;</span><br><span class="line">      <span class="attr">prop1</span>: <span class="built_in">string</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，从模块<code>moduleA</code>导入了<code>Foo</code>接口，将其重命名为<code>Bar</code>，并用 declare 关键字为<code>Bar</code>增加一个属性<code>custom</code>。</p>
+<p>下面是另一个例子。一个项目有多个模块，可以在一个模块中，对另一个模块的接口进行类型扩展。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.ts</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">interface</span> A &#123;</span><br><span class="line">  <span class="attr">x</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; A &#125; <span class="keyword">from</span> <span class="string">&#x27;./a&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&#x27;./a&#x27;</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> A &#123;</span><br><span class="line">    <span class="attr">y</span>: <span class="built_in">number</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="attr">a</span>:A = &#123; <span class="attr">x</span>: <span class="number">0</span>, <span class="attr">y</span>: <span class="number">0</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，脚本<code>a.ts</code>定义了一个接口<code>A</code>，脚本<code>b.ts</code>为这个接口添加了属性<code>y</code>。<code>declare module &#39;./a&#39; &#123;&#125;</code>表示对<code>a.ts</code>里面的模块，进行类型声明，而同名 interface 会自动合并，所以等同于扩展类型。</p>
+<p>使用这种语法进行模块的类型扩展时，有两点需要注意：</p>
+<p>（1）<code>declare module NAME</code>语法里面的模块名<code>NAME</code>，跟 import 和 export 的模块名规则是一样的，且必须跟当前文件加载该模块的语句写法（上例<code>import &#123; A &#125; from &#39;./a&#39;</code>）保持一致。</p>
+<p>（2）不能创建新的顶层类型。也就是说，只能对<code>a.ts</code>模块中已经存在的类型进行扩展，不允许增加新的顶层类型，比如新定义一个接口<code>B</code>。</p>
+<p>（3）不能对默认的<code>default</code>接口进行扩展，只能对 export 命令输出的命名接口进行扩充。这是因为在进行类型扩展时，需要依赖输出的接口名。</p>
+<p>某些第三方模块，原始作者没有提供接口类型，这时可以在自己的脚本顶部加上下面一行命令。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;模块名&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 例子</span></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;hot-new-module&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>加上上面的命令以后，外部模块即使没有类型声明，也可以通过编译。但是，从该模块输入的所有接口都将为<code>any</code>类型。</p>
+<p>declare module 描述的模块名可以使用通配符。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&#x27;my-plugin-*&#x27;</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">PluginOptions</span> &#123;</span><br><span class="line">    <span class="attr">enabled</span>: <span class="built_in">boolean</span>;</span><br><span class="line">    <span class="attr">priority</span>: <span class="built_in">number</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">initialize</span>(<span class="params">options: PluginOptions</span>): <span class="built_in">void</span>;</span><br><span class="line">  <span class="keyword">export</span> = initialize;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，模块名<code>my-plugin-*</code>表示适配所有以<code>my-plugin-</code>开头的模块名（比如<code>my-plugin-logger</code>）。</p>
+<h2 id="declare-global"><a href="#declare-global" class="headerlink" title="declare global"></a>declare global</h2><p>如果要为 JavaScript 引擎的原生对象添加属性和方法，可以使用<code>declare global &#123;&#125;</code>语法。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">global</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> <span class="title class_">String</span> &#123;</span><br><span class="line">    <span class="title function_">toSmallString</span>(): <span class="built_in">string</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">String</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">toSmallString</span> = ():<span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 具体实现</span></span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，为 JavaScript 原生的<code>String</code>对象添加了<code>toSmallString()</code>方法。declare global 给出这个新增方法的类型描述。</p>
+<p>这个示例第一行的空导出语句<code>export &#123;&#125;</code>，作用是强制编译器将这个脚本当作模块处理。这是因为<code>declare global</code>必须用在模块里面。</p>
+<p>下面的示例是为 window 对象添加一个属性<code>myAppConfig</code>。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">global</span> &#123;</span><br><span class="line">  <span class="keyword">interface</span> window &#123;</span><br><span class="line">    <span class="attr">myAppConfig</span>:<span class="built_in">object</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = <span class="variable language_">window</span>.<span class="property">myAppConfig</span>;</span><br></pre></td></tr></table></figure>
+
+<p>declare global 只能扩充现有对象的类型描述，不能增加新的顶层类型。</p>
+<h2 id="declare-enum"><a href="#declare-enum" class="headerlink" title="declare enum"></a>declare enum</h2><p>declare 关键字给出 enum 类型描述的例子如下，下面的写法都是允许的。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="keyword">enum</span> <span class="variable constant_">E1</span> &#123;</span><br><span class="line">  A,</span><br><span class="line">  B,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">enum</span> <span class="variable constant_">E2</span> &#123;</span><br><span class="line">  A = <span class="number">0</span>,</span><br><span class="line">  B = <span class="number">1</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">const</span> <span class="keyword">enum</span> <span class="variable constant_">E3</span> &#123;</span><br><span class="line">  A,</span><br><span class="line">  B,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="keyword">const</span> <span class="keyword">enum</span> <span class="variable constant_">E4</span> &#123;</span><br><span class="line">  A = <span class="number">0</span>,</span><br><span class="line">  B = <span class="number">1</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="declare-module-用于类型声明文件"><a href="#declare-module-用于类型声明文件" class="headerlink" title="declare module 用于类型声明文件"></a>declare module 用于类型声明文件</h2><p>我们可以为每个模块脚本，定义一个<code>.d.ts</code>文件，把该脚本用到的类型定义都放在这个文件里面。但是，更方便的做法是为整个项目，定义一个大的<code>.d.ts</code>文件，在这个文件里面使用<code>declare module</code>定义每个模块脚本的类型。</p>
+<p>下面的示例是<code>node.d.ts</code>文件的一部分。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;url&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">interface</span> <span class="title class_">Url</span> &#123;</span><br><span class="line">    protocol?: <span class="built_in">string</span>;</span><br><span class="line">    hostname?: <span class="built_in">string</span>;</span><br><span class="line">    pathname?: <span class="built_in">string</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">parse</span>(<span class="params"></span></span><br><span class="line"><span class="params">    urlStr: <span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">    parseQueryString?,</span></span><br><span class="line"><span class="params">    slashesDenoteHost?</span></span><br><span class="line"><span class="params">  </span>): <span class="title class_">Url</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">declare</span> <span class="variable language_">module</span> <span class="string">&quot;path&quot;</span> &#123;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">normalize</span>(<span class="params">p: <span class="built_in">string</span></span>): <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">join</span>(<span class="params">...paths: <span class="built_in">any</span>[]</span>): <span class="built_in">string</span>;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">var</span> <span class="attr">sep</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面示例中，<code>url</code>和<code>path</code>都是单独的模块脚本，但是它们的类型都定义在<code>node.d.ts</code>这个文件里面。</p>
+<p>使用时，自己的脚本使用三斜杠命令，加载这个类型声明文件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;reference path=&quot;node.d.ts&quot;/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果没有上面这一行命令，自己的脚本使用外部模块时，就需要在脚本里面使用 declare 命令单独给出外部模块的类型。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://timmousk.com/blog/typescript-declare/">How Does The Declare Keyword Work In TypeScript?</a>, Tim Mouskhelichvili</li>
+</ul>
+</div>
+				<link rel="stylesheet" type="text/css" href="https://qiniu.techgrow.cn/readmore/dist/hexo.css">
+				<script src="https://qiniu.techgrow.cn/readmore/dist/readmore.js" type="text/javascript"></script>
+				<script>
+				var isMobile = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+				var isEncrypt = document.getElementById('hexo-blog-encrypt');
+				var allowMobile = false;
+				if (!isEncrypt && (!isMobile || (isMobile && allowMobile))) {
+					try {
+						var plugin = new ReadmorePlugin();
+						plugin.init({
+							"type": "hexo",
+							"id": "readmore-container",
+							"name": "没有梦想的程序员",
+							"blogId": "27935-0924879545953-871",
+							"qrcode": "https://ronn97.github.io/images/static/qrcode.jpg",
+							"keyword": "code",
+							"random": "1",
+							"height": "auto",
+							"expires": "365",
+							"lockToc": "yes",
+							"interval": "60",
+							"baseUrl": ""
+						});
+					} catch(e) {
+						console.warn("readmore plugin occurred error: " + e.name + " | " + e.message);
+					}
+				}
+				</script>
+			
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/09/05/ts-declare/" data-id="clm609r30000ot4wlex4j0npc" class="article-share-link">
+        分享
+      </a>
+      
+    </footer>
+
+  </div>
+
+  
+  
+<nav class="article-nav">
+  
+  <a href="/2023/09/05/ts-d.ts/" class="article-nav-link">
+    <strong class="article-nav-caption">前一篇</strong>
+    <div class="article-nav-title">
+      
+      d.ts 类型声明文件
+      
+    </div>
+  </a>
+  
+  
+  <a href="/2023/09/05/ts-enum/" class="article-nav-link">
+    <strong class="article-nav-caption">后一篇</strong>
+    <div class="article-nav-title">TypeScript 的 Enum 类型</div>
+  </a>
+  
+</nav>
+
+  
+
+  
+  
+  
+  
+
+</article>
+</section>
+    <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>没有梦想的程序员 &copy; 2023</li>
+      
+        <li>
+          
+            <a href="https://beian.miit.gov.cn/" target="_blank"></a>
+            
+        </li>
+      
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>theme  <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+    <p><ul class="list-inline">
+  
+  <li><i class="fe fe-smile-alt tooltip" data-tooltip="UV"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+  <li><i class="fe fe-bookmark tooltip" data-tooltip="PV"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul></p>
+  </div>
+</footer>
+  </main>
+  <aside class="sidebar">
+    <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/hexo.svg" alt="没有梦想的程序员"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">首页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">归档</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories/TS%E6%95%99%E7%A8%8B">TS教程</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/gallery">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/about">关于</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="搜索">
+        <i class="fe fe-search"></i>
+        搜索
+      </a>
+    </li>
+      <li class="nav-item">
+        <div id="translate"></div>
+      </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="fe fe-feed"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+  </aside>
+  
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+
+<script src="/js/tocbot.min.js"></script>
+
+
+<script>
+  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+  tocbot.init({
+    tocSelector: '.tocbot',
+    contentSelector: '.article-entry',
+    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    positionFixedSelector: '.tocbot',
+    positionFixedClass: 'is-position-fixed',
+    fixedSidebarOffset: 'auto',
+  });
+</script>
+
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+
+<!--添加多语言翻译效果-->
+<script src="https://res.zvo.cn/translate/translate.js"></script>
+<script>
+  translate.setUseVersion2(); //设置使用v2.x 版本
+  translate.language.setLocal('chinese_simplified'); //设置本地语种（当前网页的语种）。如果不设置，默认自动识别当前网页显示文字的语种。 可填写如 'english'、'chinese_simplified' 等，具体参见文档下方关于此的说明。
+  translate.execute();//进行翻译
+</script>
+</html>
